@@ -1,0 +1,106 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sign Up</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+<body>
+    <div th:insert="fragments/header :: header-vacio">...</div>
+    <div class="row justify-content-center">
+        <div class="col col-md-5 text-center">
+            <!--/*@thymesVar id="user" type="com.fitness.tracker.model.User"*/-->
+            <!--/*@thymesVar id="credentials" type="com.fitness.tracker.model.Credentials"*/-->
+            <form method="post" th:action="@{/register}" th:object="${user}">
+                <h1 class="display-4">Sign Up</h1>
+
+                <div class="form-row py-1">
+                    <label>User Name</label>
+                    <input type="text" class="form-control" name="credentials.userName" th:value="*{credentials.userName}" th:errorClass="is-invalid">
+                    <div th:if="${#fields.hasErrors('credentials.userName')}" th:errors="*{credentials.userName}" class="invalid-feedback"></div>
+                </div>
+
+                <div class="form-row py-1">
+                    <label>Email</label>
+                    <input type="text" class="form-control" name="credentials.email" th:value="*{credentials.email}" th:errorClass="is-invalid">
+                    <div th:if="${#fields.hasErrors('credentials.email')}" th:errors="*{credentials.email}" class="invalid-feedback"></div>
+                </div>
+
+                <div class="form-row py-1">
+                    <label>Password</label>
+                    <input type="password" class="form-control" name="credentials.password" th:value="*{credentials.password}" th:errorClass="is-invalid">
+                    <div th:if="${#fields.hasErrors('credentials.password')}" th:errors="*{credentials.password}" class="invalid-feedback"></div>
+                </div>
+
+                <div class="form-row py-1">
+                    <label>Re-enter Password</label>
+                    <input type="password" class="form-control" name="credentials.rpassword" th:value="*{credentials.rpassword}" th:errorClass="is-invalid">
+                    <div th:if="${#fields.hasErrors('credentials.rpassword')}" th:errors="*{credentials.rpassword}" class="invalid-feedback"></div>
+                </div>
+
+                <div class="form-row py-1">
+                    <label>Sex</label>
+                    <select class="form-select form-control" aria-label="Default select example">
+                        <option selected>-</option>
+                        <option value="1">Male</option>
+                        <option value="2">Female</option>
+                    </select>
+                </div>
+
+                <div class="form-row py-1">
+                    <label>Date of Birth</label>
+                    <input type="date" class="form-control" name="dateOfBirth" th:value="*{dateOfBirth}" th:errorClass="is-invalid">
+                    <div th:if="${#fields.hasErrors('dateOfBirth')}" th:errors="*{dateOfBirth}" class="invalid-feedback"></div>
+                </div>
+
+                <div class="form-row py-1">
+                    <label>Height (m)</label>
+                    <input type="number" min="0" step="0.01" class="form-control" name="height" th:value="*{height}" th:errorClass="is-invalid">
+                    <div th:if="${#fields.hasErrors('height')}" th:errors="*{height}" class="invalid-feedback"></div>
+                </div>
+
+                <div class="form-row py-1">
+                    <label>Weight (kg)</label>
+                    <input type="number" min="0" step="0.01" class="form-control" name="weight" th:value="*{weight}" th:errorClass="is-invalid">
+                    <div th:if="${#fields.hasErrors('weight')}" th:errors="*{weight}" class="invalid-feedback"></div>
+                </div>
+
+                <div class="form-row py-1">
+                    <label>Weekly objective</label>
+                    <select class="form-select form-control" aria-label="Default select example">
+                        <option selected>-</option>
+                        <option value="1">Gain muscle - faster</option>
+                        <option value="2">Gain muscle - slower</option>
+                        <option value="3">Maintain</option>
+                        <option value="4">Loose fat - faster</option>
+                        <option value="5">Loose fat - slower</option>
+                    </select>
+                </div>
+
+                <div class="form-row py-1">
+                    <label>Amount of physical activity</label>
+                    <select class="form-select form-control" aria-label="Default select example">
+                        <option selected>-</option>
+                        <option value="1">Not very active - (Most of the day you are seated)</option>
+                        <option value="2">Slightly active - (A good amount of the day you are standed)</option>
+                        <option value="3">Active - (You excersice regulary)</option>
+                        <option value="4">Very active - (You excersice 6 or 7 days a week)</option>
+                    </select>
+                </div>
+
+                <div class="form-row py-1">
+                    <button type="submit" class="btn btn-info btn-block">
+                        Create your account
+                    </button>
+                </div>
+            </form>
+            <p class="py-2">Already have an account?
+                <a href="/login">Sign-in</a>
+            </p>
+
+        </div>
+
+    </div>
+</body>
+</html>
