@@ -17,12 +17,13 @@ import javax.persistence.PrimaryKeyJoinColumn
 import javax.persistence.SequenceGenerator
 import javax.persistence.Table
 import javax.persistence.Transient
+import javax.persistence.UniqueConstraint
 import javax.validation.constraints.Email
 import javax.validation.constraints.NotBlank
 import javax.validation.constraints.Pattern
 
 @Entity
-@Table(name = "credentials")
+@Table(name = "credentials", uniqueConstraints =  @UniqueConstraint(name = "user_email_unique", columnNames = "email"))
 @CompileStatic
 @ToString
 class Credentials {
