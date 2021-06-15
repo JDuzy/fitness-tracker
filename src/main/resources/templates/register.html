@@ -41,11 +41,12 @@
 
                 <div class="form-row py-1">
                     <label>Sex</label>
-                    <select class="form-select form-control" aria-label="Default select example">
-                        <option selected>-</option>
-                        <option value="1">Male</option>
-                        <option value="2">Female</option>
+                    <select class="form-select form-control" aria-label="Default select example" name="sex" th:value="*{sex}" th:errorClass="is-invalid">
+                        <option value="" selected>Select your sex</option>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
                     </select>
+                    <div th:if="${#fields.hasErrors('sex')}" th:errors="*{sex}" class="invalid-feedback"></div>
                 </div>
 
                 <div class="form-row py-1">
@@ -55,38 +56,40 @@
                 </div>
 
                 <div class="form-row py-1">
-                    <label>Height (m)</label>
-                    <input type="number" min="0" step="0.01" class="form-control" name="height" th:value="*{height}" th:errorClass="is-invalid">
+                    <label>Height (cm)</label>
+                    <input type="number" min="100" max="250" step="1" class="form-control" name="height" th:value="*{height}" th:errorClass="is-invalid">
                     <div th:if="${#fields.hasErrors('height')}" th:errors="*{height}" class="invalid-feedback"></div>
                 </div>
 
                 <div class="form-row py-1">
                     <label>Weight (kg)</label>
-                    <input type="number" min="0" step="0.01" class="form-control" name="weight" th:value="*{weight}" th:errorClass="is-invalid">
+                    <input type="number" min="30" step="0.01" class="form-control" name="weight" th:value="*{weight}" th:errorClass="is-invalid">
                     <div th:if="${#fields.hasErrors('weight')}" th:errors="*{weight}" class="invalid-feedback"></div>
                 </div>
 
                 <div class="form-row py-1">
                     <label>Weekly objective</label>
-                    <select class="form-select form-control" aria-label="Default select example">
-                        <option selected>-</option>
-                        <option value="1">Gain muscle - faster</option>
-                        <option value="2">Gain muscle - slower</option>
-                        <option value="3">Maintain</option>
-                        <option value="4">Loose fat - faster</option>
-                        <option value="5">Loose fat - slower</option>
+                    <select class="form-select form-control" aria-label="Default select example" name="weightChangePerWeek" th:value="*{weightChangePerWeek}" th:errorClass="is-invalid">
+                        <option value="-1" selected>Select your objective</option>
+                        <option value="0.5">Gain muscle - faster</option>
+                        <option value="0.25">Gain muscle - slower</option>
+                        <option value="0">Maintain</option>
+                        <option value="-0.5">Loose fat - faster</option>
+                        <option value="-0.25">Loose fat - slower</option>
                     </select>
+                    <div th:if="${#fields.hasErrors('weightChangePerWeek')}" th:errors="*{weightChangePerWeek}" class="invalid-feedback"></div>
                 </div>
 
                 <div class="form-row py-1">
-                    <label>Amount of physical activity</label>
-                    <select class="form-select form-control" aria-label="Default select example">
-                        <option selected>-</option>
-                        <option value="1">Not very active - (Most of the day you are seated)</option>
-                        <option value="2">Slightly active - (A good amount of the day you are standed)</option>
-                        <option value="3">Active - (You excersice regulary)</option>
-                        <option value="4">Very active - (You excersice 6 or 7 days a week)</option>
+                    <label>Weekly amount of physical activity</label>
+                    <select class="form-select form-control" aria-label="Default select example" name="physicalActivity" th:value="*{physicalActivity}" th:errorClass="is-invalid">
+                        <option value="" selected>Select your physical activity</option>
+                        <option value="Not very active">Not very active - (Most of the day you are seated)</option>
+                        <option value="Slightly active">Slightly active - (A good amount of the day you are standed)</option>
+                        <option value="Active">Active - (You excersice regulary)</option>
+                        <option value="Very active">Very active - (You excersice 6 or 7 days a week)</option>
                     </select>
+                    <div th:if="${#fields.hasErrors('physicalActivity')}" th:errors="*{physicalActivity}" class="invalid-feedback"></div>
                 </div>
 
                 <div class="form-row py-1">

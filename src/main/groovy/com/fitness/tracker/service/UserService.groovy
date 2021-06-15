@@ -1,6 +1,7 @@
 package com.fitness.tracker.service
 
 import com.fitness.tracker.model.Credentials
+import com.fitness.tracker.model.User
 import com.fitness.tracker.repository.CredentialsRepository
 import com.fitness.tracker.repository.UserRepository
 import groovy.transform.CompileStatic
@@ -24,5 +25,10 @@ class UserService {
     boolean userExists(String email){
         Optional<Credentials> credentials = credentialsRepository.findCredentialsByEmail(email)
         credentials.isPresent()
+    }
+
+    User save(User user){
+        credentialsRepository.save(user.credentials)
+        userRepository.save(user)
     }
 }

@@ -31,8 +31,8 @@ class RegistrationController {
     @Autowired
     final UserService userService
     static final Logger log = LoggerFactory.getLogger(RegistrationController.class)
-    final float MAX_HEIGHT = 2.5
-    final float MIN_HEIGHT = 1
+    final Integer MAX_HEIGHT = 250
+    final Integer MIN_HEIGHT = 100
     final float MAX_WEIGHT = 450
     final float MIN_WEIGHT = 20
 
@@ -70,12 +70,16 @@ class RegistrationController {
             bindingResult.addError(new FieldError("user", "height", "Enter a valid height"))
         }
 
+        //Checks if weekly objective has a selected value
+        if (user.weightChangePerWeek == -1){
+            bindingResult.addError(new FieldError("user", "weightChangePerWeek", "Please select a weekly objective"))
+        }
+
         if(bindingResult.hasErrors()){
-            log.info(">> Credentials : {}", user.credentials.toString())
             return "register"
         }
 
-        log.info(">> Credentials : {}", user.credentials.toString())
+        userService.save(user)
         "redirect:/login"
     }
 }

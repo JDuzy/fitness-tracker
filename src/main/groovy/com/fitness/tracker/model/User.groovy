@@ -2,6 +2,7 @@ package com.fitness.tracker.model
 
 import groovy.transform.CompileStatic
 import groovy.transform.ToString
+import org.springframework.format.annotation.DateTimeFormat
 
 import javax.persistence.CascadeType
 import javax.persistence.Column
@@ -19,6 +20,7 @@ import javax.persistence.Transient
 import javax.validation.Valid
 import javax.validation.constraints.NotBlank
 import javax.validation.constraints.NotNull
+import javax.validation.constraints.Past
 import javax.validation.constraints.Positive
 import java.time.LocalDate
 import java.time.Period
@@ -30,31 +32,34 @@ import java.time.Period
 class User {
 
     @Id
+    @SequenceGenerator(name = 'user_sequence', sequenceName = 'user_sequence', allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_sequence")
     @Column( name = "id", updatable = false, nullable = false)
     Long id
 
-    //@NotBlank(message = "Enter a valid date")
+    @NotNull(message = "Please enter a date of birth")
+    @Past(message = "Please enter a valid date of birth")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     LocalDate dateOfBirth
 
     @Transient
     int age
 
-    @NotBlank(message = "Enter a valid sex")
+    @NotBlank(message = "Enter your sex")
     String sex
-    @Positive
-    float weight
-    float height
+    BigDecimal weight
+    Integer height
 
-    @NotBlank(message = "Enter a valid physicalActivity")
+    @NotBlank(message = "Please select your weekly amount of physical activity")
     String physicalActivity
 
-    float weightChangePerWeek
+    BigDecimal weightChangePerWeek
 
     @NotNull
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     @PrimaryKeyJoinColumn
     @Valid
-    Credentials credentials = new Credentials()
+    Credentials credentials = new Credentials(user: this)
 
     int getAge(){
         Period.between(this.dateOfBirth, LocalDate.now()).getYears()

@@ -19,6 +19,7 @@ import javax.persistence.Table
 import javax.persistence.Transient
 import javax.validation.constraints.Email
 import javax.validation.constraints.NotBlank
+import javax.validation.constraints.Pattern
 
 @Entity
 @Table(name = "credentials")
@@ -27,10 +28,13 @@ import javax.validation.constraints.NotBlank
 class Credentials {
 
     @Id
-    @SequenceGenerator(name = 'credentials_sequence', sequenceName = 'credentials_sequence', allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "credentials_sequence")
     @Column( name = "user_id", updatable = false, nullable = false)
     Long id
+
+    @Pattern(regexp = '^[a-zA-Z0-9]([._-](?![._-])|[a-zA-Z0-9]){3,18}[a-zA-Z0-9]$',
+             message = """The number of characters must be between 5 to 20.
+The only special characters allowed are: .-_ 
+This characters can't be used consecutively and must not be the first or last character""")
 
     @NotBlank(message = "Enter your username")
     String userName
