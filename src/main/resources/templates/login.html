@@ -8,5 +8,7 @@
 <body>
     <div th:insert="fragments/header :: header-vacio">...</div>
     <h1>Log in</h1>
+    <!--/*@thymesVar id="message" type="String"*/-->
+    <div class="alert alert-info text-center" th:if="${message}" th:text="${message}"></div>
 </body>
 </html>

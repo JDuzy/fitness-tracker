@@ -3,18 +3,17 @@ package com.fitness.tracker.model
 import groovy.transform.CompileStatic
 import groovy.transform.ToString
 import org.hibernate.validator.constraints.Length
+import org.springframework.security.core.GrantedAuthority
+import org.springframework.security.core.authority.SimpleGrantedAuthority
+import org.springframework.security.core.userdetails.UserDetails
 
-import javax.persistence.CascadeType
 import javax.persistence.Column
 import javax.persistence.Entity
-import javax.persistence.GeneratedValue
-import javax.persistence.GenerationType
 import javax.persistence.Id
 import javax.persistence.JoinColumn
 import javax.persistence.MapsId
 import javax.persistence.OneToOne
-import javax.persistence.PrimaryKeyJoinColumn
-import javax.persistence.SequenceGenerator
+
 import javax.persistence.Table
 import javax.persistence.Transient
 import javax.persistence.UniqueConstraint
@@ -26,7 +25,7 @@ import javax.validation.constraints.Pattern
 @Table(name = "credentials", uniqueConstraints =  @UniqueConstraint(name = "user_email_unique", columnNames = "email"))
 @CompileStatic
 @ToString
-class Credentials {
+class Credentials implements UserDetails {
 
     @Id
     @Column( name = "user_id", updatable = false, nullable = false)
@@ -57,6 +56,37 @@ This characters can't be used consecutively and must not be the first or last ch
     @MapsId
     @JoinColumn(name = "user_id")
     User user
+
+    @Override
+    Collection<? extends GrantedAuthority> getAuthorities() {
+        SimpleGrantedAuthority authority = new SimpleGrantedAuthority("USER")
+        Collections.singletonList(authority)
+    }
+
+    @Override
+    String getUsername() {
+        userName
+    }
+
+    @Override
+    boolean isAccountNonExpired() {
+        true
+    }
+
+    @Override
+    boolean isAccountNonLocked() {
+        true
+    }
+
+    @Override
+    boolean isCredentialsNonExpired() {
+        return true
+    }
+
+    @Override
+    boolean isEnabled() {
+        true
+    }
 
     boolean passwordsMatch(){
         if(password != null && rpassword != null){

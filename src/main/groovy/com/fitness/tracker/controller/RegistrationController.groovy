@@ -18,13 +18,14 @@ import org.springframework.web.bind.annotation.InitBinder
 import org.springframework.web.bind.annotation.ModelAttribute
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.servlet.mvc.support.RedirectAttributes
 
 import javax.validation.Valid
 
 
 
 @Controller
-@RequestMapping("/register")
+@RequestMapping("/registration")
 @CompileStatic
 class RegistrationController {
 
@@ -45,11 +46,11 @@ class RegistrationController {
     @GetMapping
     String register(@ModelAttribute User user,Model model){
         model.addAttribute("user", user)
-        "register"
+        "registration"
     }
 
     @PostMapping
-    String saveRegistration(@Valid User user, BindingResult bindingResult){
+    String saveRegistration(@Valid User user, BindingResult bindingResult, RedirectAttributes redirectAttributes){
         //checks if the user exists
         if (userService.userExists(user.credentials.email)){
             bindingResult.addError(new FieldError("user", "credentials.email", "Email adress already in use"))
@@ -76,10 +77,10 @@ class RegistrationController {
         }
 
         if(bindingResult.hasErrors()){
-            return "register"
+            return "registration"
         }
-
-        userService.save(user)
+        redirectAttributes.addFlashAttribute("message", "Succes! Your registration is now complete")
+        userService.register(user)
         "redirect:/login"
     }
 }
