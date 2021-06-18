@@ -34,7 +34,7 @@ class Credentials implements UserDetails {
     @Pattern(regexp = '^[a-zA-Z0-9]([._-](?![._-])|[a-zA-Z0-9]){3,18}[a-zA-Z0-9]$',
              message = """The number of characters must be between 5 to 20.
 The only special characters allowed are: .-_ 
-This characters can't be used consecutively and must not be the first or last character""")
+These characters can't be used consecutively and must not be the first or last character""")
 
     @NotBlank(message = "Enter your username")
     String userName

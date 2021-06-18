@@ -10,4 +10,5 @@ import org.springframework.transaction.annotation.Transactional
 interface CredentialsRepository extends JpaRepository<Credentials, Long> {
 
     Optional<Credentials> findCredentialsByEmail(String email)
+
 }

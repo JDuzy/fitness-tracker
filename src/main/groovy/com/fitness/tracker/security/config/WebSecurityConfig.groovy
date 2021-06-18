@@ -25,13 +25,18 @@ class WebSecurityConfig extends WebSecurityConfigurerAdapter{
     @Override
     protected void configure(HttpSecurity http) throws Exception{
         http
-            .csrf().disable() //Delete this line?
+            .csrf().disable() //Delete later
                 .authorizeRequests()
-                .antMatchers("/h2-console/**").permitAll()
-                .antMatchers("/registration/**").permitAll()
+                .antMatchers("/h2-console/**", "/registration/**", "/").permitAll()
                 .anyRequest()
                 .authenticated()
-        http.formLogin()
+
+        http
+                .formLogin()
+                .loginPage("/login")
+                .defaultSuccessUrl("/authenticated")
+                .permitAll()
+
         http.headers().frameOptions().disable()
     }
 
