@@ -9,11 +9,13 @@ import org.springframework.security.core.userdetails.UserDetails
 
 import javax.persistence.Column
 import javax.persistence.Entity
+import javax.persistence.GeneratedValue
+import javax.persistence.GenerationType
 import javax.persistence.Id
 import javax.persistence.JoinColumn
 import javax.persistence.MapsId
 import javax.persistence.OneToOne
-
+import javax.persistence.SequenceGenerator
 import javax.persistence.Table
 import javax.persistence.Transient
 import javax.persistence.UniqueConstraint
@@ -27,6 +29,8 @@ import javax.validation.constraints.Pattern
 class Credentials {
 
     @Id
+    @SequenceGenerator(name = 'credentials_sequence', sequenceName = 'credentials_sequence', allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "credentials_sequence")
     @Column( name = "user_id", updatable = false, nullable = false)
     Long id
 
@@ -51,10 +55,6 @@ These characters can't be used consecutively and must not be the first or last c
     @Transient
     String rpassword
 
-    @OneToOne
-    @MapsId
-    @JoinColumn(name = "user_id")
-    User user
 
     boolean passwordsMatch(){
         if(password != null && rpassword != null){

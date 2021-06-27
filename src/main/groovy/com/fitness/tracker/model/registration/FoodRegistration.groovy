@@ -4,6 +4,7 @@ import com.fitness.tracker.model.Food
 
 import javax.persistence.CascadeType
 import javax.persistence.Entity
+import javax.persistence.JoinColumn
 import javax.persistence.OneToOne
 import javax.persistence.PrimaryKeyJoinColumn
 import javax.persistence.Table
@@ -15,6 +16,6 @@ class FoodRegistration extends Registration{
 
     @NotNull
     @OneToOne(cascade = CascadeType.ALL)
-    @PrimaryKeyJoinColumn
+    @JoinColumn(name = "food_id", referencedColumnName = "id")
     Food food
 }

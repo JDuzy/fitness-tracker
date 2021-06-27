@@ -56,11 +56,10 @@ class User implements UserDetails{
     BigDecimal weightChangePerWeek
 
     @NotNull
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL)
     @PrimaryKeyJoinColumn
     @Valid
-    Credentials credentials = new Credentials(user: this)
-
+    Credentials credentials = new Credentials()
 
     @Override
     Collection<? extends GrantedAuthority> getAuthorities() {

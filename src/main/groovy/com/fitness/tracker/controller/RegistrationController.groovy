@@ -31,7 +31,6 @@ class RegistrationController {
 
     @Autowired
     final UserService userService
-    static final Logger log = LoggerFactory.getLogger(RegistrationController.class)
     final Integer MAX_HEIGHT = 250
     final Integer MIN_HEIGHT = 100
     final float MAX_WEIGHT = 450
