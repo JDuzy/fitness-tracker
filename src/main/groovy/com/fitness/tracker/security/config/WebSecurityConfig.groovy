@@ -33,14 +33,14 @@ class WebSecurityConfig extends WebSecurityConfigurerAdapter{
         http
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/h2-console/**", "/registration/**", "/").permitAll()
+                .antMatchers("/h2-console/**", "/registration/**").permitAll()
                 .anyRequest()
                 .authenticated()
 
         http
                 .formLogin()
                 .loginPage("/login")
-                .defaultSuccessUrl("/authenticated")
+                .defaultSuccessUrl("/home")
                 .permitAll()
 
         http

@@ -20,22 +20,27 @@ class HomeController {
 
     @GetMapping("/")
     String index(){
-        "index"
+        "redirect:/home"
     }
 
-    @GetMapping("/authenticated")
+    @GetMapping("/home")
     String authenticated(Model model){
         model.addAttribute("user", userService.getPrincipal())
-        "authenticated"
+        "home"
     }
 
     @GetMapping("/login")
     String login(){
         User user = userService.getPrincipal()
         if (user != null){
-            return "redirect:/authenticated"
+            return "redirect:/home"
         }
         "login"
+    }
+
+    @GetMapping("/authenticated")
+    String authenticated(){
+        "redirect:/home"
     }
 
 }
