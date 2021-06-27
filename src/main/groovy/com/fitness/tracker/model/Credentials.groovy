@@ -24,8 +24,7 @@ import javax.validation.constraints.Pattern
 @Entity
 @Table(name = "credentials", uniqueConstraints =  @UniqueConstraint(name = "user_email_unique", columnNames = "email"))
 @CompileStatic
-@ToString
-class Credentials implements UserDetails {
+class Credentials {
 
     @Id
     @Column( name = "user_id", updatable = false, nullable = false)
@@ -57,37 +56,6 @@ These characters can't be used consecutively and must not be the first or last c
     @JoinColumn(name = "user_id")
     User user
 
-    @Override
-    Collection<? extends GrantedAuthority> getAuthorities() {
-        SimpleGrantedAuthority authority = new SimpleGrantedAuthority("USER")
-        Collections.singletonList(authority)
-    }
-
-    @Override
-    String getUsername() {
-        userName
-    }
-
-    @Override
-    boolean isAccountNonExpired() {
-        true
-    }
-
-    @Override
-    boolean isAccountNonLocked() {
-        true
-    }
-
-    @Override
-    boolean isCredentialsNonExpired() {
-        return true
-    }
-
-    @Override
-    boolean isEnabled() {
-        true
-    }
-
     boolean passwordsMatch(){
         if(password != null && rpassword != null){
             return password == rpassword
@@ -95,4 +63,15 @@ These characters can't be used consecutively and must not be the first or last c
         false
     }
 
+
+    @Override
+    public String toString() {
+        return "Credentials{" +
+                "id=" + id +
+                ", userName='" + userName + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", rpassword='" + rpassword + '\'' +
+                '}';
+    }
 }

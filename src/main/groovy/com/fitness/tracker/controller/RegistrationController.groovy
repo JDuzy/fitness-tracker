@@ -45,6 +45,10 @@ class RegistrationController {
 
     @GetMapping
     String register(@ModelAttribute User user,Model model){
+        User principal = userService.getPrincipal()
+        if (principal != null){
+            return "redirect:/authenticated"
+        }
         model.addAttribute("user", user)
         "registration"
     }

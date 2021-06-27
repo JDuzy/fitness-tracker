@@ -1,7 +1,9 @@
 package com.fitness.tracker.controller
 
 import com.fitness.tracker.model.User
+import com.fitness.tracker.service.UserService
 import groovy.transform.CompileStatic
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
@@ -13,6 +15,9 @@ import org.springframework.web.bind.annotation.RequestMapping
 @CompileStatic
 class HomeController {
 
+    @Autowired
+    final UserService userService;
+
     @GetMapping("/")
     String index(){
         "index"
@@ -20,23 +25,17 @@ class HomeController {
 
     @GetMapping("/authenticated")
     String authenticated(Model model){
-        model.addAttribute("user", getPrincipal())
+        model.addAttribute("user", userService.getPrincipal())
+        "authenticated"
     }
 
     @GetMapping("/login")
     String login(){
-        User user = getPrincipal()
+        User user = userService.getPrincipal()
         if (user != null){
-            return "authenticated"
+            return "redirect:/authenticated"
         }
         "login"
     }
 
-    private User getPrincipal(){
-        User user = null
-        if (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof User){
-            user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()
-        }
-        user
-    }
 }

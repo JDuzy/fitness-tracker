@@ -3,6 +3,9 @@ package com.fitness.tracker.model
 import groovy.transform.CompileStatic
 import groovy.transform.ToString
 import org.springframework.format.annotation.DateTimeFormat
+import org.springframework.security.core.GrantedAuthority
+import org.springframework.security.core.authority.SimpleGrantedAuthority
+import org.springframework.security.core.userdetails.UserDetails
 
 import javax.persistence.CascadeType
 import javax.persistence.Column
@@ -29,7 +32,7 @@ import java.time.Period
 @Table(name = "user")
 @CompileStatic
 @ToString
-class User {
+class User implements UserDetails{
 
     @Id
     @SequenceGenerator(name = 'user_sequence', sequenceName = 'user_sequence', allocationSize = 1)
@@ -58,8 +61,44 @@ class User {
     @Valid
     Credentials credentials = new Credentials(user: this)
 
+
+    @Override
+    Collection<? extends GrantedAuthority> getAuthorities() {
+        SimpleGrantedAuthority authority = new SimpleGrantedAuthority("USER")
+        Collections.singletonList(authority)
+    }
+
+    @Override
+    String getPassword() {
+        return credentials.password
+    }
+
+    @Override
+    String getUsername() {
+        return credentials.email
+    }
+
+    @Override
+    boolean isAccountNonExpired() {
+        return true
+    }
+
+    @Override
+    boolean isAccountNonLocked() {
+        return true
+    }
+
+    @Override
+    boolean isCredentialsNonExpired() {
+        return true
+    }
+
+    @Override
+    boolean isEnabled() {
+        return true
+    }
+
     int getAge(){
         Period.between(this.dateOfBirth, LocalDate.now()).getYears()
     }
-
 }
