@@ -11,12 +11,20 @@
 <body>
     <div th:insert="fragments/header :: header-vacio">...</div>
     <!--/*@thymesVar id="message" type="String"*/-->
-    <div class="alert alert-info text-center" th:if="${message}" th:text="${message}"></div>
+    <div class="alert alert-info text-center my-3" th:if="${message}" th:text="${message}"></div>
 
     <div class="row justify-content-center">
         <div class="col col-md-6 text-center">
             <form method="post" th:action="@{/login}">
                 <h1 class="display-4 py-4">Sign In</h1>
+
+                <div class="altert alert-danger text-center my-3 py-2" th:if="${param.error}">
+                    Invalid username and password.
+                </div>
+
+                <div class="alert alert-success text-center my-3 py-2" th:if="${param.logout}">
+                    You have been logged out.
+                </div>
 
                 <div class="input-group">
                     <div class="input-group-prepend">
