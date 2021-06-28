@@ -1,6 +1,5 @@
 package com.fitness.tracker.controller
 
-import com.fitness.tracker.model.Food
 import com.fitness.tracker.model.User
 import com.fitness.tracker.model.registration.FoodRegistration
 import com.fitness.tracker.service.FoodRegistrationService
@@ -30,7 +29,7 @@ class FoodRegistrationController {
     final FoodRegistrationService foodRegistrationService
 
     @GetMapping("/home")
-    String authenticated(Model model, @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) registrationDate){
+    String authenticated(Model model, @RequestParam(required = false) @DateTimeFormat(iso = DATE) LocalDate registrationDate){
         User loggedUser = userService.getPrincipal()
         model.addAttribute("user", loggedUser)
         List<FoodRegistration> dailyFoodsRegistrations = new ArrayList<FoodRegistration>()
