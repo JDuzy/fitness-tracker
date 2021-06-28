@@ -10,6 +10,7 @@ import org.springframework.format.annotation.DateTimeFormat
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 
@@ -28,8 +29,8 @@ class FoodRegistrationController {
     @Autowired
     final FoodRegistrationService foodRegistrationService
 
-    @GetMapping("/home")
-    String authenticated(Model model, @RequestParam(required = false) @DateTimeFormat(iso = DATE) LocalDate registrationDate){
+    @GetMapping("/food/registration")
+    String getFoodRegistrations(Model model, @RequestParam(required = false) @DateTimeFormat(iso = DATE) LocalDate registrationDate){
         User loggedUser = userService.getPrincipal()
         model.addAttribute("user", loggedUser)
         List<FoodRegistration> dailyFoodsRegistrations = new ArrayList<FoodRegistration>()
@@ -42,6 +43,16 @@ class FoodRegistrationController {
         }
 
         model.addAttribute("foodRegistrations", dailyFoodsRegistrations)
-        "home"
+        "foodRegistration"
+    }
+
+    @PostMapping("/food/registration")
+    String registerAFood(Model model, @RequestParam(required = false) @DateTimeFormat(iso = DATE) LocalDate registrationDate, @RequestParam Long foodId){
+        User loggedUser = userService.getPrincipal()
+        model.addAttribute("user", loggedUser)
+
+
+
+
     }
 }

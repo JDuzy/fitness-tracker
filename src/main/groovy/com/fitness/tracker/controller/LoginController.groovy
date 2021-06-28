@@ -13,28 +13,28 @@ import org.springframework.web.bind.annotation.RequestMapping
 @Controller
 @RequestMapping
 @CompileStatic
-class HomeController {
+class LoginController {
 
     @Autowired
     final UserService userService;
 
     @GetMapping("/")
     String index(){
-        "redirect:/home"
+        "redirect:/food/registration"
     }
 
     @GetMapping("/login")
     String login(){
         User user = userService.getPrincipal()
         if (user != null){
-            return "redirect:/home"
+            return "redirect:/food/registration"
         }
         "login"
     }
 
     @GetMapping("/authenticated")
     String authenticated(){
-        "redirect:/home"
+        "redirect:/food/registration"
     }
 
 }
