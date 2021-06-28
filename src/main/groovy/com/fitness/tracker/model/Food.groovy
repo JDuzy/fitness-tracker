@@ -27,6 +27,9 @@ class Food {
     long id
 
     @NotNull
+    String name
+
+    @NotNull
     BigDecimal calories
 
     @NotNull

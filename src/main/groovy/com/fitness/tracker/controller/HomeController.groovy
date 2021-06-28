@@ -23,12 +23,6 @@ class HomeController {
         "redirect:/home"
     }
 
-    @GetMapping("/home")
-    String authenticated(Model model){
-        model.addAttribute("user", userService.getPrincipal())
-        "home"
-    }
-
     @GetMapping("/login")
     String login(){
         User user = userService.getPrincipal()

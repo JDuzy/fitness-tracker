@@ -18,4 +18,7 @@ class FoodRegistration extends Registration{
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "food_id", referencedColumnName = "id")
     Food food
+
+    @NotNull
+    BigDecimal amount
 }
