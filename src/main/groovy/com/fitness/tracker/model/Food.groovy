@@ -30,7 +30,7 @@ class Food {
     String name
 
     @NotNull
-    BigDecimal calories
+    BigInteger calories
 
     @NotNull
     BigDecimal fats
@@ -45,4 +45,6 @@ class Food {
     @OneToOne(cascade = CascadeType.ALL)
     @PrimaryKeyJoinColumn
     Characteristics characteristics
+
+
 }

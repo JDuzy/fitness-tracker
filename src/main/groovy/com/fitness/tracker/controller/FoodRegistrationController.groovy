@@ -1,8 +1,10 @@
 package com.fitness.tracker.controller
 
+import com.fitness.tracker.model.Food
 import com.fitness.tracker.model.User
 import com.fitness.tracker.model.registration.FoodRegistration
 import com.fitness.tracker.service.FoodRegistrationService
+import com.fitness.tracker.service.FoodService
 import com.fitness.tracker.service.UserService
 import groovy.transform.CompileStatic
 import org.springframework.beans.factory.annotation.Autowired
@@ -30,11 +32,15 @@ class FoodRegistrationController {
     @Autowired
     final FoodRegistrationService foodRegistrationService
 
+    @Autowired
+    final FoodService foodService
+
     @GetMapping("/food/registration")
     String getFoodRegistrations(Model model, @RequestParam(required = false) @DateTimeFormat(iso = DATE) LocalDate registrationDate){
         User loggedUser = userService.getPrincipal()
         model.addAttribute("user", loggedUser)
         List<FoodRegistration> dailyFoodsRegistrations = new ArrayList<FoodRegistration>()
+        List<Food> foods = foodService.findAll()
 
         if (registrationDate == null){
             dailyFoodsRegistrations = foodRegistrationService.findAllFoodRegistrationByUserAndRegistrationDate(loggedUser, LocalDate.now())
@@ -44,6 +50,7 @@ class FoodRegistrationController {
         }
 
         model.addAttribute("foodRegistrations", dailyFoodsRegistrations)
+        model.addAttribute("foods", foods)
         "foodRegistration"
     }
 
