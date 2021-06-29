@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.stereotype.Service
 
+import javax.transaction.Transactional
 import java.time.LocalDate
 
 @Service
@@ -26,9 +27,14 @@ class FoodRegistrationService{
         foodRegistrationRepository.findAllFoodRegistrationByUserAndRegistrationDate(user, registrationDate)
     }
 
-    FoodRegistration register(BigDecimal amount, Long foodId){
+    @Transactional
+    FoodRegistration register(User user, LocalDate registrationDate, BigDecimal amount, Long foodId){
         Optional<Food> food = foodRepository.findFoodById(foodId)
-        food.ifPresentOrElse()
-        FoodRegistration registration= new FoodRegistration()
+        if (food.isEmpty()){
+            throw new IllegalStateException("Food with id ${foodId} does not exists")
+        }
+        FoodRegistration registration = new FoodRegistration(user: user, registrationDate: registrationDate, amount: amount, food: food.get())
+        System.out.println(user.toString())
+        foodRegistrationRepository.save(registration)
     }
 }

@@ -56,7 +56,7 @@ class User implements UserDetails{
     BigDecimal weightChangePerWeek
 
     @NotNull
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.MERGE)
     @PrimaryKeyJoinColumn
     @Valid
     Credentials credentials = new Credentials()

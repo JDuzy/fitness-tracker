@@ -46,7 +46,7 @@ class RegistrationController {
     String register(@ModelAttribute User user,Model model){
         User principal = userService.getPrincipal()
         if (principal != null){
-            return "redirect:/home"
+            return "redirect:/food/registration"
         }
         model.addAttribute("user", user)
         "registration"

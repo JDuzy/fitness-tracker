@@ -40,7 +40,7 @@ class WebSecurityConfig extends WebSecurityConfigurerAdapter{
         http
                 .formLogin()
                 .loginPage("/login")
-                .defaultSuccessUrl("/home")
+                .defaultSuccessUrl("/food/registration")
                 .permitAll()
 
         http
