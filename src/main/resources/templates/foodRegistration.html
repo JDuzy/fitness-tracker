@@ -23,7 +23,7 @@
         <div class="modal-body">
           <div class="list-group">
             <!--/*@thymesVar id="foods" type="List<com.fitness.tracker.model.Food>"*/-->
-            <a th:each="food : ${foods}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-start">
+            <a th:each="food : ${foods}" th:id="${food.id}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-start" data-bs-toggle="list">
               <div class="ms-2 me-auto">
               <div class="fw-bold" th:text="${food.name}"></div>
               100g
@@ -36,8 +36,14 @@
           </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <!--<button type="button" class="btn btn-primary">Save changes</button>-->
+          <!--/*@thymesVar id="date" type="java.time.LocalDate"*/-->
+          <form class="form-horizontal" th:value="${date}">
+            <div class="container-fluid row my-2">
+                <input type="number" id="amount-input" min="0" step="1" class="form-control col mx-1"  placeholder="Amount of grams">
+                <button type="button" th:onclick="registerFood()" class="btn btn-primary col-4 mx-1">Add food</button>
+                <button type="button" class="btn btn-secondary col-2 mx-1" data-bs-dismiss="modal">Close</button>
+            </div>
+          </form>
         </div>
       </div>
     </div>
@@ -72,7 +78,7 @@
 
   </div>
 
-
+  <script th:src="@{/scripts.js}"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 </body>
 </html>

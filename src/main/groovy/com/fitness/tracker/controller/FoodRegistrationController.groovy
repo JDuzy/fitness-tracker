@@ -51,6 +51,7 @@ class FoodRegistrationController {
 
         model.addAttribute("foodRegistrations", dailyFoodsRegistrations)
         model.addAttribute("foods", foods)
+        model.addAttribute("date", registrationDate)
         "foodRegistration"
     }
 
@@ -63,7 +64,7 @@ class FoodRegistrationController {
         BigDecimal amount = payload.get("amount").toBigDecimal()
         registrationDate ? foodRegistrationService.register(loggedUser, registrationDate, amount, foodId) : foodRegistrationService.register(loggedUser, LocalDate.now(), amount, foodId)
 
-        "redirect:/food/registration"
+        registrationDate ? "redirect:/food/registration?registrationDate=${registrationDate.toString()}" : "redirect:/food/registration"
 
     }
 }
