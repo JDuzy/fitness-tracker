@@ -36,7 +36,7 @@ class FoodRegistrationController {
     final FoodService foodService
 
     @GetMapping("/food/registration")
-    String getFoodRegistrations(Model model, @RequestParam(required = false) @DateTimeFormat(iso = DATE) LocalDate registrationDate){
+    String getFoodRegistrations(Model model, @RequestParam @DateTimeFormat(iso = DATE) LocalDate registrationDate){
         User loggedUser = userService.getPrincipal()
         model.addAttribute("user", loggedUser)
         List<FoodRegistration> dailyFoodsRegistrations = new ArrayList<FoodRegistration>()
@@ -51,20 +51,20 @@ class FoodRegistrationController {
 
         model.addAttribute("foodRegistrations", dailyFoodsRegistrations)
         model.addAttribute("foods", foods)
-        model.addAttribute("date", registrationDate)
+        model.addAttribute("date", registrationDate.toString())
         "foodRegistration"
     }
 
     //Request body should have foodId: foodId, amount: amount
     @PostMapping("/food/registration")
-    String registerAFood(Model model, @RequestParam(required = false) @DateTimeFormat(iso = DATE) LocalDate registrationDate, @RequestBody Map<String, String> payload){
+    String registerAFood(Model model, @RequestParam @DateTimeFormat(iso = DATE) LocalDate registrationDate, @RequestBody Map<String, String> payload){
         User loggedUser = userService.getPrincipal()
         //model.addAttribute("user", loggedUser)
         Long foodId = payload.get("foodId").toLong()
         BigDecimal amount = payload.get("amount").toBigDecimal()
-        registrationDate ? foodRegistrationService.register(loggedUser, registrationDate, amount, foodId) : foodRegistrationService.register(loggedUser, LocalDate.now(), amount, foodId)
+        foodRegistrationService.register(loggedUser, registrationDate, amount, foodId)
 
-        registrationDate ? "redirect:/food/registration?registrationDate=${registrationDate.toString()}" : "redirect:/food/registration"
+        "redirect:/food/registration?registrationDate=${registrationDate.toString()}"
 
     }
 }

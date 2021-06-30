@@ -17,6 +17,8 @@ import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 
+import java.time.LocalDate
+
 @Configuration
 @EnableWebSecurity
 @CompileStatic
@@ -40,7 +42,7 @@ class WebSecurityConfig extends WebSecurityConfigurerAdapter{
         http
                 .formLogin()
                 .loginPage("/login")
-                .defaultSuccessUrl("/food/registration")
+                .defaultSuccessUrl("/food/registration?registrationDate=${LocalDate.now().toString()}")
                 .permitAll()
 
         http

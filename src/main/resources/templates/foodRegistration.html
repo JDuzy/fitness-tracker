@@ -42,7 +42,7 @@
           <form class="form-horizontal" th:value="${date}">
             <div class="container-fluid row my-2">
                 <input type="number" id="amount-input" min="0" step="1" class="form-control col mx-1"  placeholder="Amount of grams">
-                <button type="button" th:onclick="registerFood()" class="btn btn-primary col-4 mx-1">Add food</button>
+                <button type="button" th:onclick="registerFood([[${date}]])" class="btn btn-primary col-4 mx-1">Add food</button>
             </div>
           </form>
         </div>
