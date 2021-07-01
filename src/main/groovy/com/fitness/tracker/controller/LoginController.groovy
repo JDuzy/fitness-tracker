@@ -25,21 +25,21 @@ class LoginController {
 
     @GetMapping("/")
     String index(){
-        "redirect:/food/registration${LocalDate.now().toString()}"
+        "redirect:/food/registration?registrationDate=${LocalDate.now().toString()}"
     }
 
     @GetMapping("/login")
     String login(){
         User user = userService.getPrincipal()
         if (user != null){
-            return "redirect:/food/registration${LocalDate.now().toString()}"
+            return "redirect:/food/registration?registrationDate=${LocalDate.now().toString()}"
         }
         "login"
     }
 
     @GetMapping("/authenticated") //This should may be deleted now
     String authenticated(){
-        "redirect:/food/registration${LocalDate.now().toString()}"
+        "redirect:/food/registration?registrationDate=${LocalDate.now().toString()}"
     }
 
 }

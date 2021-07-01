@@ -59,11 +59,11 @@
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
-            <p id="modify-text"></p>
+            <p name="modify-text"></p>
           </div>
           <div class="modal-footer">
-            <input type="number" required="true" id="edit-amount-input" min="0" step="1" class="form-control col mx-1"  placeholder="Amount of grams">
-            <button type="submit" id="save-modification" class="btn btn-primary">Save changes</button>
+            <input type="number"  name="edit-amount-input" min="0" step="1" class="form-control col mx-1"  placeholder="Amount of grams">
+            <button type="button" name="save-modification"  class="btn btn-primary">Save changes</button> <!--th:onclick="modifyAFoodRegistration([[${date}]])"-->
           </div>
         </div>
       </div>
@@ -90,7 +90,7 @@
           <td>
             <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
               <div class="btn-group me-2" role="group" aria-label="First group">
-                <button class="btn btn-success bi bi-pencil-square"  id="btn-modify" th:onclick="openEditModal([[${foodRegistration.food.name}]], [[${foodRegistration.id}]])"></button>
+                <button class="btn btn-success bi bi-pencil-square"  id="btn-modify" th:onclick="openEditModal([[${foodRegistration.food.name}]], [[${foodRegistration.id}]], [[${date}]])"></button>
                 <button class="btn btn-danger bi bi-x-square"></button>
               </div>
             </div>

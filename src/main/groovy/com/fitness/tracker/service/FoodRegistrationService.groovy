@@ -9,9 +9,12 @@ import groovy.transform.CompileStatic
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.stereotype.Service
+import org.springframework.web.server.ResponseStatusException
 
 import javax.transaction.Transactional
 import java.time.LocalDate
+
+import static org.springframework.http.HttpStatus.NOT_FOUND
 
 @Service
 @CompileStatic
@@ -35,6 +38,16 @@ class FoodRegistrationService{
         }
         FoodRegistration registration = new FoodRegistration(user: user, registrationDate: registrationDate, amount: amount, food: food.get())
         System.out.println(user.toString())
+        foodRegistrationRepository.save(registration)
+    }
+
+    FoodRegistration update(long registrationId, BigDecimal newAmount) {
+        Optional<FoodRegistration> foodRegistration = foodRegistrationRepository.findById(registrationId)
+        foodRegistration.orElseThrow({
+            new ResponseStatusException(NOT_FOUND, "No foodRegistration with id: ${registrationId} was found")
+        })
+        FoodRegistration registration = foodRegistration.get()
+        registration.amount = newAmount
         foodRegistrationRepository.save(registration)
     }
 }

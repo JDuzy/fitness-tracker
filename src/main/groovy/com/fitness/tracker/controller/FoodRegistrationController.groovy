@@ -9,18 +9,22 @@ import com.fitness.tracker.service.UserService
 import groovy.transform.CompileStatic
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.format.annotation.DateTimeFormat
+
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 
+
 import java.time.LocalDate
 
 import static org.springframework.format.annotation.DateTimeFormat.ISO.*
+
 
 @Controller
 @RequestMapping
@@ -64,18 +68,16 @@ class FoodRegistrationController {
         BigDecimal amount = payload.get("amount").toBigDecimal()
         foodRegistrationService.register(loggedUser, registrationDate, amount, foodId)
 
-        "redirect:/food/registration?registrationDate=${registrationDate.toString()}"
-
+        "foodRegistration"
+        //"redirect:/food/registration?registrationDate=${registrationDate.toString()}"
     }
 
-    @PutMapping("/food/registration")
-    String modifyARegistration(Model model, @RequestParam @DateTimeFormat(iso = DATE) LocalDate registrationDate, @RequestBody Map<String, String> payload){
-        User loggedUser = userService.getPrincipal()
-        Long foodId = payload.get("foodId").toLong()
+    //Request body should have amount: amount
+    @PutMapping("/food/registration/{registrationId}")
+    String modifyARegistration(Model model, @PathVariable Long registrationId, @RequestParam @DateTimeFormat(iso = DATE) LocalDate registrationDate, @RequestBody Map<String, String> payload){
         BigDecimal amount = payload.get("amount").toBigDecimal()
-        foodRegistrationService.register(loggedUser, registrationDate, amount, foodId)
+        foodRegistrationService.update(registrationId, amount)
 
-        "redirect:/food/registration?registrationDate=${registrationDate.toString()}"
-
+        "foodRegistration"
     }
 }
