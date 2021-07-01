@@ -13,6 +13,7 @@ import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
@@ -59,7 +60,17 @@ class FoodRegistrationController {
     @PostMapping("/food/registration")
     String registerAFood(Model model, @RequestParam @DateTimeFormat(iso = DATE) LocalDate registrationDate, @RequestBody Map<String, String> payload){
         User loggedUser = userService.getPrincipal()
-        //model.addAttribute("user", loggedUser)
+        Long foodId = payload.get("foodId").toLong()
+        BigDecimal amount = payload.get("amount").toBigDecimal()
+        foodRegistrationService.register(loggedUser, registrationDate, amount, foodId)
+
+        "redirect:/food/registration?registrationDate=${registrationDate.toString()}"
+
+    }
+
+    @PutMapping("/food/registration")
+    String modifyARegistration(Model model, @RequestParam @DateTimeFormat(iso = DATE) LocalDate registrationDate, @RequestBody Map<String, String> payload){
+        User loggedUser = userService.getPrincipal()
         Long foodId = payload.get("foodId").toLong()
         BigDecimal amount = payload.get("amount").toBigDecimal()
         foodRegistrationService.register(loggedUser, registrationDate, amount, foodId)
