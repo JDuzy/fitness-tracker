@@ -1,11 +1,8 @@
 package com.fitness.tracker.controller
 
-import com.fitness.tracker.model.Credentials
 import com.fitness.tracker.model.User
 import com.fitness.tracker.service.UserService
 import groovy.transform.CompileStatic
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.propertyeditors.StringTrimmerEditor
 import org.springframework.stereotype.Controller
@@ -31,10 +28,6 @@ class RegistrationController {
 
     @Autowired
     final UserService userService
-    final Integer MAX_HEIGHT = 250
-    final Integer MIN_HEIGHT = 100
-    final float MAX_WEIGHT = 450
-    final float MIN_WEIGHT = 20
 
     @InitBinder
     void initBinder(WebDataBinder dataBinder){
@@ -62,16 +55,6 @@ class RegistrationController {
         //checks if password match
         if (!user.credentials.passwordsMatch()){
             bindingResult.addError(new FieldError("user", "credentials.rpassword", "Passwords must match"))
-        }
-
-        //Checks if weight has a valid value
-        if (user.weight <= MIN_WEIGHT || user.weight >= MAX_WEIGHT){
-            bindingResult.addError(new FieldError("user", "weight", "Enter a valid weight"))
-        }
-
-        //Checks if height has a valid value
-        if (user.height <= MIN_HEIGHT || user.height >= MAX_HEIGHT){
-            bindingResult.addError(new FieldError("user", "height", "Enter a valid height"))
         }
 
         //Checks if weekly objective has a selected value

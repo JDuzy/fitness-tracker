@@ -12,6 +12,7 @@ import org.springframework.format.annotation.DateTimeFormat
 
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
+import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
@@ -75,6 +76,14 @@ class FoodRegistrationController {
     //Request body should have amount: amount
     @PutMapping("/food/registration/{registrationId}")
     String modifyARegistration(Model model, @PathVariable Long registrationId, @RequestParam @DateTimeFormat(iso = DATE) LocalDate registrationDate, @RequestBody Map<String, String> payload){
+        BigDecimal amount = payload.get("amount").toBigDecimal()
+        foodRegistrationService.update(registrationId, amount)
+
+        "foodRegistration"
+    }
+
+    @DeleteMapping("/food/registration/{registrationId}")
+    String deleteARegistration(Model model, @PathVariable Long registrationId, @RequestParam @DateTimeFormat(iso = DATE) LocalDate registrationDate, @RequestBody Map<String, String> payload){
         BigDecimal amount = payload.get("amount").toBigDecimal()
         foodRegistrationService.update(registrationId, amount)
 
