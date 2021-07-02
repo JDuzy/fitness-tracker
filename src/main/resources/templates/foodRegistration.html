@@ -86,6 +86,35 @@
     </div>
   </div>
 
+  <div class="card">
+    <div class="card-header row pb-1">
+      <i class="bi bi-chevron-left col text-center"></i>
+      <h5 class=" col text-center" th:text="${date}">Featured</h5>
+      <i class="bi bi-chevron-right col text-center"></i>
+    </div>
+    <div class="card-body row">
+      <div class="col">
+        <h5 class="card-title text-center">2800 kcal</h5>
+        <p class="card-text text-center">Objective</p>
+      </div>
+      <div class="col">
+        <h5 class="card-title text-center">-</h5>
+      </div>
+      <div class="col">
+        <h5 class="card-title text-center">1500 kcal</h5>
+        <p class="card-text text-center">Eaten</p>
+      </div>
+      <div class="col">
+        <h5 class="card-title text-center">=</h5>
+      </div>
+      <div class="col">
+        <h5 class="card-title text-center">1300 kcal</h5>
+        <p class="card-text text-center">Remaining</p>
+      </div>
+
+    </div>
+  </div>
+
   <div class="table-responsive">
     <table class="table table-striped">
       <thead>
@@ -93,7 +122,7 @@
         <th scope="col">Food</th>
         <th scope="col">Amount</th>
         <th scope="col">Calories</th>
-        <th scope="col">Actions</th>
+        <th class="text-center" scope="col">Actions</th>
       </tr>
       </thead>
       <tbody>
@@ -105,7 +134,7 @@
           <td th:text="${foodRegistration.amount} + 'g'"></td>
           <td th:text="${foodRegistration.food.calories} + 'kcal'"></td>
           <td>
-            <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+            <div class="btn-toolbar justify-content-center" role="toolbar" aria-label="Toolbar with button groups">
               <div class="btn-group me-2" role="group" aria-label="First group">
                 <button class="btn btn-success bi bi-pencil-square"  id="btn-modify" th:onclick="openEditModal([[${foodRegistration.food.name}]], [[${foodRegistration.id}]], [[${date}]])"></button>
                 <button class="btn btn-danger bi bi-x-square" id="btn-delete" th:onclick="openDeleteModal([[${foodRegistration.food.name}]], [[${foodRegistration.id}]], [[${date}]])"></button>
@@ -114,7 +143,7 @@
           </td>
         </tr>
         <tr>
-          <th scope="row"><button type="button" class="btn btn-outline-info" data-bs-toggle="modal" data-bs-target="#FoodModal">Add Food</button></th>
+          <th scope="row"><button type="button" class="btn btn-outline-info" data-bs-toggle="modal" data-bs-target="#FoodModal"> <i class="bi bi-plus-circle mx-1"></i>Add Food</button></th>
           <td></td><td></td><td></td>
         </tr>
       </tbody>
