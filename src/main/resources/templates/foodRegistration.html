@@ -38,10 +38,10 @@
         </div>
         <div class="modal-footer">
           <!--/*@thymesVar id="date" type="java.time.LocalDate"*/-->
-          <form class="form-horizontal" th:value="${date}">
+          <form class="form-horizontal" th:value="${today}">
             <div class="container-fluid row my-2">
                 <input type="number" id="amount-input" min="0" step="1" class="form-control col mx-1"  placeholder="Amount of grams">
-                <button type="button" th:onclick="registerFood([[${date}]])" class="btn btn-primary col-4 mx-1">Add food</button>
+                <button type="button" th:onclick="registerFood([[${today}]])" class="btn btn-primary col-4 mx-1">Add food</button>
             </div>
           </form>
         </div>
@@ -88,9 +88,9 @@
 
   <div class="card">
     <div class="card-header row pb-1">
-      <i class="bi bi-chevron-left col text-center"></i>
-      <h5 class=" col text-center" th:text="${date}">Featured</h5>
-      <i class="bi bi-chevron-right col text-center"></i>
+      <a th:href="@{'/food/registration?registrationDate=' + ${yesterday}}" class="bi bi-chevron-left col text-center"></a>
+      <h5 class=" col text-center" th:text="${today}">Featured</h5>
+      <a th:href="@{'/food/registration?registrationDate=' + ${tomorrow}}" class="bi bi-chevron-right col text-center"></a>
     </div>
     <div class="card-body row">
       <div class="col">
@@ -136,8 +136,8 @@
           <td>
             <div class="btn-toolbar justify-content-center" role="toolbar" aria-label="Toolbar with button groups">
               <div class="btn-group me-2" role="group" aria-label="First group">
-                <button class="btn btn-success bi bi-pencil-square"  id="btn-modify" th:onclick="openEditModal([[${foodRegistration.food.name}]], [[${foodRegistration.id}]], [[${date}]])"></button>
-                <button class="btn btn-danger bi bi-x-square" id="btn-delete" th:onclick="openDeleteModal([[${foodRegistration.food.name}]], [[${foodRegistration.id}]], [[${date}]])"></button>
+                <button class="btn btn-success bi bi-pencil-square"  id="btn-modify" th:onclick="openEditModal([[${foodRegistration.food.name}]], [[${foodRegistration.id}]], [[${today}]])"></button>
+                <button class="btn btn-danger bi bi-x-square" id="btn-delete" th:onclick="openDeleteModal([[${foodRegistration.food.name}]], [[${foodRegistration.id}]], [[${today}]])"></button>
               </div>
             </div>
           </td>

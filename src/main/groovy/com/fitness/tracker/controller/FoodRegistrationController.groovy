@@ -57,7 +57,10 @@ class FoodRegistrationController {
 
         model.addAttribute("foodRegistrations", dailyFoodsRegistrations)
         model.addAttribute("foods", foods)
-        model.addAttribute("date", registrationDate.toString())
+        model.addAttribute("today", registrationDate.toString())
+        model.addAttribute("yesterday", registrationDate.minusDays(1).toString())
+        model.addAttribute("tomorrow", registrationDate.plusDays(1).toString())
+
         "foodRegistration"
     }
 
