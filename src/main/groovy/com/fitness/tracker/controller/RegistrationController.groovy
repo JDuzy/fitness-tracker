@@ -48,12 +48,12 @@ class RegistrationController {
     @PostMapping
     String saveRegistration(@Valid User user, BindingResult bindingResult, RedirectAttributes redirectAttributes){
         //checks if the user exists
-        if (userService.userExists(user.credentials.email)){
+        if (userService.userExists(user)){
             bindingResult.addError(new FieldError("user", "credentials.email", "Email adress already in use"))
         }
 
         //checks if password match
-        if (!user.credentials.passwordsMatch()){
+        if (!user.passwordsMatch()){
             bindingResult.addError(new FieldError("user", "credentials.rpassword", "Passwords must match"))
         }
 

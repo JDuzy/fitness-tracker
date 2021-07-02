@@ -14,7 +14,6 @@
   <div th:insert="fragments/header :: header">...</div>
 
   <!-- Food Registration Modal-->
-
   <div class="modal fade" id="FoodModal" tabindex="-1" aria-labelledby="foodsModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable modal-fullscreen-sm-down">
       <div class="modal-content">
@@ -49,8 +48,7 @@
       </div>
     </div>
   </div>
-
-  <!-- Modification Food Registration Modal-->
+  <!-- Update Food Registration Modal-->
     <div class="modal fade" id="ModificationModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
@@ -59,7 +57,7 @@
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
-            <p name="modify-text"></p>
+            <p name="modify-update-text"></p>
           </div>
           <div class="modal-footer">
             <input type="number"  name="edit-amount-input" min="0" step="1" class="form-control col mx-1"  placeholder="Amount of grams">
@@ -68,6 +66,25 @@
         </div>
       </div>
     </div>
+
+  <!-- Delete Food Registration Modal -->
+  <div class="modal fade" id="EliminationModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Delete registration</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p name="modify-delete-text"></p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+          <button type="button" name="delete" class="btn btn-primary">Yes, delete</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <div class="table-responsive">
     <table class="table table-striped">
@@ -91,7 +108,7 @@
             <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
               <div class="btn-group me-2" role="group" aria-label="First group">
                 <button class="btn btn-success bi bi-pencil-square"  id="btn-modify" th:onclick="openEditModal([[${foodRegistration.food.name}]], [[${foodRegistration.id}]], [[${date}]])"></button>
-                <button class="btn btn-danger bi bi-x-square"></button>
+                <button class="btn btn-danger bi bi-x-square" id="btn-delete" th:onclick="openDeleteModal([[${foodRegistration.food.name}]], [[${foodRegistration.id}]], [[${date}]])"></button>
               </div>
             </div>
           </td>

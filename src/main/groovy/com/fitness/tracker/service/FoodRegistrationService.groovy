@@ -41,6 +41,7 @@ class FoodRegistrationService{
         foodRegistrationRepository.save(registration)
     }
 
+    @Transactional
     FoodRegistration update(long registrationId, BigDecimal newAmount) {
         Optional<FoodRegistration> foodRegistration = foodRegistrationRepository.findById(registrationId)
         foodRegistration.orElseThrow({
@@ -49,5 +50,10 @@ class FoodRegistrationService{
         FoodRegistration registration = foodRegistration.get()
         registration.amount = newAmount
         foodRegistrationRepository.save(registration)
+    }
+
+
+    void deleteRegistrationById(long id) {
+        foodRegistrationRepository.deleteById(id)
     }
 }

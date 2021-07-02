@@ -40,8 +40,8 @@ class UserService implements UserDetailsService{
         findUserByEmail(email).orElseThrow( { new UsernameNotFoundException(String.format(USER_NOT_FOUND_MSG, email)) })
     }
 
-    boolean userExists(String email){
-        Optional<Credentials> credentials = credentialsRepository.findCredentialsByEmail(email)
+    boolean userExists(User user){
+        Optional<Credentials> credentials = credentialsRepository.findCredentialsByEmail(user.credentials.email)
         credentials.isPresent()
     }
 
@@ -61,7 +61,7 @@ class UserService implements UserDetailsService{
     }
 
     User register(User user){
-        if (userExists(user.credentials.email)){
+        if (userExists(user)){
             throw new IllegalStateException("Email already taken")
         }
         String encodedPassword = bCryptPasswordEncoder.encode(user.credentials.password)

@@ -100,4 +100,8 @@ class User implements UserDetails{
     int getAge(){
         Period.between(this.dateOfBirth, LocalDate.now()).getYears()
     }
+
+    Boolean passwordsMatch() {
+        credentials.passwordsMatch()
+    }
 }

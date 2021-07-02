@@ -17,6 +17,14 @@ function registerFood(date){
     return
 }
 
+function setXhrRedirect(xhr, urlForGet){
+    xhr.onreadystatechange = function() { // listen for state changes
+        if (xhr.readyState == 4 && xhr.status == 200) { // when completed we can move away
+            window.location = urlForGet;
+        }
+    }
+    return xhr;
+}
 /*function modifyAFoodRegistration(date){
     var amount = document.getElementById("edit-amount-input");
     var btnModify = document.getElementsByName("save-modification")[0];
@@ -45,7 +53,7 @@ function openEditModal(name, registrationId, date){
     var $modal = $originalModal.clone().removeAttr('id');
 
 
-    $modal.find('[name="modify-text"]').text(name);
+    $modal.find('[name="modify-update-text"]').text(name);
     var $btnModify = $modal.find('[name="save-modification"]');
 
     var handler = function (){
@@ -54,11 +62,8 @@ function openEditModal(name, registrationId, date){
         var urlForPut = "/food/registration/".concat(registrationId).concat("/?registrationDate=").concat(date);
         var urlForGet = "/food/registration/".concat("?registrationDate=").concat(date);
 
-        xhr.onreadystatechange = function() { // listen for state changes
-            if (xhr.readyState == 4 && xhr.status == 200) { // when completed we can move away
-                window.location = urlForGet;
-            }
-        }
+        setXhrRedirect(xhr, urlForGet);
+
         xhr.open("PUT", urlForPut, true);
         xhr.setRequestHeader('Content-Type', 'application/json');
         xhr.send(JSON.stringify({
@@ -71,4 +76,29 @@ function openEditModal(name, registrationId, date){
 
     //show dialo
     $modal.modal('show');
+}
+
+function openDeleteModal(name, registrationId, date){
+    var $originalModal = $('#EliminationModal')
+    var $modal = $originalModal.clone().removeAttr('id');
+    $modal.find('[name="modify-delete-text"]').text("Are you sure you want to delete the registration of ".concat(name).concat("?"));
+    var $btnDelete = $modal.find('[name="delete"]');
+
+    var handler = function (){
+        var xhr = new XMLHttpRequest();
+        var urlForDelete = "/food/registration/".concat(registrationId).concat("/?registrationDate=").concat(date);
+        var urlForGet = "/food/registration/".concat("?registrationDate=").concat(date);
+
+        setXhrRedirect(xhr, urlForGet);
+
+        xhr.open("DELETE", urlForDelete, true);
+        xhr.send();
+        return
+    };
+
+    $btnDelete.click(handler);
+
+    //show dialo
+    $modal.modal('show');
+
 }
