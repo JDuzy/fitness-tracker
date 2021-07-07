@@ -37,9 +37,4 @@ class LoginController {
         "login"
     }
 
-    /*@GetMapping("/authenticated") //This should may be deleted now
-    String authenticated(){
-        "redirect:/food/registration?registrationDate=${LocalDate.now().toString()}"
-    }*/
-
 }

@@ -20,7 +20,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes
 import javax.validation.Valid
 
 
-
 @Controller
 @RequestMapping("/registration")
 @CompileStatic
@@ -47,20 +46,8 @@ class RegistrationController {
 
     @PostMapping
     String saveRegistration(@Valid User user, BindingResult bindingResult, RedirectAttributes redirectAttributes){
-        //checks if the user exists
-        if (userService.userExists(user)){
-            bindingResult.addError(new FieldError("user", "credentials.email", "Email adress already in use"))
-        }
 
-        //checks if password match
-        if (!user.passwordsMatch()){
-            bindingResult.addError(new FieldError("user", "credentials.rpassword", "Passwords must match"))
-        }
-
-        //Checks if weekly objective has a selected value
-        if (user.weightChangePerWeek == -1){
-            bindingResult.addError(new FieldError("user", "weightChangePerWeek", "Please select a weekly objective"))
-        }
+        userService.wasRegistratedValidly(user, bindingResult);
 
         if(bindingResult.hasErrors()){
             return "registration"

@@ -42,7 +42,7 @@
 
                 <div class="form-row py-1">
                     <label>Sex</label>
-                    <select class="form-select form-control" aria-label="Default select example" name="sex" th:value="*{sex}" th:errorClass="is-invalid">
+                    <select required="true" class="form-select form-control" aria-label="Default select example" name="sex" th:value="*{sex}" th:errorClass="is-invalid">
                         <option value="" selected>Select your sex</option>
                         <option value="Male">Male</option>
                         <option value="Female">Female</option>
@@ -70,8 +70,8 @@
 
                 <div class="form-row py-1">
                     <label>Weekly objective</label>
-                    <select class="form-select form-control" aria-label="Default select example" name="weightChangePerWeek" th:value="*{weightChangePerWeek}" th:errorClass="is-invalid">
-                        <option value="-1" selected>Select your objective</option>
+                    <select required="true" class="form-select form-control" aria-label="Default select example" name="weightChangePerWeek" th:value="*{weightChangePerWeek}" th:errorClass="is-invalid">
+                        <option value="" selected>Select your objective</option>
                         <option value="0.5">Gain muscle - faster</option>
                         <option value="0.25">Gain muscle - slower</option>
                         <option value="0">Maintain</option>
@@ -83,7 +83,7 @@
 
                 <div class="form-row py-1">
                     <label>Weekly amount of physical activity</label>
-                    <select class="form-select form-control" aria-label="Default select example" name="physicalActivity" th:value="*{physicalActivity}" th:errorClass="is-invalid">
+                    <select required="true" class="form-select form-control" aria-label="Default select example" name="physicalActivity" th:value="*{physicalActivity}" th:errorClass="is-invalid">
                         <option value="" selected>Select your physical activity</option>
                         <option value="Not very active">Not very active - (Most of the day you are seated)</option>
                         <option value="Slightly active">Slightly active - (A good amount of the day you are standed)</option>

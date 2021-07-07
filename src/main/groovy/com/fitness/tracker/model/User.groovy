@@ -47,12 +47,17 @@ class User implements UserDetails{
 
     @NotBlank(message = "Enter your sex")
     String sex
+
+    @NotNull(message = "Please enter a weight")
     BigDecimal weight
+
+    @NotNull(message = "Please enter a height")
     Integer height
 
     @NotBlank(message = "Please select your weekly amount of physical activity")
     String physicalActivity
 
+    @NotNull
     BigDecimal weightChangePerWeek
 
     @NotNull

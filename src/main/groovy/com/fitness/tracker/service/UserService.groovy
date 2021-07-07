@@ -15,6 +15,8 @@ import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Service
+import org.springframework.validation.BindingResult
+import org.springframework.validation.FieldError
 
 import javax.transaction.Transactional
 
@@ -77,6 +79,13 @@ class UserService implements UserDetailsService{
     }
 
 
+    void wasRegistratedValidly(User user, BindingResult bindingResult) {
+        if (userExists(user)){
+            bindingResult.addError(new FieldError("user", "credentials.email", "Email adress already in use"))
+        }
 
-
+        if (!user.passwordsMatch()){
+            bindingResult.addError(new FieldError("user", "credentials.rpassword", "Passwords must match"))
+        }
+    }
 }
