@@ -63,15 +63,4 @@ These characters can't be used consecutively and must not be the first or last c
         false
     }
 
-
-    @Override
-    public String toString() {
-        return "Credentials{" +
-                "id=" + id +
-                ", userName='" + userName + '\'' +
-                ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
-                ", rpassword='" + rpassword + '\'' +
-                '}';
-    }
 }

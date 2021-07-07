@@ -43,7 +43,7 @@ class User implements UserDetails{
     @NotNull(message = "Please enter a date of birth")
     @Past(message = "Please enter a valid date of birth")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    LocalDate dateOfBirth  //TO DO: Validate certain minimum age
+    LocalDate dateOfBirth
 
     @NotBlank(message = "Enter your sex")
     String sex
@@ -72,8 +72,16 @@ class User implements UserDetails{
         return credentials.password
     }
 
+    void setPassword(String newPassword){
+        credentials.password = newPassword
+    }
+
     @Override
     String getUsername() {
+        return credentials.email
+    }
+
+    String getEmail() {
         return credentials.email
     }
 
@@ -104,4 +112,5 @@ class User implements UserDetails{
     Boolean passwordsMatch() {
         credentials.passwordsMatch()
     }
+
 }

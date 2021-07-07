@@ -41,7 +41,7 @@ class UserService implements UserDetailsService{
     }
 
     boolean userExists(User user){
-        Optional<Credentials> credentials = credentialsRepository.findCredentialsByEmail(user.credentials.email)
+        Optional<Credentials> credentials = credentialsRepository.findCredentialsByEmail(user.email)
         credentials.isPresent()
     }
 
@@ -53,7 +53,6 @@ class UserService implements UserDetailsService{
 
     User getPrincipal(){
         User user = null;
-        //System.out.println("USER IS ${SecurityContextHolder.getContext().getAuthentication().getPrincipal()}")
         if (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof User){
             user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()
         }
@@ -64,8 +63,8 @@ class UserService implements UserDetailsService{
         if (userExists(user)){
             throw new IllegalStateException("Email already taken")
         }
-        String encodedPassword = bCryptPasswordEncoder.encode(user.credentials.password)
-        user.credentials.password = encodedPassword
+        String encodedPassword = bCryptPasswordEncoder.encode(user.password)
+        user.password = encodedPassword
         save(user)
     }
 
@@ -76,6 +75,7 @@ class UserService implements UserDetailsService{
         credentials.ifPresent({ user = userRepository.findUserByCredentials(credentials.get())})
         user
     }
+
 
 
 
