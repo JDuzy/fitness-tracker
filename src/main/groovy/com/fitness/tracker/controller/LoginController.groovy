@@ -21,7 +21,7 @@ import static org.springframework.format.annotation.DateTimeFormat.ISO.DATE
 class LoginController {
 
     @Autowired
-    final UserService userService;
+    final UserService userService
 
     @GetMapping("/")
     String index(){
@@ -37,9 +37,9 @@ class LoginController {
         "login"
     }
 
-    @GetMapping("/authenticated") //This should may be deleted now
+    /*@GetMapping("/authenticated") //This should may be deleted now
     String authenticated(){
         "redirect:/food/registration?registrationDate=${LocalDate.now().toString()}"
-    }
+    }*/
 
 }

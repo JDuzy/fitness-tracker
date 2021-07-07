@@ -33,7 +33,7 @@ import static org.springframework.format.annotation.DateTimeFormat.ISO.*
 class FoodRegistrationController {
 
     @Autowired
-    final UserService userService;
+    final UserService userService
 
     @Autowired
     final FoodRegistrationService foodRegistrationService
@@ -48,12 +48,7 @@ class FoodRegistrationController {
         List<FoodRegistration> dailyFoodsRegistrations = new ArrayList<FoodRegistration>()
         List<Food> foods = foodService.findAll()
 
-        if (registrationDate == null){
-            dailyFoodsRegistrations = foodRegistrationService.findAllFoodRegistrationByUserAndRegistrationDate(loggedUser, LocalDate.now())
-        }
-        else{
-            dailyFoodsRegistrations = foodRegistrationService.findAllFoodRegistrationByUserAndRegistrationDate(loggedUser, registrationDate as LocalDate)
-        }
+        dailyFoodsRegistrations = foodRegistrationService.findAllFoodRegistrationByUserAndRegistrationDate(loggedUser, registrationDate as LocalDate)
 
         model.addAttribute("foodRegistrations", dailyFoodsRegistrations)
         model.addAttribute("foods", foods)
@@ -66,7 +61,7 @@ class FoodRegistrationController {
 
     //Request body should have foodId: foodId, amount: amount
     @PostMapping("/food/registration")
-    String registerAFood(Model model, @RequestParam @DateTimeFormat(iso = DATE) LocalDate registrationDate, @RequestBody Map<String, String> payload){
+    String registerAFood(@RequestParam @DateTimeFormat(iso = DATE) LocalDate registrationDate, @RequestBody Map<String, String> payload){
         User loggedUser = userService.getPrincipal()
         Long foodId = payload.get("foodId").toLong()
         BigDecimal amount = payload.get("amount").toBigDecimal()
@@ -78,7 +73,7 @@ class FoodRegistrationController {
 
     //Request body should have amount: amount
     @PutMapping("/food/registration/{registrationId}")
-    String modifyARegistration(Model model, @PathVariable Long registrationId, @RequestParam @DateTimeFormat(iso = DATE) LocalDate registrationDate, @RequestBody Map<String, String> payload){
+    String modifyARegistration(@PathVariable Long registrationId, @RequestParam @DateTimeFormat(iso = DATE) LocalDate registrationDate, @RequestBody Map<String, String> payload){
         BigDecimal amount = payload.get("amount").toBigDecimal()
         foodRegistrationService.update(registrationId, amount)
 
@@ -86,7 +81,7 @@ class FoodRegistrationController {
     }
 
     @DeleteMapping("/food/registration/{registrationId}")
-    String deleteARegistration(Model model, @PathVariable Long registrationId, @RequestParam @DateTimeFormat(iso = DATE) LocalDate registrationDate){
+    String deleteARegistration(@PathVariable Long registrationId, @RequestParam @DateTimeFormat(iso = DATE) LocalDate registrationDate){
         foodRegistrationService.deleteRegistrationById(registrationId)
 
         "foodRegistration"
