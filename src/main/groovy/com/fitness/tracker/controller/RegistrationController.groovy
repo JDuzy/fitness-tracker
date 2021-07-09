@@ -1,14 +1,13 @@
 package com.fitness.tracker.controller
 
-import com.fitness.tracker.model.User
-import com.fitness.tracker.service.UserService
+import com.fitness.tracker.model.Person
+import com.fitness.tracker.service.PersonService
 import groovy.transform.CompileStatic
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.propertyeditors.StringTrimmerEditor
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.validation.BindingResult
-import org.springframework.validation.FieldError
 import org.springframework.web.bind.WebDataBinder
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.InitBinder
@@ -26,7 +25,7 @@ import javax.validation.Valid
 class RegistrationController {
 
     @Autowired
-    final UserService userService
+    final PersonService userService
 
     @InitBinder
     void initBinder(WebDataBinder dataBinder){
@@ -35,8 +34,8 @@ class RegistrationController {
     }
 
     @GetMapping
-    String register(@ModelAttribute User user,Model model){
-        User principal = userService.getPrincipal()
+    String register(@ModelAttribute Person user, Model model){
+        Person principal = userService.getPrincipal()
         if (principal != null){
             return "redirect:/food/registration"
         }
@@ -45,7 +44,7 @@ class RegistrationController {
     }
 
     @PostMapping
-    String saveRegistration(@Valid User user, BindingResult bindingResult, RedirectAttributes redirectAttributes){
+    String saveRegistration(@Valid Person user, BindingResult bindingResult, RedirectAttributes redirectAttributes){
 
         userService.wasRegistratedValidly(user, bindingResult);
 

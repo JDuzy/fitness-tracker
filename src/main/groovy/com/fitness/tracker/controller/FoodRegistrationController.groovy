@@ -1,11 +1,11 @@
 package com.fitness.tracker.controller
 
 import com.fitness.tracker.model.Food
-import com.fitness.tracker.model.User
+import com.fitness.tracker.model.Person
 import com.fitness.tracker.model.registration.FoodRegistration
 import com.fitness.tracker.service.FoodRegistrationService
 import com.fitness.tracker.service.FoodService
-import com.fitness.tracker.service.UserService
+import com.fitness.tracker.service.PersonService
 import groovy.transform.CompileStatic
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.format.annotation.DateTimeFormat
@@ -33,7 +33,7 @@ import static org.springframework.format.annotation.DateTimeFormat.ISO.*
 class FoodRegistrationController {
 
     @Autowired
-    final UserService userService
+    final PersonService userService
 
     @Autowired
     final FoodRegistrationService foodRegistrationService
@@ -43,7 +43,7 @@ class FoodRegistrationController {
 
     @GetMapping("/food/registration")
     String getFoodRegistrations(Model model, @RequestParam @DateTimeFormat(iso = DATE) LocalDate registrationDate){
-        User loggedUser = userService.getPrincipal()
+        Person loggedUser = userService.getPrincipal()
         model.addAttribute("user", loggedUser)
         List<FoodRegistration> dailyFoodsRegistrations = new ArrayList<FoodRegistration>()
         List<Food> foods = foodService.findAll()
@@ -62,7 +62,7 @@ class FoodRegistrationController {
     //Request body should have foodId: foodId, amount: amount
     @PostMapping("/food/registration")
     String registerAFood(@RequestParam @DateTimeFormat(iso = DATE) LocalDate registrationDate, @RequestBody Map<String, String> payload){
-        User loggedUser = userService.getPrincipal()
+        Person loggedUser = userService.getPrincipal()
         Long foodId = payload.get("foodId").toLong()
         BigDecimal amount = payload.get("amount").toBigDecimal()
         foodRegistrationService.register(loggedUser, registrationDate, amount, foodId)

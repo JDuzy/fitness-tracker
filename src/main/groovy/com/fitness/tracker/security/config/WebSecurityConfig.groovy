@@ -1,14 +1,13 @@
 package com.fitness.tracker.security.config
 
-import com.fitness.tracker.model.User
-import com.fitness.tracker.service.UserService
+import com.fitness.tracker.model.Person
+import com.fitness.tracker.service.PersonService
 import groovy.transform.CompileStatic
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
@@ -26,7 +25,7 @@ class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 
     Logger log = LoggerFactory.getLogger(WebSecurityConfig.class)
     @Autowired
-    final UserService userService
+    final PersonService userService
     @Autowired
     final BCryptPasswordEncoder bCryptPasswordEncoder
 
@@ -62,7 +61,7 @@ class WebSecurityConfig extends WebSecurityConfigurerAdapter{
     @Bean
     protected UserDetailsService userDetailsService() {
         return (UserDetailsService) { String email ->
-            Optional<User> user = userService.findUserByEmail(email)
+            Optional<Person> user = userService.findUserByEmail(email)
             if (user.isEmpty()){
                 throw new UsernameNotFoundException("No username found with email: ${email}")
             }

@@ -1,19 +1,14 @@
 package com.fitness.tracker.controller
 
-import com.fitness.tracker.model.User
-import com.fitness.tracker.service.UserService
+import com.fitness.tracker.model.Person
+import com.fitness.tracker.service.PersonService
 import groovy.transform.CompileStatic
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.format.annotation.DateTimeFormat
-import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Controller
-import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
 
 import java.time.LocalDate
-
-import static org.springframework.format.annotation.DateTimeFormat.ISO.DATE
 
 @Controller
 @RequestMapping
@@ -21,7 +16,7 @@ import static org.springframework.format.annotation.DateTimeFormat.ISO.DATE
 class LoginController {
 
     @Autowired
-    final UserService userService
+    final PersonService userService
 
     @GetMapping("/")
     String index(){
@@ -30,7 +25,7 @@ class LoginController {
 
     @GetMapping("/login")
     String login(){
-        User user = userService.getPrincipal()
+        Person user = userService.getPrincipal()
         if (user != null){
             return "redirect:/food/registration?registrationDate=${LocalDate.now().toString()}"
         }

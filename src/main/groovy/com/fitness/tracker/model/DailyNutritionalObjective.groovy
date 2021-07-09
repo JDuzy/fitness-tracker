@@ -18,7 +18,7 @@ class DailyNutritionalObjective {
     @Id
     @SequenceGenerator(name = 'nutritional_objective_sequence', sequenceName = 'nutritional_objective_sequence', allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "nutritional_objective_sequence")
-    @Column( name = "user_id", updatable = false, nullable = false)
+    @Column( name = "person_id", updatable = false, nullable = false)
     Long id
 
     Nutrients nutrients

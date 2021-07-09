@@ -31,7 +31,7 @@ class Credentials {
     @Id
     @SequenceGenerator(name = 'credentials_sequence', sequenceName = 'credentials_sequence', allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "credentials_sequence")
-    @Column( name = "user_id", updatable = false, nullable = false)
+    @Column( name = "person_id", updatable = false, nullable = false)
     Long id
 
     @Pattern(regexp = '^[a-zA-Z0-9]([._-](?![._-])|[a-zA-Z0-9]){3,18}[a-zA-Z0-9]$',

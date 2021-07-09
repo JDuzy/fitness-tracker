@@ -32,7 +32,7 @@ import java.time.Period
 @Table(name = "user")
 @CompileStatic
 @ToString
-class User implements UserDetails{
+class Person implements UserDetails{
 
     @Id
     @SequenceGenerator(name = 'user_sequence', sequenceName = 'user_sequence', allocationSize = 1)

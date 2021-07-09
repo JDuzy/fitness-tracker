@@ -3,9 +3,9 @@ package com.fitness.tracker
 import com.fitness.tracker.model.Characteristics
 import com.fitness.tracker.model.Credentials
 import com.fitness.tracker.model.Food
-import com.fitness.tracker.model.User
+import com.fitness.tracker.model.Person
 import com.fitness.tracker.repository.FoodRepository
-import com.fitness.tracker.repository.UserRepository
+import com.fitness.tracker.repository.PersonRepository
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.InitializingBean
@@ -25,7 +25,7 @@ class Bootstrap implements InitializingBean {
     FoodRepository foodRepository
 
     @Autowired
-    UserRepository userRepository
+    PersonRepository userRepository
 
     @Autowired
     BCryptPasswordEncoder passwordEncoder
@@ -37,7 +37,7 @@ class Bootstrap implements InitializingBean {
 
         String password = passwordEncoder.encode("123456")
         Credentials credentials = new Credentials(userName: "user1", email: "mail@mail.com", password: password, rpassword: password);
-        User user = new User(credentials: credentials, dateOfBirth: LocalDate.now().minusYears(18), weight: 80, height: 180, sex: "male", physicalActivity: "ACTIVE", weightChangePerWeek: 0.25)
+        Person user = new Person(credentials: credentials, dateOfBirth: LocalDate.now().minusYears(18), weight: 80, height: 180, sex: "male", physicalActivity: "ACTIVE", weightChangePerWeek: 0.25)
         userRepository.save(user)
 
         Characteristics characteristics = new Characteristics(isVegan: false, isPescetarian: false, isVegetarian: false);
