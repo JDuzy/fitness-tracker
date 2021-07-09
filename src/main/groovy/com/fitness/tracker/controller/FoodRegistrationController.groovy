@@ -33,7 +33,7 @@ import static org.springframework.format.annotation.DateTimeFormat.ISO.*
 class FoodRegistrationController {
 
     @Autowired
-    final PersonService userService
+    final PersonService personService
 
     @Autowired
     final FoodRegistrationService foodRegistrationService
@@ -43,12 +43,12 @@ class FoodRegistrationController {
 
     @GetMapping("/food/registration")
     String getFoodRegistrations(Model model, @RequestParam @DateTimeFormat(iso = DATE) LocalDate registrationDate){
-        Person loggedUser = userService.getPrincipal()
-        model.addAttribute("user", loggedUser)
+        Person loggedPerson = personService.getPrincipal()
+        model.addAttribute("person", loggedPerson)
         List<FoodRegistration> dailyFoodsRegistrations = new ArrayList<FoodRegistration>()
         List<Food> foods = foodService.findAll()
 
-        dailyFoodsRegistrations = foodRegistrationService.findAllFoodRegistrationByUserAndRegistrationDate(loggedUser, registrationDate as LocalDate)
+        dailyFoodsRegistrations = foodRegistrationService.findAllFoodRegistrationByPersonAndRegistrationDate(loggedPerson, registrationDate as LocalDate)
 
         model.addAttribute("foodRegistrations", dailyFoodsRegistrations)
         model.addAttribute("foods", foods)
@@ -62,10 +62,10 @@ class FoodRegistrationController {
     //Request body should have foodId: foodId, amount: amount
     @PostMapping("/food/registration")
     String registerAFood(@RequestParam @DateTimeFormat(iso = DATE) LocalDate registrationDate, @RequestBody Map<String, String> payload){
-        Person loggedUser = userService.getPrincipal()
+        Person loggedPerson = personService.getPrincipal()
         Long foodId = payload.get("foodId").toLong()
         BigDecimal amount = payload.get("amount").toBigDecimal()
-        foodRegistrationService.register(loggedUser, registrationDate, amount, foodId)
+        foodRegistrationService.register(loggedPerson, registrationDate, amount, foodId)
 
         "foodRegistration"
         //"redirect:/food/registration?registrationDate=${registrationDate.toString()}"

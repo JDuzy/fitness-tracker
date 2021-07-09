@@ -23,7 +23,7 @@ class Food {
     @Id
     @SequenceGenerator(name = 'food_sequence', sequenceName = 'food_sequence', allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "food_sequence")
-    @Column( name = "person", updatable = false, nullable = false)
+    @Column( name = "id", updatable = false, nullable = false)
     long id
 
     @NotNull

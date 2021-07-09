@@ -1,8 +1,27 @@
 package com.fitness.tracker.model
 
-import javax.validation.constraints.NotNull
+import groovy.transform.CompileStatic
 
+import javax.persistence.Column
+import javax.persistence.Entity
+import javax.persistence.GeneratedValue
+import javax.persistence.GenerationType
+import javax.persistence.Id
+import javax.persistence.SequenceGenerator
+import javax.persistence.Table
+import javax.validation.constraints.NotNull
+import java.math.RoundingMode
+
+@Entity
+@Table(name = "nutrients")
+@CompileStatic
 class Nutrients {
+
+    @Id
+    @SequenceGenerator(name = 'nutrient_sequence', sequenceName = 'nutrient_sequence', allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "nutrient_sequence")
+    @Column( name = "id", updatable = false, nullable = false)
+    long id
 
     @NotNull
     BigDecimal carbohydrates

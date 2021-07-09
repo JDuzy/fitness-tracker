@@ -22,66 +22,66 @@ import javax.transaction.Transactional
 @CompileStatic
 class PersonService implements UserDetailsService{
 
-    final PersonRepository userRepository
+    final PersonRepository personRepository
     final CredentialsRepository credentialsRepository
     final BCryptPasswordEncoder bCryptPasswordEncoder
-    final static String USER_NOT_FOUND_MSG = "user with email %s not found"
+    final static String PERSON_NOT_FOUND_MSG = "user with email %s not found"
 
     @Autowired
-    PersonService(PersonRepository userRepository, CredentialsRepository credentialsRepository, BCryptPasswordEncoder bCryptPasswordEncoder){
-        this.userRepository = userRepository
+    PersonService(PersonRepository personRepository, CredentialsRepository credentialsRepository, BCryptPasswordEncoder bCryptPasswordEncoder){
+        this.personRepository = personRepository
         this.credentialsRepository = credentialsRepository
         this.bCryptPasswordEncoder = bCryptPasswordEncoder
     }
 
     @Override
     UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        findUserByEmail(email).orElseThrow( { new UsernameNotFoundException(String.format(USER_NOT_FOUND_MSG, email)) })
+        findPersonByEmail(email).orElseThrow( { new UsernameNotFoundException(String.format(PERSON_NOT_FOUND_MSG, email)) })
     }
 
-    boolean userExists(Person user){
-        Optional<Credentials> credentials = credentialsRepository.findCredentialsByEmail(user.email)
+    boolean personExists(Person person){
+        Optional<Credentials> credentials = credentialsRepository.findCredentialsByEmail(person.email)
         credentials.isPresent()
     }
 
     @Transactional
-    Person save(Person user){
-        credentialsRepository.save(user.credentials)
-        userRepository.save(user)
+    Person save(Person person){
+        credentialsRepository.save(person.credentials)
+        personRepository.save(person)
     }
 
     Person getPrincipal(){
-        Person user = null;
+        Person person = null;
         if (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof Person){
-            user = (Person) SecurityContextHolder.getContext().getAuthentication().getPrincipal()
+            person = (Person) SecurityContextHolder.getContext().getAuthentication().getPrincipal()
         }
-        user
+        person
     }
 
-    Person register(Person user){
-        if (userExists(user)){
+    Person register(Person person){
+        if (personExists(person)){
             throw new IllegalStateException("Email already taken")
         }
-        String encodedPassword = bCryptPasswordEncoder.encode(user.password)
-        user.password = encodedPassword
-        save(user)
+        String encodedPassword = bCryptPasswordEncoder.encode(person.password)
+        person.password = encodedPassword
+        save(person)
     }
 
     @Transactional
-    Optional<Person> findUserByEmail(String email){
+    Optional<Person> findPersonByEmail(String email){
         Optional<Credentials> credentials = credentialsRepository.findCredentialsByEmail(email)
-        Optional<Person> user = Optional.empty()
-        credentials.ifPresent({ user = userRepository.findUserByCredentials(credentials.get())})
-        user
+        Optional<Person> person = Optional.empty()
+        credentials.ifPresent({ person = personRepository.findPersonByCredentials(credentials.get())})
+        person
     }
 
 
-    void wasRegistratedValidly(Person user, BindingResult bindingResult) {
-        if (userExists(user)){
+    void wasRegistratedValidly(Person person, BindingResult bindingResult) {
+        if (personExists(person)){
             bindingResult.addError(new FieldError("user", "credentials.email", "Email adress already in use"))
         }
 
-        if (!user.passwordsMatch()){
+        if (!person.passwordsMatch()){
             bindingResult.addError(new FieldError("user", "credentials.rpassword", "Passwords must match"))
         }
     }

@@ -16,7 +16,7 @@ import java.time.LocalDate
 class LoginController {
 
     @Autowired
-    final PersonService userService
+    final PersonService personService
 
     @GetMapping("/")
     String index(){
@@ -25,8 +25,8 @@ class LoginController {
 
     @GetMapping("/login")
     String login(){
-        Person user = userService.getPrincipal()
-        if (user != null){
+        Person person = personService.getPrincipal()
+        if (person != null){
             return "redirect:/food/registration?registrationDate=${LocalDate.now().toString()}"
         }
         "login"

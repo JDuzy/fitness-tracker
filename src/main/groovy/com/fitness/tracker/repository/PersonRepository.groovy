@@ -9,5 +9,5 @@ import org.springframework.stereotype.Repository
 @Repository
 interface PersonRepository extends JpaRepository<Person, Long>{
 
-    Optional<Person> findUserByCredentials(Credentials credentials);
+    Optional<Person> findPersonByCredentials(Credentials credentials);
 }

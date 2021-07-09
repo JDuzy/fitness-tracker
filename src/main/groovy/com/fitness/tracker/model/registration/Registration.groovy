@@ -26,8 +26,8 @@ class Registration {
     Long id
 
     @ManyToOne(cascade = CascadeType.MERGE)
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
-    Person user
+    @JoinColumn(name = "person_id", referencedColumnName = "id")
+    Person person
 
     @NotNull
     LocalDate registrationDate

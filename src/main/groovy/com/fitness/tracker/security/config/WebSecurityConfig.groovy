@@ -61,11 +61,11 @@ class WebSecurityConfig extends WebSecurityConfigurerAdapter{
     @Bean
     protected UserDetailsService userDetailsService() {
         return (UserDetailsService) { String email ->
-            Optional<Person> user = userService.findUserByEmail(email)
-            if (user.isEmpty()){
+            Optional<Person> person = userService.findPersonByEmail(email)
+            if (person.isEmpty()){
                 throw new UsernameNotFoundException("No username found with email: ${email}")
             }
-            return user.get()
+            return person.get()
         }
     }
 

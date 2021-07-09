@@ -2,7 +2,9 @@ package com.fitness.tracker
 
 import com.fitness.tracker.model.Characteristics
 import com.fitness.tracker.model.Credentials
+import com.fitness.tracker.model.DailyNutritionalObjective
 import com.fitness.tracker.model.Food
+import com.fitness.tracker.model.Nutrients
 import com.fitness.tracker.model.Person
 import com.fitness.tracker.repository.FoodRepository
 import com.fitness.tracker.repository.PersonRepository
@@ -37,8 +39,11 @@ class Bootstrap implements InitializingBean {
 
         String password = passwordEncoder.encode("123456")
         Credentials credentials = new Credentials(userName: "user1", email: "mail@mail.com", password: password, rpassword: password);
-        Person user = new Person(credentials: credentials, dateOfBirth: LocalDate.now().minusYears(18), weight: 80, height: 180, sex: "male", physicalActivity: "ACTIVE", weightChangePerWeek: 0.25)
-        userRepository.save(user)
+
+        Nutrients nutrientsEaten = new Nutrients(carbohydrates: 0, proteins: 0, fats: 0)
+        Person person = new Person(credentials: credentials, dateOfBirth: LocalDate.now().minusYears(18), weight: 80, height: 180, sex: "male", physicalActivity: "ACTIVE", weightChangePerWeek: 0.25, dailyNutrientsEaten: nutrientsEaten)
+        person.setNutritionalObjective()
+        userRepository.save(person)
 
         Characteristics characteristics = new Characteristics(isVegan: false, isPescetarian: false, isVegetarian: false);
         Food banana = new Food(name: "Banana", calories: 100, carbohydrates: 20,proteins: 1, fats: 0.5, characteristics: characteristics)

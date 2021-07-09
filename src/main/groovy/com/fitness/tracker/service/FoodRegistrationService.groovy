@@ -25,18 +25,18 @@ class FoodRegistrationService{
     @Autowired
     final FoodRepository foodRepository
 
-    List<FoodRegistration> findAllFoodRegistrationByUserAndRegistrationDate(Person user, LocalDate registrationDate) {
-        foodRegistrationRepository.findAllFoodRegistrationByUserAndRegistrationDate(user, registrationDate)
+    List<FoodRegistration> findAllFoodRegistrationByPersonAndRegistrationDate(Person person, LocalDate registrationDate) {
+        foodRegistrationRepository.findAllFoodRegistrationByPersonAndRegistrationDate(person, registrationDate)
     }
 
     @Transactional
-    FoodRegistration register(Person user, LocalDate registrationDate, BigDecimal amount, Long foodId){
+    FoodRegistration register(Person person, LocalDate registrationDate, BigDecimal amount, Long foodId){
         Optional<Food> food = foodRepository.findFoodById(foodId)
         if (food.isEmpty()){
             throw new IllegalStateException("Food with id ${foodId} does not exists")
         }
-        FoodRegistration registration = new FoodRegistration(user: user, registrationDate: registrationDate, amount: amount, food: food.get())
-        //user.eatFood(food)
+        FoodRegistration registration = new FoodRegistration(person: person, registrationDate: registrationDate, amount: amount, food: food.get())
+        //person.eatFood(food)
         foodRegistrationRepository.save(registration)
     }
 

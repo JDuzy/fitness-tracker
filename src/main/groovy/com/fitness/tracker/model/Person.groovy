@@ -14,29 +14,26 @@ import javax.persistence.GeneratedValue
 import javax.persistence.GenerationType
 import javax.persistence.Id
 import javax.persistence.JoinColumn
-import javax.persistence.MapsId
 import javax.persistence.OneToOne
 import javax.persistence.PrimaryKeyJoinColumn
 import javax.persistence.SequenceGenerator
 import javax.persistence.Table
-import javax.persistence.Transient
 import javax.validation.Valid
 import javax.validation.constraints.NotBlank
 import javax.validation.constraints.NotNull
 import javax.validation.constraints.Past
-import javax.validation.constraints.Positive
 import java.time.LocalDate
 import java.time.Period
 
 @Entity
-@Table(name = "user")
+@Table(name = "person")
 @CompileStatic
 @ToString
 class Person implements UserDetails{
 
     @Id
-    @SequenceGenerator(name = 'user_sequence', sequenceName = 'user_sequence', allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_sequence")
+    @SequenceGenerator(name = 'person_sequence', sequenceName = 'person_sequence', allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "person_sequence")
     @Column( name = "id", updatable = false, nullable = false)
     Long id
 
@@ -66,9 +63,16 @@ class Person implements UserDetails{
     @Valid
     Credentials credentials = new Credentials()
 
-    DailyNutritionalObjective nutritionalObjective
+    @NotNull
+    @OneToOne(cascade = CascadeType.ALL)
+    @PrimaryKeyJoinColumn
+    DailyNutritionalObjective nutritionalObjective = new DailyNutritionalObjective()
 
+    @NotNull
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "nutrients_id", referencedColumnName = "id")
     Nutrients dailyNutrientsEaten
+
 
     @Override
     Collection<? extends GrantedAuthority> getAuthorities() {

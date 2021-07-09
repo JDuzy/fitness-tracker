@@ -11,5 +11,5 @@ import java.time.LocalDate
 @Repository
 interface FoodRegistrationRepository extends JpaRepository<FoodRegistration, Long> {
 
-    List<FoodRegistration> findAllFoodRegistrationByUserAndRegistrationDate(Person user, LocalDate localDate)
+    List<FoodRegistration> findAllFoodRegistrationByPersonAndRegistrationDate(Person person, LocalDate localDate)
 }

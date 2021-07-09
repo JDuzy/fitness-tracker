@@ -25,7 +25,7 @@ import javax.validation.Valid
 class RegistrationController {
 
     @Autowired
-    final PersonService userService
+    final PersonService personService
 
     @InitBinder
     void initBinder(WebDataBinder dataBinder){
@@ -34,25 +34,25 @@ class RegistrationController {
     }
 
     @GetMapping
-    String register(@ModelAttribute Person user, Model model){
-        Person principal = userService.getPrincipal()
+    String register(@ModelAttribute Person person, Model model){
+        Person principal = personService.getPrincipal()
         if (principal != null){
             return "redirect:/food/registration"
         }
-        model.addAttribute("user", user)
+        model.addAttribute("person", person)
         "registration"
     }
 
     @PostMapping
-    String saveRegistration(@Valid Person user, BindingResult bindingResult, RedirectAttributes redirectAttributes){
+    String saveRegistration(@Valid Person person, BindingResult bindingResult, RedirectAttributes redirectAttributes){
 
-        userService.wasRegistratedValidly(user, bindingResult);
+        personService.wasRegistratedValidly(person, bindingResult);
 
         if(bindingResult.hasErrors()){
             return "registration"
         }
         redirectAttributes.addFlashAttribute("message", "Succes! Your registration is now complete")
-        userService.register(user)
+        personService.register(person)
         "redirect:/login"
     }
 }
