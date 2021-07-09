@@ -38,8 +38,9 @@ class Nutrients {
         calories.toInteger()
     }
 
+
     Nutrients minus(Nutrients other){
-        new Nutrients(carbohydrates: this.carbohydrates - other.carbohydrates, proteins: this.proteins - other.proteins, fats: this.fats - fats)
+        new Nutrients(carbohydrates: this.carbohydrates - other.carbohydrates, proteins: this.proteins - other.proteins, fats: this.fats - other.fats)
     }
 
     void update(BigDecimal carbohydrates, BigDecimal proteins, BigDecimal fats) {

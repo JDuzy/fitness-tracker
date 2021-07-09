@@ -94,7 +94,7 @@
     </div>
     <div class="card-body row">
       <div class="col">
-        <h5 class="card-title text-center" th:text="*{objectiveCalories.toString() + ' kcal'}"></h5>
+        <h5 class="card-title text-center" th:text="*{objectiveCalories?.toString() + ' kcal'}"></h5>
         <p class="card-text text-center">Objective</p>
       </div>
       <div class="col">
@@ -108,7 +108,7 @@
         <h5 class="card-title text-center">=</h5>
       </div>
       <div class="col">
-        <h5 class="card-title text-center">1300 kcal</h5>
+        <h5 class="card-title text-center" th:text="*{calculateRemainingCalories().toString() + 'kcal'}"></h5>
         <p class="card-text text-center">Remaining</p>
       </div>
 

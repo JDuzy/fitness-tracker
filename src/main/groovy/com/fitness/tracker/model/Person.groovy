@@ -133,8 +133,16 @@ class Person implements UserDetails{
         nutritionalObjective.calculateRemainingNutrients(dailyNutrientsEaten)
     }
 
+    BigDecimal calculateRemainingCalories(){
+        nutritionalObjective.calculateRemainingCalories(dailyNutrientsEaten)
+    }
+
+    Nutrients getObjectiveNutrients(){
+        nutritionalObjective.objectiveNutrients
+    }
+
     BigDecimal getObjectiveCalories(){
-        nutritionalObjective.getObjectiveCalories()
+        nutritionalObjective.objectiveCalories
     }
 
 }

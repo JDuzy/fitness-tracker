@@ -28,7 +28,7 @@ class DailyNutritionalObjective {
     @NotNull
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "nutrients_id", referencedColumnName = "id")
-    Nutrients nutrients = new Nutrients()
+    Nutrients objectiveNutrients = new Nutrients()
 
 
     void calculateObjective(Integer age, BigDecimal weight, Integer height, String sex, BigDecimal physicalActivity, BigDecimal weightChangePerWeek){
@@ -45,16 +45,9 @@ class DailyNutritionalObjective {
         distributePersonNutrients(objectiveCalories, weight)
     }
 
-    Nutrients getObjectiveNutrients(){
-        nutrients
-    }
-
-    BigDecimal getObjectiveCalories(){
-        nutrients.getCalories()
-    }
 
     Nutrients calculateRemainingNutrients(Nutrients eatenNutrients) {
-        this.nutrients.minus(eatenNutrients)
+        this.objectiveNutrients - eatenNutrients
     }
 
     void distributePersonNutrients(BigDecimal objectiveCalories, BigDecimal weight){
@@ -64,6 +57,15 @@ class DailyNutritionalObjective {
         BigDecimal caloriesForCarbohydrates = objectiveCalories - caloriesFromProteinAndFats
         BigDecimal carbohydrates = caloriesForCarbohydrates / 4
 
-        nutrients.update(carbohydrates, proteins ,fats)
+        objectiveNutrients.update(carbohydrates, proteins ,fats)
+    }
+
+
+    Integer calculateRemainingCalories(Nutrients eatenNutrients) {
+        calculateRemainingNutrients(eatenNutrients).calories
+    }
+
+    Integer getObjectiveCalories() {
+        objectiveNutrients.calories
     }
 }
