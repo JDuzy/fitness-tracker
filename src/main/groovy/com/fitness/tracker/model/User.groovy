@@ -66,6 +66,10 @@ class User implements UserDetails{
     @Valid
     Credentials credentials = new Credentials()
 
+    DailyNutritionalObjective nutritionalObjective
+
+    Nutrients dailyNutrientsEaten
+
     @Override
     Collection<? extends GrantedAuthority> getAuthorities() {
         SimpleGrantedAuthority authority = new SimpleGrantedAuthority("USER")
@@ -110,12 +114,20 @@ class User implements UserDetails{
         return true
     }
 
-    int getAge(){
+    Integer getAge(){
         Period.between(this.dateOfBirth, LocalDate.now()).getYears()
     }
 
     Boolean passwordsMatch() {
         credentials.passwordsMatch()
+    }
+
+    void setNutritionalObjective(){
+        nutritionalObjective.calculateObjective(age, weight, height, sex, physicalActivity, weightChangePerWeek )
+    }
+
+    Nutrients calculateRemainingNutrients(){
+        nutritionalObjective.calculateRemainingNutrients(dailyNutrientsEaten)
     }
 
 }

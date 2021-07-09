@@ -37,7 +37,7 @@ class FoodRegistrationService{
             throw new IllegalStateException("Food with id ${foodId} does not exists")
         }
         FoodRegistration registration = new FoodRegistration(user: user, registrationDate: registrationDate, amount: amount, food: food.get())
-        System.out.println(user.toString())
+        //user.eatFood(food)
         foodRegistrationRepository.save(registration)
     }
 
