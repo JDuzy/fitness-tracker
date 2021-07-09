@@ -41,7 +41,7 @@ class Bootstrap implements InitializingBean {
         Credentials credentials = new Credentials(userName: "user1", email: "mail@mail.com", password: password, rpassword: password);
 
         Nutrients nutrientsEaten = new Nutrients(carbohydrates: 0, proteins: 0, fats: 0)
-        Person person = new Person(credentials: credentials, dateOfBirth: LocalDate.now().minusYears(18), weight: 80, height: 180, sex: "male", physicalActivity: "ACTIVE", weightChangePerWeek: 0.25, dailyNutrientsEaten: nutrientsEaten)
+        Person person = new Person(credentials: credentials, dateOfBirth: LocalDate.now().minusYears(18), weight: 80, height: 180, sex: "male", physicalActivity: 1.725, weightChangePerWeek: 150, dailyNutrientsEaten: nutrientsEaten)
         person.setNutritionalObjective()
         userRepository.save(person)
 

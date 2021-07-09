@@ -64,6 +64,7 @@ class PersonService implements UserDetailsService{
         }
         String encodedPassword = bCryptPasswordEncoder.encode(person.password)
         person.password = encodedPassword
+        person.setNutritionalObjective()
         save(person)
     }
 

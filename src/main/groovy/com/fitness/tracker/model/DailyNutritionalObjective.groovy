@@ -31,7 +31,7 @@ class DailyNutritionalObjective {
     Nutrients nutrients = new Nutrients()
 
 
-    void calculateObjective(Integer age, BigDecimal weight, Integer height, String sex, String physicalActivity, BigDecimal weightChangePerWeek){
+    void calculateObjective(Integer age, BigDecimal weight, Integer height, String sex, BigDecimal physicalActivity, BigDecimal weightChangePerWeek){
         BigDecimal brm
         if (sex == "Male"){
             brm =  66 + (13.7 * weight) + (5 * height) - (6.8 * age)
@@ -40,12 +40,17 @@ class DailyNutritionalObjective {
             brm =  655 + (9.6 * weight) + (1.8 * height) - (4.7 * age)
         }
 
-        BigDecimal objectiveCalories = brm * weightChangePerWeek
+        BigDecimal objectiveCalories = (brm * physicalActivity) + weightChangePerWeek
+
         distributePersonNutrients(objectiveCalories, weight)
     }
 
     Nutrients getObjectiveNutrients(){
         nutrients
+    }
+
+    BigDecimal getObjectiveCalories(){
+        nutrients.getCalories()
     }
 
     Nutrients calculateRemainingNutrients(Nutrients eatenNutrients) {

@@ -51,8 +51,8 @@ class Person implements UserDetails{
     @NotNull(message = "Please enter a height")
     Integer height
 
-    @NotBlank(message = "Please select your weekly amount of physical activity")
-    String physicalActivity
+    @NotNull
+    BigDecimal physicalActivity
 
     @NotNull
     BigDecimal weightChangePerWeek
@@ -71,8 +71,7 @@ class Person implements UserDetails{
     @NotNull
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "nutrients_id", referencedColumnName = "id")
-    Nutrients dailyNutrientsEaten
-
+    Nutrients dailyNutrientsEaten = new Nutrients(carbohydrates: 0, proteins: 0, fats: 0)
 
     @Override
     Collection<? extends GrantedAuthority> getAuthorities() {
@@ -127,11 +126,15 @@ class Person implements UserDetails{
     }
 
     void setNutritionalObjective(){
-        nutritionalObjective.calculateObjective(age, weight, height, sex, physicalActivity, weightChangePerWeek )
+        nutritionalObjective.calculateObjective(age, weight, height, sex, physicalActivity, weightChangePerWeek)
     }
 
     Nutrients calculateRemainingNutrients(){
         nutritionalObjective.calculateRemainingNutrients(dailyNutrientsEaten)
+    }
+
+    BigDecimal getObjectiveCalories(){
+        nutritionalObjective.getObjectiveCalories()
     }
 
 }

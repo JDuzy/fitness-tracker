@@ -9,7 +9,7 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
 </head>
 <body>
-<!--/*@thymesVar id="user" type="com.fitness.tracker.model.Person"*/-->
+<!--/*@thymesVar id="person" type="com.fitness.tracker.model.Person"*/-->
 
   <div th:insert="fragments/header :: header">...</div>
 
@@ -86,7 +86,7 @@
     </div>
   </div>
 
-  <div class="card">
+  <div class="card" th:object="${person}">
     <div class="card-header row pb-1">
       <a th:href="@{'/food/registration?registrationDate=' + ${yesterday}}" class="bi bi-chevron-left col text-center"></a>
       <h5 class=" col text-center" th:text="${today}">Featured</h5>
@@ -94,14 +94,14 @@
     </div>
     <div class="card-body row">
       <div class="col">
-        <h5 class="card-title text-center">2800 kcal</h5>
+        <h5 class="card-title text-center" th:text="*{objectiveCalories.toString() + ' kcal'}"></h5>
         <p class="card-text text-center">Objective</p>
       </div>
       <div class="col">
         <h5 class="card-title text-center">-</h5>
       </div>
       <div class="col">
-        <h5 class="card-title text-center">1500 kcal</h5>
+        <h5 class="card-title text-center">0 kcal</h5>
         <p class="card-text text-center">Eaten</p>
       </div>
       <div class="col">
