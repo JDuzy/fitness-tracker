@@ -46,9 +46,7 @@ class Bootstrap implements InitializingBean {
         userRepository.save(person)
 
         Characteristics characteristics = new Characteristics(isVegan: false, isPescetarian: false, isVegetarian: false);
-        Nutrients bananaNutrientsPerGram = new Nutrients(carbohydrates: 20, proteins: 0.5, fats: 0.5)
-        System.out.println("Amount of fats on a g of banana: ${bananaNutrientsPerGram.fats}")
-        Food banana = new Food(name: "Banana", nutrientsPer100Gram: bananaNutrientsPerGram, characteristics: characteristics, gramsInOnePortion: 100)
+        Food banana = new Food(name: "Banana", nutrientsPer100Gram: new Nutrients(carbohydrates: 20, proteins: 0.5, fats: 0.5), characteristics: characteristics, gramsInOnePortion: 100)
         Food manzana = new Food(name: "Manzana",  nutrientsPer100Gram: new Nutrients(carbohydrates: 20,proteins: 0.5, fats: 2), characteristics: characteristics, gramsInOnePortion: 80)
         Food pizza = new Food(name: "Pizza", nutrientsPer100Gram: new Nutrients(carbohydrates: 28,proteins: 5, fats: 9), characteristics: characteristics, gramsInOnePortion: 150)
         Food pechugaDePollo = new Food(name: "Pechuga De Pollo", nutrientsPer100Gram: new Nutrients(carbohydrates: 20,proteins: 22, fats: 5), characteristics: characteristics, gramsInOnePortion: 120)

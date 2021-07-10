@@ -60,8 +60,6 @@ class Food {
     }
 
     Nutrients getNutrientsPerAmount(BigDecimal amountOfGrams){
-        System.out.println("The portion is of ${amountOfGrams} grams")
-        System.out.println("Amount of fats per g: ${fats}, amount in one portion: ${(amountOfGrams * fats)/100}")
         new Nutrients(carbohydrates: (amountOfGrams * carbohydrates)/100 , proteins: (amountOfGrams * proteins)/100, fats: (amountOfGrams * fats)/100)
     }
 

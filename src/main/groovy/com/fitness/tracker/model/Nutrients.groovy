@@ -39,7 +39,6 @@ class Nutrients {
         calories.toInteger()
     }
 
-
     Nutrients minus(Nutrients other){
         new Nutrients(carbohydrates: this.carbohydrates - other.carbohydrates, proteins: this.proteins - other.proteins, fats: this.fats - other.fats)
     }
@@ -54,11 +53,15 @@ class Nutrients {
         this.fats = other.fats
     }
 
-    void addFoodNutrients(FoodRegistration foodRegistration) {
+    void addNutrientsBasedOn(FoodRegistration foodRegistration) {
         update(this + foodRegistration.nutrients)
     }
 
-    void deleteFoodNutrients(FoodRegistration foodRegistration) {
+    void deleteNutrientsBasedOn(FoodRegistration foodRegistration) {
         update(this - foodRegistration.nutrients)
+    }
+
+    void updateNutrientsBasedOn(FoodRegistration foodRegistration, BigDecimal newAmount) {
+
     }
 }
