@@ -37,6 +37,7 @@ class FoodRegistrationService{
         }
         FoodRegistration registration = new FoodRegistration(person: person, registrationDate: registrationDate, amount: amount, food: food.get())
         //person.eatFood(food)
+        System.out.println("ARRIVES HERREEEEEEE")
         foodRegistrationRepository.save(registration)
     }
 
@@ -53,6 +54,7 @@ class FoodRegistrationService{
 
 
     void deleteRegistrationById(long id) {
+        //Verify if exists
         foodRegistrationRepository.deleteById(id)
     }
 }

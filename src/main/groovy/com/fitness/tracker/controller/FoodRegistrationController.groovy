@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
-
+import org.springframework.web.bind.annotation.ResponseBody
 
 import java.time.LocalDate
 
@@ -67,23 +67,24 @@ class FoodRegistrationController {
         BigDecimal amount = payload.get("amount").toBigDecimal()
         foodRegistrationService.register(loggedPerson, registrationDate, amount, foodId)
 
-        "foodRegistration"
-        //"redirect:/food/registration?registrationDate=${registrationDate.toString()}"
+        //"foodRegistration"
+        "redirect:/food/registration?registrationDate=${registrationDate.toString()}"
     }
 
     //Request body should have amount: amount
     @PutMapping("/food/registration/{registrationId}")
-    String modifyARegistration(@PathVariable Long registrationId, @RequestParam @DateTimeFormat(iso = DATE) LocalDate registrationDate, @RequestBody Map<String, String> payload){
+    @ResponseBody
+    String modifyARegistration(Model model, @PathVariable Long registrationId, @RequestParam @DateTimeFormat(iso = DATE) LocalDate registrationDate, @RequestBody Map<String, String> payload){
         BigDecimal amount = payload.get("amount").toBigDecimal()
         foodRegistrationService.update(registrationId, amount)
-
-        "foodRegistration"
+        "Updated"
     }
 
     @DeleteMapping("/food/registration/{registrationId}")
-    String deleteARegistration(@PathVariable Long registrationId, @RequestParam @DateTimeFormat(iso = DATE) LocalDate registrationDate){
+    @ResponseBody
+    String deleteARegistration(Model model, @PathVariable Long registrationId, @RequestParam @DateTimeFormat(iso = DATE) LocalDate registrationDate){
         foodRegistrationService.deleteRegistrationById(registrationId)
 
-        "foodRegistration"
+        "Deleted"
     }
 }

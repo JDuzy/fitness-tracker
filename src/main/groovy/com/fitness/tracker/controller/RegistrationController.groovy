@@ -49,7 +49,6 @@ class RegistrationController {
         personService.wasRegistratedValidly(person, bindingResult);
 
         if(bindingResult.hasErrors()){
-            System.out.println("ENTERSS HEREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE")
             return "registration"
         }
         redirectAttributes.addFlashAttribute("message", "Succes! Your registration is now complete")
