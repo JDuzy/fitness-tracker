@@ -74,7 +74,7 @@ class FoodRegistrationController {
     //Request body should have amount: amount
     @PutMapping("/food/registration/{registrationId}")
     @ResponseBody
-    String modifyARegistration(Model model, @PathVariable Long registrationId, @RequestParam @DateTimeFormat(iso = DATE) LocalDate registrationDate, @RequestBody Map<String, String> payload){
+    String modifyARegistration(Model model, @PathVariable Long registrationId, @RequestBody Map<String, String> payload){
         BigDecimal amount = payload.get("amount").toBigDecimal()
         foodRegistrationService.update(registrationId, amount)
         "Updated"
@@ -82,9 +82,8 @@ class FoodRegistrationController {
 
     @DeleteMapping("/food/registration/{registrationId}")
     @ResponseBody
-    String deleteARegistration(Model model, @PathVariable Long registrationId, @RequestParam @DateTimeFormat(iso = DATE) LocalDate registrationDate){
+    String deleteARegistration(Model model, @PathVariable Long registrationId){
         foodRegistrationService.deleteRegistrationById(registrationId)
-
         "Deleted"
     }
 }

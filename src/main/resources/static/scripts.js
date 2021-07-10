@@ -3,7 +3,6 @@ function registerFood(date){
     var amount = document.getElementById("amount-input");
     var xhr = new XMLHttpRequest();
     var url = "/food/registration?registrationDate="
-    alert("Enters here for CREATE")
     xhr.onreadystatechange = function() { // listen for state changes
         if (xhr.readyState == 4 && xhr.status == 200) { // when completed we can move away
             window.location = url.concat(date);
@@ -60,9 +59,8 @@ function openEditModal(name, registrationId, date){
     var handler = function (){
         var $amount = $modal.find('[name="edit-amount-input"]');
         var xhr = new XMLHttpRequest();
-        var urlForPut = "/food/registration/".concat(registrationId).concat("/?registrationDate=").concat(date);
+        var urlForPut = "/food/registration/".concat(registrationId);
         var urlForGet = "/food/registration/".concat("?registrationDate=").concat(date);
-        alert("Enters here for UPDATE")
         setXhrRedirect(xhr, urlForGet);
 
         xhr.open("PUT", urlForPut, true);
@@ -85,11 +83,9 @@ function openDeleteModal(name, registrationId, date){
     $modal.find('[name="modify-delete-text"]').text("Are you sure you want to delete the registration of ".concat(name).concat("?"));
     var $btnDelete = $modal.find('[name="delete"]');
 
-    alert("Enters here for DELETE")
-
     var handler = function (){
         var xhr = new XMLHttpRequest();
-        var urlForDelete = "/food/registration/".concat(registrationId).concat("/?registrationDate=").concat(date);
+        var urlForDelete = "/food/registration/".concat(registrationId);
         var urlForGet = "/food/registration/".concat("?registrationDate=").concat(date);
 
         setXhrRedirect(xhr, urlForGet);
