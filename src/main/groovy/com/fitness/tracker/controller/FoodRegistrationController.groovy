@@ -61,14 +61,13 @@ class FoodRegistrationController {
 
     //Request body should have foodId: foodId, amount: amount
     @PostMapping("/food/registration")
+    @ResponseBody
     String registerAFood(@RequestParam @DateTimeFormat(iso = DATE) LocalDate registrationDate, @RequestBody Map<String, String> payload){
         Person loggedPerson = personService.getPrincipal()
         Long foodId = payload.get("foodId").toLong()
         BigDecimal amount = payload.get("amount").toBigDecimal()
         foodRegistrationService.register(loggedPerson, registrationDate, amount, foodId)
-
-        //"foodRegistration"
-        "redirect:/food/registration?registrationDate=${registrationDate.toString()}"
+        "Food registered"
     }
 
     //Request body should have amount: amount
