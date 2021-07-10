@@ -47,14 +47,14 @@ class FoodRegistrationController {
     final DailyNutrientsEatenService dailyNutrientsEatenService
 
     @GetMapping("/food/registration")
-    String getFoodRegistrations(Model model, @RequestParam @DateTimeFormat(iso = DATE) LocalDate registrationDate){
+    String getFoodRegistrations(Model model, @RequestParam(required = false, defaultValue = "#{T(java.time.LocalDate).now().toString()}") @DateTimeFormat(iso = DATE) LocalDate registrationDate){
         Person loggedPerson = personService.getPrincipal()
         model.addAttribute("person", loggedPerson)
 
-        dailyNutrientsEatenService.updateActualNutrientsEatenByEatenDayAndPerson(registrationDate as LocalDate, loggedPerson) //Verify if it works without as
+        dailyNutrientsEatenService.updateActualNutrientsEatenByEatenDayAndPerson(registrationDate, loggedPerson)
 
         List<Food> foods = foodService.findAll()
-        List<FoodRegistration> dailyFoodsRegistrations = foodRegistrationService.findAllFoodRegistrationByPersonAndRegistrationDate(loggedPerson, registrationDate as LocalDate)
+        List<FoodRegistration> dailyFoodsRegistrations = foodRegistrationService.findAllFoodRegistrationByPersonAndRegistrationDate(loggedPerson, registrationDate)
 
         //TO DO: Use model.addAttributes in 1 line
         model.addAttribute("foodRegistrations", dailyFoodsRegistrations)
