@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <title>Fitness Tracker - Register your food</title>
+  <title>Fitness Tracker - Register your food </title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
 </head>
@@ -23,16 +23,16 @@
         </div>
         <div class="modal-body">
           <div class="list-group">
-            <!--/*@thymesVar id="foods" type="List<com.fitness.tracker.model.Food>"*/-->
+            <!--/*@thymesVar id="food" type="com.fitness.tracker.model.Food"*/-->
             <a th:each="food : ${foods}" th:id="${food.id}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-start" data-bs-toggle="list">
               <div class="ms-2 me-auto">
-              <div class="fw-bold" th:text="${food.name}"></div>
-              100g
+                <div class="fw-bold" th:text="${food.name}"></div>
+                <span th:text="${food.gramsInOnePortion} + ' g'" th:remove="tag"></span>
               </div>
-              <span class="badge bg-dark rounded-pill mx-1" th:text="'Carbs ' + ${food.carbohydrates} + 'g'"></span>
-              <span class="badge bg-dark rounded-pill mx-1" th:text="'Proteins ' + ${food.proteins} + 'g'"></span>
-              <span class="badge bg-dark rounded-pill mx-1" th:text="'Fats ' +${food.fats} + 'g'"></span>
-              <span class="badge bg-primary rounded-pill mx-1" th:text="${food.calories} + 'kcal'"></span>
+              <span class="badge bg-dark rounded-pill mx-1" th:text="'Carbs ' + ${#numbers.formatDecimal(food.getNutrientsPerAmount(food.gramsInOnePortion).carbohydrates, 1, 2)} + 'g'"></span>
+              <span class="badge bg-dark rounded-pill mx-1" th:text="'Proteins ' + ${#numbers.formatDecimal(food.getNutrientsPerAmount(food.gramsInOnePortion).proteins, 1, 2)} + 'g'"></span>
+              <span class="badge bg-dark rounded-pill mx-1" th:text="'Fats ' +${#numbers.formatDecimal(food.getNutrientsPerAmount(food.gramsInOnePortion).fats, 1, 2)} + 'g'"></span>
+              <span class="badge bg-primary rounded-pill mx-1" th:text="${food.getCaloriesPerAmount(food.gramsInOnePortion)} + 'kcal'"></span>
             </a>
           </div>
         </div>
@@ -94,14 +94,14 @@
     </div>
     <div class="card-body row">
       <div class="col">
-        <h5 class="card-title text-center" th:text="*{objectiveCalories?.toString() + ' kcal'}"></h5>
+        <h5 class="card-title text-center" th:text="*{objectiveCalories.toString() + ' kcal'}"></h5>
         <p class="card-text text-center">Objective</p>
       </div>
       <div class="col">
         <h5 class="card-title text-center">-</h5>
       </div>
       <div class="col">
-        <h5 class="card-title text-center">0 kcal</h5>
+        <h5 class="card-title text-center" th:text="*{dailyNutrientsEaten.calories.toString() + ' kcal'}"></h5>
         <p class="card-text text-center">Eaten</p>
       </div>
       <div class="col">
@@ -126,13 +126,13 @@
       </tr>
       </thead>
       <tbody>
-      <!--/*@thymesVar id="foodRegistrations" type="List<com.fitness.tracker.model.registration.FoodRegistration>"*/-->
+      <!--/*@thymesVar id="foodRegistration" type="com.fitness.tracker.model.registration.FoodRegistration"*/-->
         <tr th:each="foodRegistration : ${foodRegistrations}">
           <!--/*@thymesVar id="food" type="com.fitness.tracker.model.Food"*/-->
           <!--/*@thymesVar id="name" type="String"*/-->
           <th scope="row" th:text="${foodRegistration.food.name}"></th>
-          <td th:text="${foodRegistration.amount} + 'g'"></td>
-          <td th:text="${foodRegistration.food.calories} + 'kcal'"></td>
+          <td th:text="${foodRegistration.amountOfGrams} + 'g'"></td>
+          <td th:text="${foodRegistration.food.getCaloriesPerAmount(foodRegistration.amountOfGrams)} + 'kcal'"></td>
           <td>
             <div class="btn-toolbar justify-content-center" role="toolbar" aria-label="Toolbar with button groups">
               <div class="btn-group me-2" role="group" aria-label="First group">

@@ -45,10 +45,8 @@ class FoodRegistrationController {
     String getFoodRegistrations(Model model, @RequestParam @DateTimeFormat(iso = DATE) LocalDate registrationDate){
         Person loggedPerson = personService.getPrincipal()
         model.addAttribute("person", loggedPerson)
-        List<FoodRegistration> dailyFoodsRegistrations = new ArrayList<FoodRegistration>()
         List<Food> foods = foodService.findAll()
-
-        dailyFoodsRegistrations = foodRegistrationService.findAllFoodRegistrationByPersonAndRegistrationDate(loggedPerson, registrationDate as LocalDate)
+        List<FoodRegistration> dailyFoodsRegistrations = foodRegistrationService.findAllFoodRegistrationByPersonAndRegistrationDate(loggedPerson, registrationDate as LocalDate)
 
         model.addAttribute("foodRegistrations", dailyFoodsRegistrations)
         model.addAttribute("foods", foods)
@@ -65,8 +63,8 @@ class FoodRegistrationController {
     String registerAFood(@RequestParam @DateTimeFormat(iso = DATE) LocalDate registrationDate, @RequestBody Map<String, String> payload){
         Person loggedPerson = personService.getPrincipal()
         Long foodId = payload.get("foodId").toLong()
-        BigDecimal amount = payload.get("amount").toBigDecimal()
-        foodRegistrationService.register(loggedPerson, registrationDate, amount, foodId)
+        BigDecimal amountOfGrams = payload.get("amount").toBigDecimal()
+        foodRegistrationService.register(loggedPerson, registrationDate, amountOfGrams, foodId)
         "Food registered"
     }
 
@@ -74,15 +72,17 @@ class FoodRegistrationController {
     @PutMapping("/food/registration/{registrationId}")
     @ResponseBody
     String modifyARegistration(Model model, @PathVariable Long registrationId, @RequestBody Map<String, String> payload){
-        BigDecimal amount = payload.get("amount").toBigDecimal()
-        foodRegistrationService.update(registrationId, amount)
+        Person loggedPerson = personService.getPrincipal()
+        BigDecimal amountOfGrams = payload.get("amount").toBigDecimal()
+        foodRegistrationService.update(registrationId, amountOfGrams, loggedPerson)
         "Updated"
     }
 
     @DeleteMapping("/food/registration/{registrationId}")
     @ResponseBody
     String deleteARegistration(Model model, @PathVariable Long registrationId){
-        foodRegistrationService.deleteRegistrationById(registrationId)
+        Person loggedPerson = personService.getPrincipal()
+        foodRegistrationService.deleteRegistrationById(registrationId, loggedPerson)
         "Deleted"
     }
 }

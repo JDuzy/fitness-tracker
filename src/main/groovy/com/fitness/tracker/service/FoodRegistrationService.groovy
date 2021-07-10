@@ -25,36 +25,41 @@ class FoodRegistrationService{
     @Autowired
     final FoodRepository foodRepository
 
+
     List<FoodRegistration> findAllFoodRegistrationByPersonAndRegistrationDate(Person person, LocalDate registrationDate) {
         foodRegistrationRepository.findAllFoodRegistrationByPersonAndRegistrationDate(person, registrationDate)
     }
 
     @Transactional
-    FoodRegistration register(Person person, LocalDate registrationDate, BigDecimal amount, Long foodId){
+    FoodRegistration register(Person person, LocalDate registrationDate, BigDecimal amountOfGrams, Long foodId){
         Optional<Food> food = foodRepository.findFoodById(foodId)
-        if (food.isEmpty()){
-            throw new IllegalStateException("Food with id ${foodId} does not exists")
-        }
-        FoodRegistration registration = new FoodRegistration(person: person, registrationDate: registrationDate, amount: amount, food: food.get())
-        //person.eatFood(food)
-        System.out.println("ARRIVES HERREEEEEEE")
+        food.orElseThrow({
+            new IllegalStateException("Food with id ${foodId} does not exists")
+        })
+        FoodRegistration registration = new FoodRegistration(person: person, registrationDate: registrationDate, amountOfGrams: amountOfGrams, food: food.get())
+        person.addFood(food.get())
         foodRegistrationRepository.save(registration)
     }
 
     @Transactional
-    FoodRegistration update(long registrationId, BigDecimal newAmount) {
+    FoodRegistration update(long registrationId, BigDecimal newAmount, Person person) {
         Optional<FoodRegistration> foodRegistration = foodRegistrationRepository.findById(registrationId)
         foodRegistration.orElseThrow({
             new ResponseStatusException(NOT_FOUND, "No foodRegistration with id: ${registrationId} was found")
         })
         FoodRegistration registration = foodRegistration.get()
-        registration.amount = newAmount
+        person.updateFood(registration.amountOfGrams, newAmount)
+        registration.amountOfGrams = newAmount
         foodRegistrationRepository.save(registration)
     }
 
 
-    void deleteRegistrationById(long id) {
-        //Verify if exists
+    void deleteRegistrationById(long id, Person person) {
+        Optional<Food> food =  foodRegistrationRepository.findFoodById(id)
+        food.orElseThrow({
+          new ResponseStatusException(NOT_FOUND, "No foodRegistration with id: ${id} was found")
+        })
+        person.deleteFood(food.get())
         foodRegistrationRepository.deleteById(id)
     }
 }

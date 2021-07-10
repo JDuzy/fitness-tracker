@@ -8,6 +8,7 @@ import javax.persistence.Entity
 import javax.persistence.GeneratedValue
 import javax.persistence.GenerationType
 import javax.persistence.Id
+import javax.persistence.JoinColumn
 import javax.persistence.OneToOne
 import javax.persistence.PrimaryKeyJoinColumn
 import javax.persistence.SequenceGenerator
@@ -30,21 +31,41 @@ class Food {
     String name
 
     @NotNull
-    BigInteger calories
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "nutrients_id", referencedColumnName = "id")
+    Nutrients nutrientsPerGram
 
     @NotNull
-    BigDecimal fats
-
-    @NotNull
-    BigDecimal carbohydrates
-
-    @NotNull
-    BigDecimal proteins
+    BigDecimal gramsInOnePortion
 
     @NotNull
     @OneToOne(cascade = CascadeType.ALL)
     @PrimaryKeyJoinColumn
     Characteristics characteristics
+
+    Integer getCalories(){
+        nutrientsPerGram.calories
+    }
+
+    BigDecimal getCarbohydrates(){
+        nutrientsPerGram.carbohydrates
+    }
+
+    BigDecimal getProteins(){
+        nutrientsPerGram.proteins
+    }
+
+    BigDecimal getFats(){
+        nutrientsPerGram.fats
+    }
+
+    Nutrients getNutrientsPerAmount(BigDecimal amountOfGrams){
+        new Nutrients(carbohydrates: amountOfGrams.multiply(carbohydrates) , proteins: amountOfGrams * proteins, fats: amountOfGrams * fats)
+    }
+
+    Integer getCaloriesPerAmount(BigDecimal amountOfGrams){
+        getNutrientsPerAmount(amountOfGrams).calories
+    }
 
 
 }

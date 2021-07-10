@@ -46,11 +46,11 @@ class Bootstrap implements InitializingBean {
         userRepository.save(person)
 
         Characteristics characteristics = new Characteristics(isVegan: false, isPescetarian: false, isVegetarian: false);
-        Food banana = new Food(name: "Banana", calories: 100, carbohydrates: 20,proteins: 1, fats: 0.5, characteristics: characteristics)
-        Food manzana = new Food(name: "Manzana", calories: 80, carbohydrates: 15,proteins: 2, fats: 0.8, characteristics: characteristics)
-        Food pizza = new Food(name: "Pizza", calories: 200, carbohydrates: 28,proteins: 5, fats: 9, characteristics: characteristics)
-        Food pechugaDePollo = new Food(name: "Pechuga De Pollo", calories: 180, carbohydrates: 0.2,proteins: 22, fats: 5, characteristics: characteristics)
-        Food hamburguesa = new Food(name: "Hamburguesa", calories: 350, carbohydrates: 38,proteins: 9, fats: 15, characteristics: characteristics)
+        Food banana = new Food(name: "Banana", nutrientsPerGram: new Nutrients(carbohydrates: 0.2, proteins: 0.005, fats: 0.005), characteristics: characteristics, gramsInOnePortion: 100)
+        Food manzana = new Food(name: "Manzana",  nutrientsPerGram: new Nutrients(carbohydrates: 0.2,proteins: 0.005, fats: 0.02), characteristics: characteristics, gramsInOnePortion: 80)
+        Food pizza = new Food(name: "Pizza", nutrientsPerGram: new Nutrients(carbohydrates: 0.28,proteins: 0.05, fats: 0.09), characteristics: characteristics, gramsInOnePortion: 150)
+        Food pechugaDePollo = new Food(name: "Pechuga De Pollo", nutrientsPerGram: new Nutrients(carbohydrates: 0.2,proteins: 0.22, fats: 0.05), characteristics: characteristics, gramsInOnePortion: 120)
+        Food hamburguesa = new Food(name: "Hamburguesa",nutrientsPerGram: new Nutrients(carbohydrates: 0.38,proteins: 0.09, fats: 0.15), characteristics: characteristics, gramsInOnePortion: 300)
 
         foodRepository.saveAll(Arrays.asList(banana, manzana, pizza, pechugaDePollo, hamburguesa))
 

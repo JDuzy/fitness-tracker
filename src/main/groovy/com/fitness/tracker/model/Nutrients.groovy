@@ -48,4 +48,16 @@ class Nutrients {
         this.proteins = proteins
         this.fats = fats
     }
+
+    void addFoodNutrients(Food food) {
+        this.carbohydrates += food.carbohydrates
+        this.proteins += food.proteins
+        this.fats += food.fats
+    }
+
+    void deleteFoodNutrients(Food food) {
+        this.carbohydrates -= food.carbohydrates
+        this.proteins -= food.proteins
+        this.fats -= food.fats
+    }
 }

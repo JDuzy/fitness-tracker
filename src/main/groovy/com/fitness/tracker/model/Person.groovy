@@ -145,4 +145,15 @@ class Person implements UserDetails{
         nutritionalObjective.objectiveCalories
     }
 
+    void addFood(Food food) {
+        dailyNutrientsEaten.addFoodNutrients(food)
+    }
+
+    void deleteFood(Food food) {
+        dailyNutrientsEaten.deleteFoodNutrients(food)
+    }
+
+    void updateFood(BigDecimal oldAmount, BigDecimal newAmount) {
+
+    }
 }
