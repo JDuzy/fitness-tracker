@@ -15,6 +15,7 @@ import javax.persistence.GeneratedValue
 import javax.persistence.GenerationType
 import javax.persistence.Id
 import javax.persistence.JoinColumn
+import javax.persistence.OneToMany
 import javax.persistence.OneToOne
 import javax.persistence.PrimaryKeyJoinColumn
 import javax.persistence.SequenceGenerator
@@ -69,10 +70,15 @@ class Person implements UserDetails{
     @PrimaryKeyJoinColumn
     DailyNutritionalObjective nutritionalObjective = new DailyNutritionalObjective()
 
-    @NotNull
+    /*@NotNull
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "nutrients_id", referencedColumnName = "id")
-    Nutrients dailyNutrientsEaten = new Nutrients(carbohydrates: 0, proteins: 0, fats: 0)
+    Nutrients dailyNutrientsEaten = new Nutrients(carbohydrates: 0, proteins: 0, fats: 0)*/
+
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "daily_nutrients_eaten_id", referencedColumnName = "id")
+    DailyNutrientsEaten actualDailyNutrientsEaten = new DailyNutrientsEaten(nutrients: new Nutrients(carbohydrates: 0, proteins: 0, fats: 0), eatenDay: LocalDate.now(), person: this)
 
     @Override
     Collection<? extends GrantedAuthority> getAuthorities() {
@@ -131,11 +137,11 @@ class Person implements UserDetails{
     }
 
     Nutrients calculateRemainingNutrients(){
-        nutritionalObjective.calculateRemainingNutrients(dailyNutrientsEaten)
+        nutritionalObjective.calculateRemainingNutrients(actualDailyNutrientsEaten)
     }
 
     BigDecimal calculateRemainingCalories(){
-        nutritionalObjective.calculateRemainingCalories(dailyNutrientsEaten)
+        nutritionalObjective.calculateRemainingCalories(actualDailyNutrientsEaten)
     }
 
     Nutrients getObjectiveNutrients(){
@@ -146,15 +152,17 @@ class Person implements UserDetails{
         nutritionalObjective.objectiveCalories
     }
 
-    void addFoodRegistration(FoodRegistration foodRegistration) {
-        dailyNutrientsEaten.addNutrientsBasedOn(foodRegistration)
+    DailyNutrientsEaten addFoodRegistration(FoodRegistration foodRegistration) {
+        actualDailyNutrientsEaten.addNutrientsBasedOn(foodRegistration)
+        actualDailyNutrientsEaten
     }
 
-    void deleteFoodRegistration(FoodRegistration foodRegistration) {
-        dailyNutrientsEaten.deleteNutrientsBasedOn(foodRegistration)
+    DailyNutrientsEaten deleteFoodRegistration(FoodRegistration foodRegistration) {
+        actualDailyNutrientsEaten.deleteNutrientsBasedOn(foodRegistration)
+        actualDailyNutrientsEaten
     }
 
-    void updateFoodRegistration(FoodRegistration foodRegistration, BigDecimal newAmount) {
-        dailyNutrientsEaten.updateNutrientsBasedOn(foodRegistration, newAmount)
-    }
+    /*void updateFoodRegistration(FoodRegistration foodRegistration, BigDecimal newAmount) {
+        todayNutrientsEaten.updateNutrientsBasedOn(foodRegistration, newAmount)
+    }*/
 }

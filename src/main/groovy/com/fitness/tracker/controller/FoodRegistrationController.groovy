@@ -1,8 +1,10 @@
 package com.fitness.tracker.controller
 
+import com.fitness.tracker.model.DailyNutrientsEaten
 import com.fitness.tracker.model.Food
 import com.fitness.tracker.model.Person
 import com.fitness.tracker.model.registration.FoodRegistration
+import com.fitness.tracker.service.DailyNutrientsEatenService
 import com.fitness.tracker.service.FoodRegistrationService
 import com.fitness.tracker.service.FoodService
 import com.fitness.tracker.service.PersonService
@@ -41,13 +43,20 @@ class FoodRegistrationController {
     @Autowired
     final FoodService foodService
 
+    @Autowired
+    final DailyNutrientsEatenService dailyNutrientsEatenService
+
     @GetMapping("/food/registration")
     String getFoodRegistrations(Model model, @RequestParam @DateTimeFormat(iso = DATE) LocalDate registrationDate){
         Person loggedPerson = personService.getPrincipal()
         model.addAttribute("person", loggedPerson)
+
+        dailyNutrientsEatenService.updateActualNutrientsEatenByEatenDayAndPerson(registrationDate as LocalDate, loggedPerson) //Verify if it works without as
+
         List<Food> foods = foodService.findAll()
         List<FoodRegistration> dailyFoodsRegistrations = foodRegistrationService.findAllFoodRegistrationByPersonAndRegistrationDate(loggedPerson, registrationDate as LocalDate)
 
+        //TO DO: Use model.addAttributes in 1 line
         model.addAttribute("foodRegistrations", dailyFoodsRegistrations)
         model.addAttribute("foods", foods)
         model.addAttribute("today", registrationDate.toString())
@@ -71,7 +80,7 @@ class FoodRegistrationController {
     //Request body should have amount: amount
     @PutMapping("/food/registration/{registrationId}")
     @ResponseBody
-    String modifyARegistration(Model model, @PathVariable Long registrationId, @RequestBody Map<String, String> payload){
+    String modifyARegistration(@PathVariable Long registrationId, @RequestBody Map<String, String> payload){
         Person loggedPerson = personService.getPrincipal()
         BigDecimal amountOfGrams = payload.get("amount").toBigDecimal()
         foodRegistrationService.update(registrationId, amountOfGrams, loggedPerson)
@@ -80,7 +89,7 @@ class FoodRegistrationController {
 
     @DeleteMapping("/food/registration/{registrationId}")
     @ResponseBody
-    String deleteARegistration(Model model, @PathVariable Long registrationId){
+    String deleteARegistration(@PathVariable Long registrationId){
         Person loggedPerson = personService.getPrincipal()
         foodRegistrationService.deleteRegistrationById(registrationId, loggedPerson)
         "Deleted"

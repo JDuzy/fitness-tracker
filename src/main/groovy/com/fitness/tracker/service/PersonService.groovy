@@ -46,7 +46,7 @@ class PersonService implements UserDetailsService{
 
     @Transactional
     Person save(Person person){
-        credentialsRepository.save(person.credentials)
+        credentialsRepository.save(person.credentials)  //Already done with cascadetype.all?
         personRepository.save(person)
     }
 

@@ -1,5 +1,6 @@
 package com.fitness.tracker.service
 
+import com.fitness.tracker.model.DailyNutrientsEaten
 import com.fitness.tracker.model.Food
 import com.fitness.tracker.model.Person
 import com.fitness.tracker.model.registration.FoodRegistration
@@ -25,6 +26,8 @@ class FoodRegistrationService{
     @Autowired
     final FoodRepository foodRepository
 
+    @Autowired
+    final DailyNutrientsEatenService dailyNutrientsEatenService
 
     List<FoodRegistration> findAllFoodRegistrationByPersonAndRegistrationDate(Person person, LocalDate registrationDate) {
         foodRegistrationRepository.findAllFoodRegistrationByPersonAndRegistrationDate(person, registrationDate)
@@ -37,7 +40,8 @@ class FoodRegistrationService{
             new IllegalStateException("Food with id ${foodId} does not exists")
         })
         FoodRegistration registration = new FoodRegistration(person: person, registrationDate: registrationDate, amountOfGrams: amountOfGrams, food: food.get())
-        person.addFoodRegistration(registration)
+        DailyNutrientsEaten registrationDateNutrientsEaten = person.addFoodRegistration(registration)
+        dailyNutrientsEatenService.save(registrationDateNutrientsEaten)
         foodRegistrationRepository.save(registration)
 
     }
@@ -51,7 +55,8 @@ class FoodRegistrationService{
         FoodRegistration registration = foodRegistration.get()
         person.deleteFoodRegistration(registration)
         registration.amountOfGrams = newAmount
-        person.addFoodRegistration(registration)
+        DailyNutrientsEaten registrationDateNutrientsEaten = person.addFoodRegistration(registration)
+        dailyNutrientsEatenService.save(registrationDateNutrientsEaten)
         foodRegistrationRepository.save(registration)
     }
 
@@ -61,7 +66,8 @@ class FoodRegistrationService{
         registration.orElseThrow({
           new ResponseStatusException(NOT_FOUND, "No foodRegistration with id: ${id} was found")
         })
-        person.deleteFoodRegistration(registration.get())
+        DailyNutrientsEaten registrationDateNutrientsEaten = person.deleteFoodRegistration(registration.get())
+        dailyNutrientsEatenService.save(registrationDateNutrientsEaten)
         foodRegistrationRepository.deleteById(id)
     }
 }

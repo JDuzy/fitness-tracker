@@ -46,8 +46,8 @@ class DailyNutritionalObjective {
     }
 
 
-    Nutrients calculateRemainingNutrients(Nutrients eatenNutrients) {
-        this.objectiveNutrients - eatenNutrients
+    Nutrients calculateRemainingNutrients(DailyNutrientsEaten dailyNutrientsEaten) {
+        this.objectiveNutrients - dailyNutrientsEaten.nutrients
     }
 
     void distributePersonNutrients(BigDecimal objectiveCalories, BigDecimal weight){
@@ -61,8 +61,8 @@ class DailyNutritionalObjective {
     }
 
 
-    Integer calculateRemainingCalories(Nutrients eatenNutrients) {
-        calculateRemainingNutrients(eatenNutrients).calories
+    Integer calculateRemainingCalories(DailyNutrientsEaten dailyNutrientsEaten) {
+        calculateRemainingNutrients(dailyNutrientsEaten).calories
     }
 
     Integer getObjectiveCalories() {
