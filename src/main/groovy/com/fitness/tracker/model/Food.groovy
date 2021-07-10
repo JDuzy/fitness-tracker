@@ -33,7 +33,7 @@ class Food {
     @NotNull
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "nutrients_id", referencedColumnName = "id")
-    Nutrients nutrientsPerGram
+    Nutrients nutrientsPer100Gram
 
     @NotNull
     BigDecimal gramsInOnePortion
@@ -44,23 +44,25 @@ class Food {
     Characteristics characteristics
 
     Integer getCalories(){
-        nutrientsPerGram.calories
+        nutrientsPer100Gram.calories
     }
 
     BigDecimal getCarbohydrates(){
-        nutrientsPerGram.carbohydrates
+        nutrientsPer100Gram.carbohydrates
     }
 
     BigDecimal getProteins(){
-        nutrientsPerGram.proteins
+        nutrientsPer100Gram.proteins
     }
 
     BigDecimal getFats(){
-        nutrientsPerGram.fats
+        nutrientsPer100Gram.fats
     }
 
     Nutrients getNutrientsPerAmount(BigDecimal amountOfGrams){
-        new Nutrients(carbohydrates: amountOfGrams.multiply(carbohydrates) , proteins: amountOfGrams * proteins, fats: amountOfGrams * fats)
+        System.out.println("The portion is of ${amountOfGrams} grams")
+        System.out.println("Amount of fats per g: ${fats}, amount in one portion: ${(amountOfGrams * fats)/100}")
+        new Nutrients(carbohydrates: (amountOfGrams * carbohydrates)/100 , proteins: (amountOfGrams * proteins)/100, fats: (amountOfGrams * fats)/100)
     }
 
     Integer getCaloriesPerAmount(BigDecimal amountOfGrams){

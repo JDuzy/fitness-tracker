@@ -13,5 +13,5 @@ interface FoodRegistrationRepository extends JpaRepository<FoodRegistration, Lon
 
     List<FoodRegistration> findAllFoodRegistrationByPersonAndRegistrationDate(Person person, LocalDate localDate)
 
-    Optional<Food> findFoodById(Long foodRegistrationId)
+    Optional<FoodRegistration> findFoodRegistrationById(long id)
 }

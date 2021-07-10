@@ -37,8 +37,9 @@ class FoodRegistrationService{
             new IllegalStateException("Food with id ${foodId} does not exists")
         })
         FoodRegistration registration = new FoodRegistration(person: person, registrationDate: registrationDate, amountOfGrams: amountOfGrams, food: food.get())
-        person.addFood(food.get())
+        person.addFood(registration)
         foodRegistrationRepository.save(registration)
+
     }
 
     @Transactional
@@ -53,13 +54,13 @@ class FoodRegistrationService{
         foodRegistrationRepository.save(registration)
     }
 
-
+    @Transactional
     void deleteRegistrationById(long id, Person person) {
-        Optional<Food> food =  foodRegistrationRepository.findFoodById(id)
-        food.orElseThrow({
+        Optional<FoodRegistration> registration =  foodRegistrationRepository.findFoodRegistrationById(id)
+        registration.orElseThrow({
           new ResponseStatusException(NOT_FOUND, "No foodRegistration with id: ${id} was found")
         })
-        person.deleteFood(food.get())
+        person.deleteFood(registration.get())
         foodRegistrationRepository.deleteById(id)
     }
 }

@@ -57,7 +57,7 @@ class DailyNutritionalObjective {
         BigDecimal caloriesForCarbohydrates = objectiveCalories - caloriesFromProteinAndFats
         BigDecimal carbohydrates = caloriesForCarbohydrates / 4
 
-        objectiveNutrients.update(carbohydrates, proteins ,fats)
+        objectiveNutrients.update(new Nutrients(carbohydrates: carbohydrates, proteins: proteins, fats: fats))
     }
 
 

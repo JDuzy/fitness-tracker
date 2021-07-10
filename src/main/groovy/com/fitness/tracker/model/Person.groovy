@@ -1,5 +1,6 @@
 package com.fitness.tracker.model
 
+import com.fitness.tracker.model.registration.FoodRegistration
 import groovy.transform.CompileStatic
 import groovy.transform.ToString
 import org.springframework.format.annotation.DateTimeFormat
@@ -145,12 +146,12 @@ class Person implements UserDetails{
         nutritionalObjective.objectiveCalories
     }
 
-    void addFood(Food food) {
-        dailyNutrientsEaten.addFoodNutrients(food)
+    void addFood(FoodRegistration foodRegistration) {
+        dailyNutrientsEaten.addFoodNutrients(foodRegistration)
     }
 
-    void deleteFood(Food food) {
-        dailyNutrientsEaten.deleteFoodNutrients(food)
+    void deleteFood(FoodRegistration foodRegistration) {
+        dailyNutrientsEaten.deleteFoodNutrients(foodRegistration)
     }
 
     void updateFood(BigDecimal oldAmount, BigDecimal newAmount) {

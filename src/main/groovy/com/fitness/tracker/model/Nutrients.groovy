@@ -1,5 +1,6 @@
 package com.fitness.tracker.model
 
+import com.fitness.tracker.model.registration.FoodRegistration
 import groovy.transform.CompileStatic
 
 import javax.persistence.Column
@@ -43,21 +44,21 @@ class Nutrients {
         new Nutrients(carbohydrates: this.carbohydrates - other.carbohydrates, proteins: this.proteins - other.proteins, fats: this.fats - other.fats)
     }
 
-    void update(BigDecimal carbohydrates, BigDecimal proteins, BigDecimal fats) {
-        this.carbohydrates = carbohydrates
-        this.proteins = proteins
-        this.fats = fats
+    Nutrients plus(Nutrients other){
+        new Nutrients(carbohydrates: this.carbohydrates + other.carbohydrates, proteins: this.proteins + other.proteins, fats: this.fats + other.fats)
     }
 
-    void addFoodNutrients(Food food) {
-        this.carbohydrates += food.carbohydrates
-        this.proteins += food.proteins
-        this.fats += food.fats
+    void update(Nutrients other) {
+        this.carbohydrates = other.carbohydrates
+        this.proteins = other.proteins
+        this.fats = other.fats
     }
 
-    void deleteFoodNutrients(Food food) {
-        this.carbohydrates -= food.carbohydrates
-        this.proteins -= food.proteins
-        this.fats -= food.fats
+    void addFoodNutrients(FoodRegistration foodRegistration) {
+        update(this + foodRegistration.nutrients)
+    }
+
+    void deleteFoodNutrients(FoodRegistration foodRegistration) {
+        update(this - foodRegistration.nutrients)
     }
 }
