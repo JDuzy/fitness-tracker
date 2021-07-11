@@ -35,7 +35,7 @@ class DailyNutrientsEaten {
     @NotNull
     LocalDate eatenDay
 
-    @ManyToOne(cascade = CascadeType.MERGE)
+    @ManyToOne
     @JoinColumn(name = "person_id", referencedColumnName = "id")
     Person person
 

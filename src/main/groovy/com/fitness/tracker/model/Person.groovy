@@ -136,11 +136,11 @@ class Person implements UserDetails{
         nutritionalObjective.calculateObjective(age, weight, height, sex, physicalActivity, weightChangePerWeek)
     }
 
-    Nutrients calculateRemainingNutrients(){
+    Nutrients remainingNutrientsForTheActualDay(){
         nutritionalObjective.calculateRemainingNutrients(actualDailyNutrientsEaten)
     }
 
-    Integer calculateRemainingCalories(){
+    Integer remainingCaloriesForTheActualDay(){
         nutritionalObjective.calculateRemainingCalories(actualDailyNutrientsEaten)
     }
 
@@ -152,7 +152,7 @@ class Person implements UserDetails{
         nutritionalObjective.objectiveCalories
     }
 
-    Integer getEatenCalories(){
+    Integer getEatenCaloriesOnActualDay(){
         actualDailyNutrientsEaten.calories
     }
 

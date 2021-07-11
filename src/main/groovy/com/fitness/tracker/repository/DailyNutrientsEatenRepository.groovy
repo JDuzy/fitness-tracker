@@ -10,5 +10,7 @@ import java.time.LocalDate
 @Repository
 interface DailyNutrientsEatenRepository extends JpaRepository< DailyNutrientsEaten, Long> {
 
-    Optional<DailyNutrientsEaten> findByEatenDayAndPerson(LocalDate eatenDay, Person person)
+    Optional<DailyNutrientsEaten> findByEatenDayAndPersonId(LocalDate eatenDay, Long personId)
+
+    List<DailyNutrientsEaten> findAllByPerson(Person person)
 }
