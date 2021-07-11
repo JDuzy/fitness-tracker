@@ -25,4 +25,8 @@ class FoodRegistration extends Registration{
     Nutrients getNutrients(){
         food.getNutrientsPerAmount(amountOfGrams)
     }
+
+    Integer getCalories(){
+        food.getCaloriesPerAmount(amountOfGrams)
+    }
 }

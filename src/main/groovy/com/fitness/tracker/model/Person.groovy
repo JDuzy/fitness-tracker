@@ -140,7 +140,7 @@ class Person implements UserDetails{
         nutritionalObjective.calculateRemainingNutrients(actualDailyNutrientsEaten)
     }
 
-    BigDecimal calculateRemainingCalories(){
+    Integer calculateRemainingCalories(){
         nutritionalObjective.calculateRemainingCalories(actualDailyNutrientsEaten)
     }
 
@@ -148,8 +148,12 @@ class Person implements UserDetails{
         nutritionalObjective.objectiveNutrients
     }
 
-    BigDecimal getObjectiveCalories(){
+    Integer getObjectiveCalories(){
         nutritionalObjective.objectiveCalories
+    }
+
+    Integer getEatenCalories(){
+        actualDailyNutrientsEaten.calories
     }
 
     DailyNutrientsEaten addFoodRegistration(FoodRegistration foodRegistration) {
