@@ -17,6 +17,32 @@ function registerFood(date){
     return
 }
 
+function updatePerson(){
+    alert("ENTERS")
+
+    var sexInput = document.getElementById("sexInput")
+    var dateInput = document.getElementById("dateInput")
+    var heightInput = document.getElementById("heightInput")
+    var weightInput = document.getElementById("weightInput")
+    var objective = document.getElementById("objectiveInput")
+    var physicalActivity = document.getElementById("physicalActivityInput")
+
+    var xhr = new XMLHttpRequest();
+    var url = "/person/update"
+    setXhrRedirect(xhr, "/food/registration")
+    xhr.open("PUT", url, true);
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.send(JSON.stringify({
+        sex: sexInput.value,
+        dateOfBirth: dateInput.value,
+        height: heightInput.value,
+        weight: weightInput.value,
+        objective: objective.value,
+        physicalActivity: physicalActivity.value
+    }))
+}
+
+
 function setXhrRedirect(xhr, urlForGet){
     xhr.onreadystatechange = function() { // listen for state changes
         if (xhr.readyState == 4 && xhr.status == 200) { // when completed we can move away
@@ -101,3 +127,4 @@ function openDeleteModal(name, registrationId, date){
     $modal.modal('show');
 
 }
+

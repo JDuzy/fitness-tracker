@@ -46,8 +46,7 @@ class RegistrationController {
     @PostMapping
     String saveRegistration(@Valid Person person, BindingResult bindingResult, RedirectAttributes redirectAttributes){
 
-        personService.wasRegistratedValidly(person, bindingResult);
-
+        personService.wasRegisteredValidly(person, bindingResult);
         if(bindingResult.hasErrors()){
             return "registration"
         }

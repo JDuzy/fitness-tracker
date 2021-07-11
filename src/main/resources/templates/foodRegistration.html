@@ -10,8 +10,9 @@
 </head>
 <body>
 <!--/*@thymesVar id="person" type="com.fitness.tracker.model.Person"*/-->
-
-  <div th:insert="fragments/header :: header">...</div>
+  <header>
+    <div th:insert="fragments/header :: header">...</div>
+  </header>
 
   <!-- Food Registration Modal-->
   <div class="modal fade" id="FoodModal" tabindex="-1" aria-labelledby="foodsModalLabel" aria-hidden="true">

@@ -1,6 +1,5 @@
 package com.fitness.tracker.controller
 
-import com.fitness.tracker.model.DailyNutrientsEaten
 import com.fitness.tracker.model.Food
 import com.fitness.tracker.model.Person
 import com.fitness.tracker.model.registration.FoodRegistration

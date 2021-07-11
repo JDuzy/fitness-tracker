@@ -16,6 +16,7 @@ import org.springframework.validation.BindingResult
 import org.springframework.validation.FieldError
 
 import javax.transaction.Transactional
+import java.time.LocalDate
 
 
 @Service
@@ -39,14 +40,12 @@ class PersonService implements UserDetailsService{
         findPersonByEmail(email).orElseThrow( { new UsernameNotFoundException(String.format(PERSON_NOT_FOUND_MSG, email)) })
     }
 
-    boolean personExists(Person person){
-        Optional<Credentials> credentials = credentialsRepository.findCredentialsByEmail(person.email)
-        credentials.isPresent()
+    boolean emailUsedExists(Person person){
+        credentialsRepository.findCredentialsByEmail(person.email).isPresent()
     }
 
     @Transactional
     Person save(Person person){
-        credentialsRepository.save(person.credentials)  //Already done with cascadetype.all?
         personRepository.save(person)
     }
 
@@ -58,12 +57,24 @@ class PersonService implements UserDetailsService{
         person
     }
 
+    @Transactional
     Person register(Person person){
-        if (personExists(person)){
+        if (emailUsedExists(person)){
             throw new IllegalStateException("Email already taken")
         }
         String encodedPassword = bCryptPasswordEncoder.encode(person.password)
         person.password = encodedPassword
+        person.setNutritionalObjective()
+        save(person)
+    }
+
+    Person update(Person person, Map<String, String> payload){
+        person.sex = payload.get("sex")
+        person.dateOfBirth = LocalDate.parse(payload.get("dateOfBirth"))
+        person.height = payload.get("height").toInteger()
+        person.weight = payload.get("weight").toBigDecimal()
+        person.weightChangePerWeek = payload.get("objective").toBigDecimal()
+        person.physicalActivity = payload.get("physicalActivity").toBigDecimal()
         person.setNutritionalObjective()
         save(person)
     }
@@ -77,8 +88,8 @@ class PersonService implements UserDetailsService{
     }
 
 
-    void wasRegistratedValidly(Person person, BindingResult bindingResult) {
-        if (personExists(person)){
+    void wasRegisteredValidly(Person person, BindingResult bindingResult) {
+        if (emailUsedExists(person)){
             bindingResult.addError(new FieldError("user", "credentials.email", "Email adress already in use"))
         }
 
@@ -86,4 +97,6 @@ class PersonService implements UserDetailsService{
             bindingResult.addError(new FieldError("user", "credentials.rpassword", "Passwords must match"))
         }
     }
+
+
 }
