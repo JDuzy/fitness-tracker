@@ -18,8 +18,6 @@ function registerFood(date){
 }
 
 function updatePerson(){
-    alert("ENTERS")
-
     var sexInput = document.getElementById("sexInput")
     var dateInput = document.getElementById("dateInput")
     var heightInput = document.getElementById("heightInput")
