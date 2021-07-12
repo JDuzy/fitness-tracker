@@ -1,4 +1,4 @@
-package com.fitness.tracker.controller
+package com.fitness.tracker.food.controller
 
 import com.fitness.tracker.food.model.FoodRegistration
 import com.fitness.tracker.food.repository.DailyNutrientsEatenRepository
@@ -27,7 +27,7 @@ import static org.mockito.Mockito.when
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class FoodRegistrationControllerTest {
+class FoodRegistrationControllerIntegrationTest {
 
     @Autowired
     MockMvc mockMvc
