@@ -14,6 +14,8 @@ import javax.validation.constraints.NotNull
 @CompileStatic
 class Exercise {
 
+    enum Type {AEROBIC, STRENGTH}
+
     @Id
     @Column( name = "id", updatable = false, nullable = false)
     long id
@@ -22,9 +24,19 @@ class Exercise {
     String name
 
     @NotNull
-    enum type
+    BigDecimal caloriesBurned
 
-    boolean isCardio() {
+    @NotNull
+    Type type
+
+    boolean isAerobic() {
+        if (type == Type.AEROBIC)
+            true
+    }
+
+    boolean isStrength() {
+        if (type == Type.STRENGTH)
+            true
     }
 
 }

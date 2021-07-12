@@ -21,7 +21,6 @@ class ExerciseRegistration extends Registration{
     Exercise exercise
 
     @NotNull
-    BigDecimal time
-
+    BigDecimal time //create class duration with HH:MM:SS or import from somewhere
 
 }
