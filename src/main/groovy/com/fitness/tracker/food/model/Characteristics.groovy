@@ -1,4 +1,4 @@
-package com.fitness.tracker.model
+package com.fitness.tracker.food.model
 
 import groovy.transform.CompileStatic
 
@@ -26,8 +26,4 @@ class Characteristics {
     @NotNull
     Boolean isPescetarian
 
-    Boolean compareTo(Characteristics other){
-        //Do the comparison
-        true
-    }
 }

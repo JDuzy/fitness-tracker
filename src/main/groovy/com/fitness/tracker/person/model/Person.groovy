@@ -1,5 +1,9 @@
-package com.fitness.tracker.model
+package com.fitness.tracker.person.model
 
+import com.fitness.tracker.food.model.DailyNutrientsEaten
+import com.fitness.tracker.food.model.DailyNutritionalObjective
+import com.fitness.tracker.food.model.FoodRegistration
+import com.fitness.tracker.food.model.Nutrients
 import groovy.transform.CompileStatic
 import groovy.transform.ToString
 import org.springframework.format.annotation.DateTimeFormat
@@ -14,29 +18,26 @@ import javax.persistence.GeneratedValue
 import javax.persistence.GenerationType
 import javax.persistence.Id
 import javax.persistence.JoinColumn
-import javax.persistence.MapsId
 import javax.persistence.OneToOne
 import javax.persistence.PrimaryKeyJoinColumn
 import javax.persistence.SequenceGenerator
 import javax.persistence.Table
-import javax.persistence.Transient
 import javax.validation.Valid
 import javax.validation.constraints.NotBlank
 import javax.validation.constraints.NotNull
 import javax.validation.constraints.Past
-import javax.validation.constraints.Positive
 import java.time.LocalDate
 import java.time.Period
 
 @Entity
-@Table(name = "user")
+@Table(name = "person")
 @CompileStatic
 @ToString
-class User implements UserDetails{
+class Person implements UserDetails{
 
     @Id
-    @SequenceGenerator(name = 'user_sequence', sequenceName = 'user_sequence', allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_sequence")
+    @SequenceGenerator(name = 'person_sequence', sequenceName = 'person_sequence', allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "person_sequence")
     @Column( name = "id", updatable = false, nullable = false)
     Long id
 
@@ -54,8 +55,8 @@ class User implements UserDetails{
     @NotNull(message = "Please enter a height")
     Integer height
 
-    @NotBlank(message = "Please select your weekly amount of physical activity")
-    String physicalActivity
+    @NotNull
+    BigDecimal physicalActivity
 
     @NotNull
     BigDecimal weightChangePerWeek
@@ -65,6 +66,21 @@ class User implements UserDetails{
     @PrimaryKeyJoinColumn
     @Valid
     Credentials credentials = new Credentials()
+
+    @NotNull
+    @OneToOne(cascade = CascadeType.ALL)
+    @PrimaryKeyJoinColumn
+    DailyNutritionalObjective nutritionalObjective = new DailyNutritionalObjective()
+
+    /*@NotNull
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "nutrients_id", referencedColumnName = "id")
+    Nutrients dailyNutrientsEaten = new Nutrients(carbohydrates: 0, proteins: 0, fats: 0)*/
+
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "daily_nutrients_eaten_id", referencedColumnName = "id")
+    DailyNutrientsEaten actualDailyNutrientsEaten = new DailyNutrientsEaten(nutrients: new Nutrients(carbohydrates: 0, proteins: 0, fats: 0), eatenDay: LocalDate.now(), person: this)
 
     @Override
     Collection<? extends GrantedAuthority> getAuthorities() {
@@ -110,7 +126,7 @@ class User implements UserDetails{
         return true
     }
 
-    int getAge(){
+    Integer getAge(){
         Period.between(this.dateOfBirth, LocalDate.now()).getYears()
     }
 
@@ -118,4 +134,41 @@ class User implements UserDetails{
         credentials.passwordsMatch()
     }
 
+    void setNutritionalObjective(){
+        nutritionalObjective.calculateObjective(age, weight, height, sex, physicalActivity, weightChangePerWeek)
+    }
+
+    Nutrients remainingNutrientsForTheActualDay(){
+        nutritionalObjective.calculateRemainingNutrients(actualDailyNutrientsEaten)
+    }
+
+    Integer remainingCaloriesForTheActualDay(){
+        nutritionalObjective.calculateRemainingCalories(actualDailyNutrientsEaten)
+    }
+
+    Nutrients getObjectiveNutrients(){
+        nutritionalObjective.objectiveNutrients
+    }
+
+    Integer getObjectiveCalories(){
+        nutritionalObjective.objectiveCalories
+    }
+
+    Integer getEatenCaloriesOnActualDay(){
+        actualDailyNutrientsEaten.calories
+    }
+
+    DailyNutrientsEaten addFoodRegistration(FoodRegistration foodRegistration) {
+        actualDailyNutrientsEaten.addNutrientsBasedOn(foodRegistration)
+        actualDailyNutrientsEaten
+    }
+
+    DailyNutrientsEaten deleteFoodRegistration(FoodRegistration foodRegistration) {
+        actualDailyNutrientsEaten.deleteNutrientsBasedOn(foodRegistration)
+        actualDailyNutrientsEaten
+    }
+
+    /*void updateFoodRegistration(FoodRegistration foodRegistration, BigDecimal newAmount) {
+        todayNutrientsEaten.updateNutrientsBasedOn(foodRegistration, newAmount)
+    }*/
 }

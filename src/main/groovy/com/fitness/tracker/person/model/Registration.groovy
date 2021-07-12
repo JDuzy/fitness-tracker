@@ -1,6 +1,6 @@
-package com.fitness.tracker.model.registration
+package com.fitness.tracker.person.model
 
-import com.fitness.tracker.model.User
+
 import groovy.transform.CompileStatic
 
 import javax.persistence.CascadeType
@@ -26,8 +26,8 @@ class Registration {
     Long id
 
     @ManyToOne(cascade = CascadeType.MERGE)
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
-    User user
+    @JoinColumn(name = "person_id", referencedColumnName = "id")
+    Person person
 
     @NotNull
     LocalDate registrationDate

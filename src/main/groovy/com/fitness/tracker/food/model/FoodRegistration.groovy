@@ -1,13 +1,12 @@
-package com.fitness.tracker.model.registration
+package com.fitness.tracker.food.model
 
-import com.fitness.tracker.model.Food
+
+import com.fitness.tracker.person.model.Registration
 
 import javax.persistence.CascadeType
 import javax.persistence.Entity
 import javax.persistence.JoinColumn
 import javax.persistence.ManyToOne
-import javax.persistence.OneToOne
-import javax.persistence.PrimaryKeyJoinColumn
 import javax.persistence.Table
 import javax.validation.constraints.NotNull
 
@@ -21,5 +20,13 @@ class FoodRegistration extends Registration{
     Food food
 
     @NotNull
-    BigDecimal amount
+    BigDecimal amountOfGrams
+
+    Nutrients getNutrients(){
+        food.getNutrientsPerAmount(amountOfGrams)
+    }
+
+    Integer getCalories(){
+        food.getCaloriesPerAmount(amountOfGrams)
+    }
 }

@@ -17,6 +17,30 @@ function registerFood(date){
     return
 }
 
+function updatePerson(){
+    var sexInput = document.getElementById("sexInput")
+    var dateInput = document.getElementById("dateInput")
+    var heightInput = document.getElementById("heightInput")
+    var weightInput = document.getElementById("weightInput")
+    var objective = document.getElementById("objectiveInput")
+    var physicalActivity = document.getElementById("physicalActivityInput")
+
+    var xhr = new XMLHttpRequest();
+    var url = "/person/update"
+    setXhrRedirect(xhr, "/food/registration")
+    xhr.open("PUT", url, true);
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.send(JSON.stringify({
+        sex: sexInput.value,
+        dateOfBirth: dateInput.value,
+        height: heightInput.value,
+        weight: weightInput.value,
+        objective: objective.value,
+        physicalActivity: physicalActivity.value
+    }))
+}
+
+
 function setXhrRedirect(xhr, urlForGet){
     xhr.onreadystatechange = function() { // listen for state changes
         if (xhr.readyState == 4 && xhr.status == 200) { // when completed we can move away
@@ -59,9 +83,8 @@ function openEditModal(name, registrationId, date){
     var handler = function (){
         var $amount = $modal.find('[name="edit-amount-input"]');
         var xhr = new XMLHttpRequest();
-        var urlForPut = "/food/registration/".concat(registrationId).concat("/?registrationDate=").concat(date);
+        var urlForPut = "/food/registration/".concat(registrationId);
         var urlForGet = "/food/registration/".concat("?registrationDate=").concat(date);
-
         setXhrRedirect(xhr, urlForGet);
 
         xhr.open("PUT", urlForPut, true);
@@ -86,7 +109,7 @@ function openDeleteModal(name, registrationId, date){
 
     var handler = function (){
         var xhr = new XMLHttpRequest();
-        var urlForDelete = "/food/registration/".concat(registrationId).concat("/?registrationDate=").concat(date);
+        var urlForDelete = "/food/registration/".concat(registrationId);
         var urlForGet = "/food/registration/".concat("?registrationDate=").concat(date);
 
         setXhrRedirect(xhr, urlForGet);
@@ -102,3 +125,4 @@ function openDeleteModal(name, registrationId, date){
     $modal.modal('show');
 
 }
+
