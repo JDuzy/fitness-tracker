@@ -1,7 +1,7 @@
-package com.fitness.tracker.model.registration
+package com.fitness.tracker.food.model
 
-import com.fitness.tracker.model.Food
-import com.fitness.tracker.model.Nutrients
+
+import com.fitness.tracker.person.model.Registration
 
 import javax.persistence.CascadeType
 import javax.persistence.Entity

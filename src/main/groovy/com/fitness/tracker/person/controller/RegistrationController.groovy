@@ -1,7 +1,7 @@
-package com.fitness.tracker.controller
+package com.fitness.tracker.person.controller
 
-import com.fitness.tracker.model.Person
-import com.fitness.tracker.service.PersonService
+import com.fitness.tracker.person.model.Person
+import com.fitness.tracker.person.service.PersonService
 import groovy.transform.CompileStatic
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.propertyeditors.StringTrimmerEditor
@@ -46,7 +46,7 @@ class RegistrationController {
     @PostMapping
     String saveRegistration(@Valid Person person, BindingResult bindingResult, RedirectAttributes redirectAttributes){
 
-        personService.wasRegisteredValidly(person, bindingResult);
+        personService.wasRegisteredValidly(person, bindingResult)
         if(bindingResult.hasErrors()){
             return "registration"
         }

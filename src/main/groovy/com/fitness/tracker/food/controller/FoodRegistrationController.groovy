@@ -1,12 +1,12 @@
-package com.fitness.tracker.controller
+package com.fitness.tracker.food.controller
 
-import com.fitness.tracker.model.Food
-import com.fitness.tracker.model.Person
-import com.fitness.tracker.model.registration.FoodRegistration
-import com.fitness.tracker.service.DailyNutrientsEatenService
-import com.fitness.tracker.service.FoodRegistrationService
-import com.fitness.tracker.service.FoodService
-import com.fitness.tracker.service.PersonService
+import com.fitness.tracker.food.model.Food
+import com.fitness.tracker.person.model.Person
+import com.fitness.tracker.food.model.FoodRegistration
+import com.fitness.tracker.food.service.DailyNutrientsEatenService
+import com.fitness.tracker.food.service.FoodRegistrationService
+import com.fitness.tracker.food.service.FoodService
+import com.fitness.tracker.person.service.PersonService
 import groovy.transform.CompileStatic
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.format.annotation.DateTimeFormat

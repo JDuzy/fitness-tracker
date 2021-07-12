@@ -1,4 +1,4 @@
-package com.fitness.tracker.model
+package com.fitness.tracker.food.model
 
 import groovy.transform.CompileStatic
 

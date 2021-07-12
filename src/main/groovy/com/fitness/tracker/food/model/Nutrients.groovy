@@ -1,6 +1,6 @@
-package com.fitness.tracker.model
+package com.fitness.tracker.food.model
 
-import com.fitness.tracker.model.registration.FoodRegistration
+
 import groovy.transform.CompileStatic
 
 import javax.persistence.Column
@@ -35,7 +35,7 @@ class Nutrients {
 
 
     Integer getCalories(){
-        BigDecimal calories = (carbohydrates * 4 + proteins * 4 + fats * 4).setScale(0, RoundingMode.HALF_UP);
+        BigDecimal calories = (carbohydrates * 4 + proteins * 4 + fats * 4).setScale(0, RoundingMode.HALF_UP)
         calories.toInteger()
     }
 

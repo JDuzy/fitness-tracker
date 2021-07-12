@@ -12,8 +12,8 @@
     <div th:insert="fragments/header :: header-vacio">...</div>
     <div class="row justify-content-center">
         <div class="col col-md-5">
-            <!--/*@thymesVar id="person" type="com.fitness.tracker.model.Person"*/-->
-            <!--/*@thymesVar id="credentials" type="com.fitness.tracker.model.Credentials"*/-->
+            <!--/*@thymesVar id="person" type="com.fitness.tracker.person.model.Person"*/-->
+            <!--/*@thymesVar id="credentials" type="com.fitness.tracker.person.model.Credentials"*/-->
             <form method="post" th:action="@{/registration}" th:object="${person}" class="text-start">
                 <h1 class="display-4 text-center">Sign Up</h1>
 

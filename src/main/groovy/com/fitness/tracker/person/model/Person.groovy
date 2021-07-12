@@ -1,6 +1,9 @@
-package com.fitness.tracker.model
+package com.fitness.tracker.person.model
 
-import com.fitness.tracker.model.registration.FoodRegistration
+import com.fitness.tracker.food.model.DailyNutrientsEaten
+import com.fitness.tracker.food.model.DailyNutritionalObjective
+import com.fitness.tracker.food.model.FoodRegistration
+import com.fitness.tracker.food.model.Nutrients
 import groovy.transform.CompileStatic
 import groovy.transform.ToString
 import org.springframework.format.annotation.DateTimeFormat
@@ -15,7 +18,6 @@ import javax.persistence.GeneratedValue
 import javax.persistence.GenerationType
 import javax.persistence.Id
 import javax.persistence.JoinColumn
-import javax.persistence.OneToMany
 import javax.persistence.OneToOne
 import javax.persistence.PrimaryKeyJoinColumn
 import javax.persistence.SequenceGenerator

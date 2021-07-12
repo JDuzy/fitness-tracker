@@ -1,6 +1,6 @@
-package com.fitness.tracker.repository
+package com.fitness.tracker.food.repository
 
-import com.fitness.tracker.model.Food
+import com.fitness.tracker.food.model.Food
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Repository
 

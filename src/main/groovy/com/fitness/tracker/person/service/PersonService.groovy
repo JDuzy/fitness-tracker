@@ -1,9 +1,9 @@
-package com.fitness.tracker.service
+package com.fitness.tracker.person.service
 
-import com.fitness.tracker.model.Credentials
-import com.fitness.tracker.model.Person
-import com.fitness.tracker.repository.CredentialsRepository
-import com.fitness.tracker.repository.PersonRepository
+import com.fitness.tracker.person.model.Credentials
+import com.fitness.tracker.person.model.Person
+import com.fitness.tracker.person.repository.CredentialsRepository
+import com.fitness.tracker.person.repository.PersonRepository
 import groovy.transform.CompileStatic
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.core.context.SecurityContextHolder
@@ -51,7 +51,7 @@ class PersonService implements UserDetailsService{
     }
 
     Person getPrincipal(){
-        Person person = null;
+        Person person = null
         if (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof Person){
             person = (Person) SecurityContextHolder.getContext().getAuthentication().getPrincipal()
         }

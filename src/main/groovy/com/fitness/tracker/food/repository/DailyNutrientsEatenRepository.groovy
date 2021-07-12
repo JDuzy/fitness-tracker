@@ -1,7 +1,6 @@
-package com.fitness.tracker.repository
+package com.fitness.tracker.food.repository
 
-import com.fitness.tracker.model.DailyNutrientsEaten
-import com.fitness.tracker.model.Person
+import com.fitness.tracker.food.model.DailyNutrientsEaten
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Repository
 
@@ -12,5 +11,4 @@ interface DailyNutrientsEatenRepository extends JpaRepository< DailyNutrientsEat
 
     Optional<DailyNutrientsEaten> findByEatenDayAndPersonId(LocalDate eatenDay, Long personId)
 
-    List<DailyNutrientsEaten> findAllByPerson(Person person)
 }

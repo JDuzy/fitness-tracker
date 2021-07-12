@@ -1,9 +1,9 @@
-package com.fitness.tracker.service
+package com.fitness.tracker.food.service
 
-import com.fitness.tracker.model.DailyNutrientsEaten
-import com.fitness.tracker.model.Nutrients
-import com.fitness.tracker.model.Person
-import com.fitness.tracker.repository.DailyNutrientsEatenRepository
+import com.fitness.tracker.food.model.DailyNutrientsEaten
+import com.fitness.tracker.food.model.Nutrients
+import com.fitness.tracker.person.model.Person
+import com.fitness.tracker.food.repository.DailyNutrientsEatenRepository
 import groovy.transform.CompileStatic
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service

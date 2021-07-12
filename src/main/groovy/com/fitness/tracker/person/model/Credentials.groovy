@@ -1,4 +1,4 @@
-package com.fitness.tracker.model
+package com.fitness.tracker.person.model
 
 import groovy.transform.CompileStatic
 import org.hibernate.validator.constraints.Length

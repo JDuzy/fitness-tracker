@@ -1,10 +1,8 @@
 package com.fitness.tracker.security.config
 
-import com.fitness.tracker.model.Person
-import com.fitness.tracker.service.PersonService
+import com.fitness.tracker.person.model.Person
+import com.fitness.tracker.person.service.PersonService
 import groovy.transform.CompileStatic
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -23,7 +21,6 @@ import java.time.LocalDate
 @CompileStatic
 class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 
-    Logger log = LoggerFactory.getLogger(WebSecurityConfig.class)
     @Autowired
     final PersonService userService
     @Autowired

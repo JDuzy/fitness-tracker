@@ -1,6 +1,6 @@
-package com.fitness.tracker.model.registration
+package com.fitness.tracker.person.model
 
-import com.fitness.tracker.model.Person
+
 import groovy.transform.CompileStatic
 
 import javax.persistence.CascadeType

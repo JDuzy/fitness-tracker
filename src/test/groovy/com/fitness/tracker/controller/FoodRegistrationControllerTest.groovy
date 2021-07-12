@@ -1,13 +1,13 @@
 package com.fitness.tracker.controller
 
-import com.fitness.tracker.model.Credentials
-import com.fitness.tracker.model.Person
-import com.fitness.tracker.model.registration.FoodRegistration
-import com.fitness.tracker.repository.DailyNutrientsEatenRepository
-import com.fitness.tracker.repository.FoodRegistrationRepository
-import com.fitness.tracker.repository.PersonRepository
-import com.fitness.tracker.service.FoodRegistrationService
-import com.fitness.tracker.service.PersonService
+import com.fitness.tracker.food.model.FoodRegistration
+import com.fitness.tracker.food.repository.DailyNutrientsEatenRepository
+import com.fitness.tracker.food.repository.FoodRegistrationRepository
+import com.fitness.tracker.food.service.FoodRegistrationService
+import com.fitness.tracker.person.model.Credentials
+import com.fitness.tracker.person.model.Person
+import com.fitness.tracker.person.repository.PersonRepository
+import com.fitness.tracker.person.service.PersonService
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -65,7 +65,7 @@ class FoodRegistrationControllerTest {
 
         //Set up credentials for the person
         String password = passwordEncoder.encode("123456")
-        Credentials credentials = new Credentials(userName: "testUser", email: "testUser@mail.com", password: password, rpassword: password);
+        Credentials credentials = new Credentials(userName: "testUser", email: "testUser@mail.com", password: password, rpassword: password)
 
         //Set up the Person
         //DailyNutrientsEaten ints created on the attribute
