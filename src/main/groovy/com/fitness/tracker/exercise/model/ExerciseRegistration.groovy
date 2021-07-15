@@ -1,5 +1,6 @@
 package com.fitness.tracker.exercise.model
 
+import com.fitness.tracker.person.model.Registration
 
 import javax.persistence.Entity
 import javax.persistence.Table
