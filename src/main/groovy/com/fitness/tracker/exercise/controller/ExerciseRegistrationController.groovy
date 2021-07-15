@@ -2,6 +2,8 @@ package com.fitness.tracker.exercise.controller
 
 import com.fitness.tracker.exercise.model.Exercise
 import com.fitness.tracker.exercise.model.ExerciseRegistration
+import com.fitness.tracker.exercise.service.ExerciseRegistrationService
+import com.fitness.tracker.exercise.service.ExerciseService
 import com.fitness.tracker.person.model.Person
 import com.fitness.tracker.person.service.PersonService
 import groovy.transform.CompileStatic
@@ -35,8 +37,6 @@ class ExerciseRegistrationController {
         Person loggedPerson = personService.getPrincipal()
         model.addAttribute("person", loggedPerson)
 
-        dailyNutrientsEatenService.updateActualNutrientsEatenByEatenDayAndPerson(registrationDate, loggedPerson)
-
         List<Exercise> exercises = exerciseService.findAll()
         List<ExerciseRegistration> dailyExercisesRegistrations = exerciseRegistrationService.findAllExerciseRegistrationByPersonAndRegistrationDate(loggedPerson, registrationDate)
 
@@ -56,8 +56,8 @@ class ExerciseRegistrationController {
     String registerAExercise(@RequestParam @DateTimeFormat(iso = DATE) LocalDate registrationDate, @RequestBody Map<String, String> payload){
         Person loggedPerson = personService.getPrincipal()
         Long exerciseId = payload.get("exerciseId").toLong()
-        BigDecimal amountOfGrams = payload.get("amount").toBigDecimal()
-        exerciseRegistrationService.register(loggedPerson, registrationDate, amountOfGrams, exerciseId)
+        BigDecimal time = payload.get("time").toBigDecimal()
+        exerciseRegistrationService.register(loggedPerson, registrationDate, time, exerciseId)
         "Exercise registered"
     }
 
@@ -66,8 +66,8 @@ class ExerciseRegistrationController {
     @ResponseBody
     String modifyARegistration(@PathVariable Long registrationId, @RequestBody Map<String, String> payload){
         Person loggedPerson = personService.getPrincipal()
-        BigDecimal amountOfGrams = payload.get("amount").toBigDecimal()
-        exerciseRegistrationService.update(registrationId, amountOfGrams, loggedPerson)
+        BigDecimal time = payload.get("time").toBigDecimal()
+        exerciseRegistrationService.update(registrationId, time, loggedPerson)
         "Updated"
     }
 

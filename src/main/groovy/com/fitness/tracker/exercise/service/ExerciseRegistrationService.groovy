@@ -43,14 +43,14 @@ class ExerciseRegistrationService {
     }
 
     @Transactional
-    ExerciseRegistration update(long registrationId, BigDecimal newAmount, Person person) {
+    ExerciseRegistration update(long registrationId, BigDecimal newTime, Person person) {
         Optional<ExerciseRegistration> exerciseRegistration = exerciseRegistrationRepository.findById(registrationId)
         exerciseRegistration.orElseThrow({
             new ResponseStatusException(NOT_FOUND, "No exerciseRegistration with id: ${registrationId} was found")
         })
         ExerciseRegistration registration = exerciseRegistration.get()
         //person.deleteExerciseRegistration(registration)
-        registration.time = newAmount
+        registration.time = newTime
         exerciseRegistrationRepository.save(registration)
     }
 
