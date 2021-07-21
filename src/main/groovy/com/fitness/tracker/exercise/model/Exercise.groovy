@@ -24,7 +24,7 @@ class Exercise {
     String name
 
     @NotNull
-    BigDecimal caloriesBurned
+    BigDecimal caloriesBurnedPerMinute
 
     @NotNull
     Type type
@@ -37,6 +37,10 @@ class Exercise {
     boolean isStrength() {
         if (type == Type.STRENGTH)
             true
+    }
+
+    BigDecimal getTotalCaloriesBurned(BigDecimal time) {
+        this.caloriesBurnedPerMinute * time
     }
 
 }
