@@ -17,6 +17,36 @@ function registerFood(date){
     return
 }
 
+function registerExercise(date){
+    var exerciseAnchor = document.getElementsByClassName("list-group-item active")[0];
+    var time = document.getElementById("time-input");
+    var weight = document.getElementById("weight-input");
+    var xhr = new XMLHttpRequest();
+    var url = "/exercise/registration?registrationDate="
+    xhr.onreadystatechange = function() { // listen for state changes
+        if (xhr.readyState == 4 && xhr.status == 200) { // when completed we can move away
+            window.location = url.concat(date);
+        }
+    }
+    xhr.open("POST", url.concat(date), true);
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.send(JSON.stringify({
+        exerciseId: exerciseAnchor.id,
+        time: time.value,
+        weight: weight.value
+    }))
+    return
+}
+
+/*function getTimeInputValue(){
+    return document.getElementById("time-input").value
+}
+
+//can i call exercise.getcaloriesBurned(time) here?
+window.addEventListener('storage', function() {
+    var time = document.getElementById('time-input').value;
+});*/
+
 function updatePerson(){
     var sexInput = document.getElementById("sexInput")
     var dateInput = document.getElementById("dateInput")

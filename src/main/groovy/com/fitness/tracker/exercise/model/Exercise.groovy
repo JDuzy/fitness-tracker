@@ -4,7 +4,10 @@ import groovy.transform.CompileStatic
 
 import javax.persistence.Column
 import javax.persistence.Entity
+import javax.persistence.GeneratedValue
+import javax.persistence.GenerationType
 import javax.persistence.Id
+import javax.persistence.SequenceGenerator
 import javax.persistence.Table
 import javax.validation.constraints.NotNull
 
@@ -17,6 +20,8 @@ class Exercise {
     enum Type {AEROBIC, STRENGTH}
 
     @Id
+    @SequenceGenerator(name = 'exercise_sequence', sequenceName = 'exercise_sequence', allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "exercise_sequence")
     @Column( name = "id", updatable = false, nullable = false)
     long id
 
@@ -40,7 +45,7 @@ class Exercise {
     }
 
     BigDecimal getTotalCaloriesBurned(BigDecimal time) {
-        this.caloriesBurnedPerMinute * time
+        caloriesBurnedPerMinute * time
     }
 
 }

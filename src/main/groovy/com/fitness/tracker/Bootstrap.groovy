@@ -1,5 +1,7 @@
 package com.fitness.tracker
 
+import com.fitness.tracker.exercise.model.Exercise
+import com.fitness.tracker.exercise.repository.ExerciseRepository
 import com.fitness.tracker.food.model.Characteristics
 import com.fitness.tracker.food.model.Food
 import com.fitness.tracker.food.model.Nutrients
@@ -24,6 +26,9 @@ class Bootstrap implements InitializingBean {
 
     @Autowired
     FoodRepository foodRepository
+
+    @Autowired
+    ExerciseRepository exerciseRepository
 
     @Autowired
     PersonRepository userRepository
@@ -54,6 +59,10 @@ class Bootstrap implements InitializingBean {
         Food chickenBreast = new Food(name: "Chicken breast", nutrientsPer100Gram: new Nutrients(carbohydrates: 20,proteins: 22, fats: 5), characteristics: characteristics, gramsInOnePortion: 120)
         Food hamburguer = new Food(name: "Hamburguer",nutrientsPer100Gram: new Nutrients(carbohydrates: 38,proteins: 9, fats: 15), characteristics: characteristics, gramsInOnePortion: 300)
         foodRepository.saveAll(Arrays.asList(banana, apple, pizza, chickenBreast, hamburguer))
+
+        //Set up exercises
+        Exercise pechoPlano = new Exercise(name: "Bench Press", type: Exercise.Type.AEROBIC, caloriesBurnedPerMinute: 100)
+        exerciseRepository.saveAll(Arrays.asList(pechoPlano))
 
         LOG.info("Bootstrapping finished")
     }

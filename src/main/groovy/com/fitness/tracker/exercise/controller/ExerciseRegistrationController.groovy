@@ -57,7 +57,8 @@ class ExerciseRegistrationController {
         Person loggedPerson = personService.getPrincipal()
         Long exerciseId = payload.get("exerciseId").toLong()
         BigDecimal time = payload.get("time").toBigDecimal()
-        exerciseRegistrationService.register(loggedPerson, registrationDate, time, exerciseId)
+        BigDecimal weight = payload.get("weight").toBigDecimal()
+        exerciseRegistrationService.register(loggedPerson, registrationDate, time, weight, exerciseId)
         "Exercise registered"
     }
 
@@ -67,7 +68,8 @@ class ExerciseRegistrationController {
     String modifyARegistration(@PathVariable Long registrationId, @RequestBody Map<String, String> payload){
         Person loggedPerson = personService.getPrincipal()
         BigDecimal time = payload.get("time").toBigDecimal()
-        exerciseRegistrationService.update(registrationId, time, loggedPerson)
+        BigDecimal weight = payload.get("weight").toBigDecimal()
+        exerciseRegistrationService.update(registrationId, time, weight, loggedPerson)
         "Updated"
     }
 

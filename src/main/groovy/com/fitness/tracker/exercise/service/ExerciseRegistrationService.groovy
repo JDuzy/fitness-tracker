@@ -32,18 +32,18 @@ class ExerciseRegistrationService {
     }
 
     @Transactional
-    ExerciseRegistration register(Person person, LocalDate registrationDate, BigDecimal time, Long exerciseId){
+    ExerciseRegistration register(Person person, LocalDate registrationDate, BigDecimal time, BigDecimal weight, Long exerciseId){
         Optional<Exercise> exercise = exerciseRepository.findExerciseById(exerciseId)
         exercise.orElseThrow({
             new IllegalStateException("Exercise with id ${exerciseId} does not exists")
         })
-        ExerciseRegistration registration = new ExerciseRegistration(person: person, registrationDate: registrationDate, time: time, exercise: exercise.get())
+        ExerciseRegistration registration = new ExerciseRegistration(person: person, registrationDate: registrationDate, time: time, weight: weight, exercise: exercise.get())
         exerciseRegistrationRepository.save(registration)
 
     }
 
     @Transactional
-    ExerciseRegistration update(long registrationId, BigDecimal newTime, Person person) {
+    ExerciseRegistration update(long registrationId, BigDecimal newTime, BigDecimal newWeight, Person person) {
         Optional<ExerciseRegistration> exerciseRegistration = exerciseRegistrationRepository.findById(registrationId)
         exerciseRegistration.orElseThrow({
             new ResponseStatusException(NOT_FOUND, "No exerciseRegistration with id: ${registrationId} was found")
@@ -51,6 +51,7 @@ class ExerciseRegistrationService {
         ExerciseRegistration registration = exerciseRegistration.get()
         //person.deleteExerciseRegistration(registration)
         registration.time = newTime
+        registration.weight = newWeight
         exerciseRegistrationRepository.save(registration)
     }
 
