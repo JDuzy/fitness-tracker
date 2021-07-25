@@ -38,7 +38,9 @@ class ExerciseRegistrationController {
         model.addAttribute("person", loggedPerson)
 
         List<Exercise> exercises = exerciseService.findAll()
-        List<ExerciseRegistration> dailyExercisesRegistrations = exerciseRegistrationService.findAllExerciseRegistrationByPersonAndRegistrationDate(loggedPerson, registrationDate)
+
+        List<ExerciseRegistration> dailyExercisesRegistrations = personService.getExercisesRegistrationsByDate(registrationDate)
+        //List<ExerciseRegistration> dailyExercisesRegistrations = exerciseRegistrationService.findAllExerciseRegistrationByPersonAndRegistrationDate(loggedPerson, registrationDate)
 
         //TO DO: Use model.addAttributes in 1 line
         model.addAttribute("exerciseRegistrations", dailyExercisesRegistrations)
@@ -54,11 +56,10 @@ class ExerciseRegistrationController {
     @PostMapping("/exercise/registration")
     @ResponseBody
     String registerAExercise(@RequestParam @DateTimeFormat(iso = DATE) LocalDate registrationDate, @RequestBody Map<String, String> payload){
-        Person loggedPerson = personService.getPrincipal()
         Long exerciseId = payload.get("exerciseId").toLong()
         BigDecimal time = payload.get("time").toBigDecimal()
         BigDecimal weight = payload.get("weight").toBigDecimal()
-        exerciseRegistrationService.register(loggedPerson, registrationDate, time, weight, exerciseId)
+        personService.registerExercise(registrationDate, time, weight, exerciseId)
         "Exercise registered"
     }
 
