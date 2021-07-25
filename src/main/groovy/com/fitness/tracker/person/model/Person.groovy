@@ -14,10 +14,12 @@ import org.springframework.security.core.userdetails.UserDetails
 import javax.persistence.CascadeType
 import javax.persistence.Column
 import javax.persistence.Entity
+import javax.persistence.FetchType
 import javax.persistence.GeneratedValue
 import javax.persistence.GenerationType
 import javax.persistence.Id
 import javax.persistence.JoinColumn
+import javax.persistence.OneToMany
 import javax.persistence.OneToOne
 import javax.persistence.PrimaryKeyJoinColumn
 import javax.persistence.SequenceGenerator
@@ -32,7 +34,6 @@ import java.time.Period
 @Entity
 @Table(name = "person")
 @CompileStatic
-@ToString
 class Person implements UserDetails{
 
     @Id
@@ -72,15 +73,13 @@ class Person implements UserDetails{
     @PrimaryKeyJoinColumn
     DailyNutritionalObjective nutritionalObjective = new DailyNutritionalObjective()
 
-    /*@NotNull
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "nutrients_id", referencedColumnName = "id")
-    Nutrients dailyNutrientsEaten = new Nutrients(carbohydrates: 0, proteins: 0, fats: 0)*/
-
-
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "daily_nutrients_eaten_id", referencedColumnName = "id")
     DailyNutrientsEaten actualDailyNutrientsEaten = new DailyNutrientsEaten(nutrients: new Nutrients(carbohydrates: 0, proteins: 0, fats: 0), eatenDay: LocalDate.now(), person: this)
+
+    @OneToMany(fetch = FetchType.EAGER)
+    @JoinColumn(name = "person_id")
+    Set<FoodRegistration> foodRegistrations = new HashSet()
 
     @Override
     Collection<? extends GrantedAuthority> getAuthorities() {
@@ -159,11 +158,13 @@ class Person implements UserDetails{
     }
 
     DailyNutrientsEaten addFoodRegistration(FoodRegistration foodRegistration) {
+        foodRegistrations.add(foodRegistration)
         actualDailyNutrientsEaten.addNutrientsBasedOn(foodRegistration)
         actualDailyNutrientsEaten
     }
 
     DailyNutrientsEaten deleteFoodRegistration(FoodRegistration foodRegistration) {
+        foodRegistrations.remove(foodRegistration)
         actualDailyNutrientsEaten.deleteNutrientsBasedOn(foodRegistration)
         actualDailyNutrientsEaten
     }
@@ -171,4 +172,12 @@ class Person implements UserDetails{
     /*void updateFoodRegistration(FoodRegistration foodRegistration, BigDecimal newAmount) {
         todayNutrientsEaten.updateNutrientsBasedOn(foodRegistration, newAmount)
     }*/
+
+    List<FoodRegistration> getFoodRegistrationsByDate(LocalDate date) {
+        foodRegistrations.findAll {registration -> registration.wasRegisteredOn(date) }.toList()
+    }
+
+    FoodRegistration findFoodRegistrationWithId(Long registrationId) {
+        foodRegistrations.find({registration -> registration.id == registrationId})
+    }
 }

@@ -1,11 +1,18 @@
 package com.fitness.tracker.person.service
 
+import com.fitness.tracker.food.model.DailyNutrientsEaten
+import com.fitness.tracker.food.model.Food
+import com.fitness.tracker.food.model.FoodRegistration
+import com.fitness.tracker.food.repository.FoodRegistrationRepository
+import com.fitness.tracker.food.repository.FoodRepository
+import com.fitness.tracker.food.service.DailyNutrientsEatenService
 import com.fitness.tracker.person.model.Credentials
 import com.fitness.tracker.person.model.Person
 import com.fitness.tracker.person.repository.CredentialsRepository
 import com.fitness.tracker.person.repository.PersonRepository
 import groovy.transform.CompileStatic
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.http.HttpStatus
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UserDetailsService
@@ -14,26 +21,39 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Service
 import org.springframework.validation.BindingResult
 import org.springframework.validation.FieldError
+import org.springframework.web.server.ResponseStatusException
 
 import javax.transaction.Transactional
 import java.time.LocalDate
+import java.util.function.Supplier
+
+import static org.springframework.http.HttpStatus.NOT_FOUND
 
 
 @Service
 @CompileStatic
 class PersonService implements UserDetailsService{
 
+    @Autowired
     final PersonRepository personRepository
-    final CredentialsRepository credentialsRepository
-    final BCryptPasswordEncoder bCryptPasswordEncoder
-    final static String PERSON_NOT_FOUND_MSG = "user with email %s not found"
 
     @Autowired
-    PersonService(PersonRepository personRepository, CredentialsRepository credentialsRepository, BCryptPasswordEncoder bCryptPasswordEncoder){
-        this.personRepository = personRepository
-        this.credentialsRepository = credentialsRepository
-        this.bCryptPasswordEncoder = bCryptPasswordEncoder
-    }
+    final CredentialsRepository credentialsRepository
+
+    @Autowired
+    final FoodRepository foodRepository
+
+    @Autowired
+    final BCryptPasswordEncoder bCryptPasswordEncoder
+
+    @Autowired
+    final DailyNutrientsEatenService dailyNutrientsEatenService
+
+    @Autowired
+    final FoodRegistrationRepository foodRegistrationRepository
+
+    final static String PERSON_NOT_FOUND_MSG = "user with email %s not found"
+
 
     @Override
     UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
@@ -49,7 +69,11 @@ class PersonService implements UserDetailsService{
         if (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof Person){
             person = (Person) SecurityContextHolder.getContext().getAuthentication().getPrincipal()
         }
-        person
+
+        Optional.ofNullable(person).map(
+                {personRepository.findById(it.id).orElseThrow( {new IllegalStateException("User not on DB")})}
+        ).orElse(null)
+
     }
 
     @Transactional
@@ -93,5 +117,47 @@ class PersonService implements UserDetailsService{
         }
     }
 
+    @Transactional
+    void registerFood(LocalDate registrationDate, BigDecimal amountOfGrams, long foodId) {
+        Person person = getPrincipal()
+        Food food = foodRepository.findFoodById(foodId).orElseThrow({
+            new IllegalStateException("Food with id ${foodId} does not exists")
+        })
+        FoodRegistration registration = new FoodRegistration(person: person, registrationDate: registrationDate, amountOfGrams: amountOfGrams, food: food)
+        foodRegistrationRepository.save(registration)
+        dailyNutrientsEatenService.updateActualNutrientsEatenByEatenDayAndPerson(registrationDate, person)
+        person.addFoodRegistration(registration)
+        registration
+    }
 
+    @Transactional
+    List<FoodRegistration> getFoodRegistrationsByDate(Person person, LocalDate date){
+        person.getFoodRegistrationsByDate(date)
+    }
+
+    @Transactional
+    void updateFoodRegistration(Long registrationId, BigDecimal newAmount) {
+        Person person = getPrincipal()
+        println person.findFoodRegistrationWithId(registrationId)
+        FoodRegistration registration = Optional.ofNullable(person.findFoodRegistrationWithId(registrationId) as FoodRegistration)
+        .orElseThrow({
+            new ResponseStatusException(NOT_FOUND, "No foodRegistration with id: ${registrationId} was found")
+        })
+        dailyNutrientsEatenService.updateActualNutrientsEatenByEatenDayAndPerson(registration.registrationDate, person)
+        person.deleteFoodRegistration(registration)
+        registration.amountOfGrams = newAmount
+        person.addFoodRegistration(registration)
+        registration
+    }
+
+    @Transactional
+    void deleteFoodRegistration(Long id) {
+        Person person = getPrincipal()
+        FoodRegistration registration =  foodRegistrationRepository.findFoodRegistrationById(id).orElseThrow({
+            new ResponseStatusException(NOT_FOUND, "No foodRegistration with id: ${id} was found")
+        })
+        dailyNutrientsEatenService.updateActualNutrientsEatenByEatenDayAndPerson(registration.registrationDate, person)
+        person.deleteFoodRegistration(registration)
+        foodRegistrationRepository.deleteById(id)
+    }
 }

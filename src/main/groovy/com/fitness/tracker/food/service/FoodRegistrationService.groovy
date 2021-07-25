@@ -33,40 +33,5 @@ class FoodRegistrationService{
         foodRegistrationRepository.findAllFoodRegistrationByPersonAndRegistrationDate(person, registrationDate)
     }
 
-    @Transactional
-    FoodRegistration register(Person person, LocalDate registrationDate, BigDecimal amountOfGrams, Long foodId){
-        Optional<Food> food = foodRepository.findFoodById(foodId)
-        food.orElseThrow({
-            new IllegalStateException("Food with id ${foodId} does not exists")
-        })
-        FoodRegistration registration = new FoodRegistration(person: person, registrationDate: registrationDate, amountOfGrams: amountOfGrams, food: food.get())
-        dailyNutrientsEatenService.updateActualNutrientsEatenByEatenDayAndPerson(registrationDate, person)
-        person.addFoodRegistration(registration)
-        registration
-    }
 
-    @Transactional
-    FoodRegistration update(long registrationId, BigDecimal newAmount, Person person) {
-        Optional<FoodRegistration> foodRegistration = foodRegistrationRepository.findById(registrationId)
-        foodRegistration.orElseThrow({
-            new ResponseStatusException(NOT_FOUND, "No foodRegistration with id: ${registrationId} was found")
-        })
-        FoodRegistration registration = foodRegistration.get()
-        dailyNutrientsEatenService.updateActualNutrientsEatenByEatenDayAndPerson(registration.registrationDate, person)
-        person.deleteFoodRegistration(registration)
-        registration.amountOfGrams = newAmount
-        person.addFoodRegistration(registration)
-        registration
-    }
-
-    @Transactional
-    void deleteRegistrationById(long id, Person person) {
-        Optional<FoodRegistration> registration =  foodRegistrationRepository.findFoodRegistrationById(id)
-        registration.orElseThrow({
-          new ResponseStatusException(NOT_FOUND, "No foodRegistration with id: ${id} was found")
-        })
-        dailyNutrientsEatenService.updateActualNutrientsEatenByEatenDayAndPerson(registration.get().registrationDate, person)
-        person.deleteFoodRegistration(registration.get())
-        foodRegistrationRepository.deleteById(id)
-    }
 }

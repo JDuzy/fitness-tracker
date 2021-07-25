@@ -53,7 +53,8 @@ class FoodRegistrationController {
         dailyNutrientsEatenService.updateActualNutrientsEatenByEatenDayAndPerson(registrationDate, loggedPerson)
 
         List<Food> foods = foodService.findAll()
-        List<FoodRegistration> dailyFoodsRegistrations = foodRegistrationService.findAllFoodRegistrationByPersonAndRegistrationDate(loggedPerson, registrationDate)
+        List<FoodRegistration> dailyFoodsRegistrations = personService.getFoodRegistrationsByDate(loggedPerson, registrationDate)
+        //List<FoodRegistration> dailyFoodsRegistrations = foodRegistrationService.findAllFoodRegistrationByPersonAndRegistrationDate(loggedPerson, registrationDate)
 
         //TO DO: Use model.addAttributes in 1 line
         model.addAttribute("foodRegistrations", dailyFoodsRegistrations)
@@ -69,10 +70,9 @@ class FoodRegistrationController {
     @PostMapping("/food/registration")
     @ResponseBody
     String registerAFood(@RequestParam @DateTimeFormat(iso = DATE) LocalDate registrationDate, @RequestBody Map<String, String> payload){
-        Person loggedPerson = personService.getPrincipal()
         Long foodId = payload.get("foodId").toLong()
         BigDecimal amountOfGrams = payload.get("amount").toBigDecimal()
-        foodRegistrationService.register(loggedPerson, registrationDate, amountOfGrams, foodId)
+        personService.registerFood(registrationDate, amountOfGrams, foodId)
         "Food registered"
     }
 
@@ -80,17 +80,15 @@ class FoodRegistrationController {
     @PutMapping("/food/registration/{registrationId}")
     @ResponseBody
     String modifyARegistration(@PathVariable Long registrationId, @RequestBody Map<String, String> payload){
-        Person loggedPerson = personService.getPrincipal()
         BigDecimal amountOfGrams = payload.get("amount").toBigDecimal()
-        foodRegistrationService.update(registrationId, amountOfGrams, loggedPerson)
+        personService.updateFoodRegistration(registrationId, amountOfGrams)
         "Updated"
     }
 
     @DeleteMapping("/food/registration/{registrationId}")
     @ResponseBody
     String deleteARegistration(@PathVariable Long registrationId){
-        Person loggedPerson = personService.getPrincipal()
-        foodRegistrationService.deleteRegistrationById(registrationId, loggedPerson)
+        personService.deleteFoodRegistration(registrationId)
         "Deleted"
     }
 }
