@@ -41,10 +41,8 @@ class FoodRegistrationService{
         })
         FoodRegistration registration = new FoodRegistration(person: person, registrationDate: registrationDate, amountOfGrams: amountOfGrams, food: food.get())
         dailyNutrientsEatenService.updateActualNutrientsEatenByEatenDayAndPerson(registrationDate, person)
-        DailyNutrientsEaten registrationDateNutrientsEaten = person.addFoodRegistration(registration)
-        dailyNutrientsEatenService.save(registrationDateNutrientsEaten)
-        foodRegistrationRepository.save(registration)
-
+        person.addFoodRegistration(registration)
+        registration
     }
 
     @Transactional
@@ -57,9 +55,8 @@ class FoodRegistrationService{
         dailyNutrientsEatenService.updateActualNutrientsEatenByEatenDayAndPerson(registration.registrationDate, person)
         person.deleteFoodRegistration(registration)
         registration.amountOfGrams = newAmount
-        DailyNutrientsEaten registrationDateNutrientsEaten = person.addFoodRegistration(registration)
-        dailyNutrientsEatenService.save(registrationDateNutrientsEaten)
-        foodRegistrationRepository.save(registration)
+        person.addFoodRegistration(registration)
+        registration
     }
 
     @Transactional
@@ -69,8 +66,7 @@ class FoodRegistrationService{
           new ResponseStatusException(NOT_FOUND, "No foodRegistration with id: ${id} was found")
         })
         dailyNutrientsEatenService.updateActualNutrientsEatenByEatenDayAndPerson(registration.get().registrationDate, person)
-        DailyNutrientsEaten registrationDateNutrientsEaten = person.deleteFoodRegistration(registration.get())
-        dailyNutrientsEatenService.save(registrationDateNutrientsEaten)
+        person.deleteFoodRegistration(registration.get())
         foodRegistrationRepository.deleteById(id)
     }
 }

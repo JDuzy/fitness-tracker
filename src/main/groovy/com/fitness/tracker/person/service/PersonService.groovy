@@ -44,12 +44,6 @@ class PersonService implements UserDetailsService{
         credentialsRepository.findCredentialsByEmail(person.email).isPresent()
     }
 
-    @Transactional
-    Person save(Person person){
-        System.out.println("IS ENTERINGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG")
-        personRepository.save(person)
-    }
-
     Person getPrincipal(){
         Person person = null
         if (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof Person){
@@ -66,7 +60,7 @@ class PersonService implements UserDetailsService{
         String encodedPassword = bCryptPasswordEncoder.encode(person.password)
         person.password = encodedPassword
         person.setNutritionalObjective()
-        save(person)
+        personRepository.save(person)
     }
 
     Person update(Person person, Map<String, String> payload){
@@ -77,7 +71,7 @@ class PersonService implements UserDetailsService{
         person.weightChangePerWeek = payload.get("objective").toBigDecimal()
         person.physicalActivity = payload.get("physicalActivity").toBigDecimal()
         person.setNutritionalObjective()
-        save(person)
+        personRepository.save(person)
     }
 
     @Transactional

@@ -26,8 +26,4 @@ class DailyNutrientsEatenService {
         person.actualDailyNutrientsEaten = dailyNutrientsEatenForCertainDate
     }
 
-    void save(DailyNutrientsEaten dailyNutrientsEaten) {
-        dailyNutrientsEatenRepository.save(dailyNutrientsEaten)
-    }
-
 }
