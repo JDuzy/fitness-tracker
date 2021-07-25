@@ -118,7 +118,7 @@ class PersonService implements UserDetailsService{
     }
 
     @Transactional
-    void registerFood(LocalDate registrationDate, BigDecimal amountOfGrams, long foodId) {
+    FoodRegistration registerFood(LocalDate registrationDate, BigDecimal amountOfGrams, Long foodId) {
         Person person = getPrincipal()
         Food food = foodRepository.findFoodById(foodId).orElseThrow({
             new IllegalStateException("Food with id ${foodId} does not exists")
@@ -127,6 +127,8 @@ class PersonService implements UserDetailsService{
         foodRegistrationRepository.save(registration)
         dailyNutrientsEatenService.updateActualNutrientsEatenByEatenDayAndPerson(registrationDate, person)
         person.addFoodRegistration(registration)
+        println("ACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
+        println registration
         registration
     }
 
@@ -139,8 +141,7 @@ class PersonService implements UserDetailsService{
     void updateFoodRegistration(Long registrationId, BigDecimal newAmount) {
         Person person = getPrincipal()
         println person.findFoodRegistrationWithId(registrationId)
-        FoodRegistration registration = Optional.ofNullable(person.findFoodRegistrationWithId(registrationId) as FoodRegistration)
-        .orElseThrow({
+        FoodRegistration registration = Optional.ofNullable(person.findFoodRegistrationWithId(registrationId) as FoodRegistration).orElseThrow({
             new ResponseStatusException(NOT_FOUND, "No foodRegistration with id: ${registrationId} was found")
         })
         dailyNutrientsEatenService.updateActualNutrientsEatenByEatenDayAndPerson(registration.registrationDate, person)
@@ -151,13 +152,13 @@ class PersonService implements UserDetailsService{
     }
 
     @Transactional
-    void deleteFoodRegistration(Long id) {
+    void deleteFoodRegistration(Long registrationId) {
         Person person = getPrincipal()
-        FoodRegistration registration =  foodRegistrationRepository.findFoodRegistrationById(id).orElseThrow({
-            new ResponseStatusException(NOT_FOUND, "No foodRegistration with id: ${id} was found")
+        FoodRegistration registration =  Optional.ofNullable(person.findFoodRegistrationWithId(registrationId) as FoodRegistration).orElseThrow({
+            new ResponseStatusException(NOT_FOUND, "No foodRegistration with id: ${registrationId} was found")
         })
         dailyNutrientsEatenService.updateActualNutrientsEatenByEatenDayAndPerson(registration.registrationDate, person)
         person.deleteFoodRegistration(registration)
-        foodRegistrationRepository.deleteById(id)
+        foodRegistrationRepository.deleteById(registrationId)
     }
 }

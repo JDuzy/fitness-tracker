@@ -15,7 +15,6 @@ import java.time.LocalDate
 
 @Entity
 @Table(name = "food_registration")
-@EqualsAndHashCode
 @ToString
 class FoodRegistration extends Registration{
 

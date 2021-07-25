@@ -79,7 +79,7 @@ class Person implements UserDetails{
 
     @OneToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "person_id")
-    Set<FoodRegistration> foodRegistrations = new HashSet()
+    List<FoodRegistration> foodRegistrations = new ArrayList<>()
 
     @Override
     Collection<? extends GrantedAuthority> getAuthorities() {

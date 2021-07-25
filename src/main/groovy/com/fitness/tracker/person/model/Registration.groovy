@@ -2,6 +2,7 @@ package com.fitness.tracker.person.model
 
 
 import groovy.transform.CompileStatic
+import groovy.transform.EqualsAndHashCode
 
 import javax.persistence.CascadeType
 import javax.persistence.Column
@@ -17,6 +18,7 @@ import java.time.LocalDate
 
 @MappedSuperclass
 @CompileStatic
+@EqualsAndHashCode
 class Registration {
 
     @Id

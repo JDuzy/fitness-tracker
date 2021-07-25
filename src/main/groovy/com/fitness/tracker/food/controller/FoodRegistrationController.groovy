@@ -4,7 +4,6 @@ import com.fitness.tracker.food.model.Food
 import com.fitness.tracker.person.model.Person
 import com.fitness.tracker.food.model.FoodRegistration
 import com.fitness.tracker.food.service.DailyNutrientsEatenService
-import com.fitness.tracker.food.service.FoodRegistrationService
 import com.fitness.tracker.food.service.FoodService
 import com.fitness.tracker.person.service.PersonService
 import groovy.transform.CompileStatic
@@ -37,9 +36,6 @@ class FoodRegistrationController {
     final PersonService personService
 
     @Autowired
-    final FoodRegistrationService foodRegistrationService
-
-    @Autowired
     final FoodService foodService
 
     @Autowired
@@ -54,7 +50,6 @@ class FoodRegistrationController {
 
         List<Food> foods = foodService.findAll()
         List<FoodRegistration> dailyFoodsRegistrations = personService.getFoodRegistrationsByDate(loggedPerson, registrationDate)
-        //List<FoodRegistration> dailyFoodsRegistrations = foodRegistrationService.findAllFoodRegistrationByPersonAndRegistrationDate(loggedPerson, registrationDate)
 
         //TO DO: Use model.addAttributes in 1 line
         model.addAttribute("foodRegistrations", dailyFoodsRegistrations)

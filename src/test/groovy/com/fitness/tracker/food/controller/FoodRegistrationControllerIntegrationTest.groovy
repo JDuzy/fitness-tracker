@@ -3,7 +3,6 @@ package com.fitness.tracker.food.controller
 import com.fitness.tracker.food.model.FoodRegistration
 import com.fitness.tracker.food.repository.DailyNutrientsEatenRepository
 import com.fitness.tracker.food.repository.FoodRegistrationRepository
-import com.fitness.tracker.food.service.FoodRegistrationService
 import com.fitness.tracker.person.model.Credentials
 import com.fitness.tracker.person.model.Person
 import com.fitness.tracker.person.repository.PersonRepository
@@ -42,9 +41,6 @@ class FoodRegistrationControllerIntegrationTest {
 
     @Autowired
     FoodRegistrationRepository foodRegistrationRepository
-
-    @Autowired
-    FoodRegistrationService foodRegistrationService
 
     @Autowired
     BCryptPasswordEncoder passwordEncoder
@@ -102,7 +98,6 @@ class FoodRegistrationControllerIntegrationTest {
                 .content("{\"foodId\": \"2\", \"amount\": \"160\" }")
         )
 
-
         Integer remainingCaloriesAfterRegistrations = personUsedToTest.remainingCaloriesForTheActualDay()
         Integer eatenCaloriesAfterRegistration = personUsedToTest.eatenCaloriesOnActualDay
 
@@ -118,8 +113,8 @@ class FoodRegistrationControllerIntegrationTest {
         /*GIVEN: food with id: 1 -> 'Banana' with 84kcal per 100g
         food with id: 2 -> 'Apple' with 72kcal per 80g
         */
-        FoodRegistration registrationToDelete = foodRegistrationService.register(personUsedToTest, LocalDate.now(), 100.0, 1) //100g of banana
-        foodRegistrationService.register(personUsedToTest, LocalDate.now(), 80.0, 2) //80g of apple
+        FoodRegistration registrationToDelete = personService.registerFood(LocalDate.now(), 100.0, 1) //100g of banana
+        personService.registerFood(LocalDate.now(), 80.0, 2) //80g of apple
 
         Integer initialCaloriesEaten = personUsedToTest.eatenCaloriesOnActualDay
         Integer caloriesToDelete = registrationToDelete.calories
@@ -150,8 +145,8 @@ class FoodRegistrationControllerIntegrationTest {
         BigDecimal bananaNewAmountOfGrams = 100
         BigDecimal appleAmountOfGrams = 80
 
-        FoodRegistration bananaRegistrationToUpdate = foodRegistrationService.register(personUsedToTest, LocalDate.now(), bananaOldAmountOfGrams, 1) //100g of banana
-        FoodRegistration appleRegistrationWhichStays = foodRegistrationService.register(personUsedToTest, LocalDate.now(), appleAmountOfGrams, 2) //80g of apple
+        FoodRegistration bananaRegistrationToUpdate = personService.registerFood(LocalDate.now(), bananaOldAmountOfGrams, 1) //100g of banana
+        FoodRegistration appleRegistrationWhichStays = personService.registerFood(LocalDate.now(), appleAmountOfGrams, 2) //80g of apple
 
         Integer initialCaloriesEaten = personUsedToTest.eatenCaloriesOnActualDay
         Integer caloriesOfBananaRegistrationBeforeUpdate = bananaRegistrationToUpdate.calories
@@ -220,12 +215,12 @@ class FoodRegistrationControllerIntegrationTest {
         food with id: 2 -> 'Apple' with 72kcal per 80g
         */
         //Today
-        FoodRegistration bananaRegistrationToDeleteToday = foodRegistrationService.register(personUsedToTest, LocalDate.now(), 100.0, 1) //100g of banana
+        FoodRegistration bananaRegistrationToDeleteToday = personService.registerFood(LocalDate.now(), 100.0, 1) //100g of banana
         Integer remainingCaloriesForTodayBeforeDelete = personUsedToTest.remainingCaloriesForTheActualDay()
         Integer eatenCaloriesTodayBeforeDelete = personUsedToTest.eatenCaloriesOnActualDay
 
         //Yesterday
-        FoodRegistration appleRegistrationToDeleteYesterday = foodRegistrationService.register(personUsedToTest, LocalDate.now().minusDays(1), 80.0, 2) //80g of apple
+        FoodRegistration appleRegistrationToDeleteYesterday = personService.registerFood(LocalDate.now().minusDays(1), 80.0, 2) //80g of apple
         Integer remainingCaloriesForYesterdayBeforeDelete = personUsedToTest.remainingCaloriesForTheActualDay()
         Integer eatenCaloriesYesterdayBeforeDelete = personUsedToTest.eatenCaloriesOnActualDay
 
@@ -263,11 +258,11 @@ class FoodRegistrationControllerIntegrationTest {
         /*GIVEN: food with id: 1 -> 'Banana' with 84kcal per 100g
         food with id: 2 -> 'Apple' with 72kcal per 80g
         */
-        FoodRegistration bananaRegistrationToUpdateToday = foodRegistrationService.register(personUsedToTest, LocalDate.now(), 100.0, 1) //100g of banana
+        FoodRegistration bananaRegistrationToUpdateToday = personService.registerFood(LocalDate.now(), 100.0, 1) //100g of banana
         Integer remainingCaloriesForTodayBeforeUpdate = personUsedToTest.remainingCaloriesForTheActualDay()
         Integer eatenCaloriesTodayBeforeUpdate = personUsedToTest.eatenCaloriesOnActualDay
 
-        FoodRegistration appleRegistrationToUpdateYesterday = foodRegistrationService.register(personUsedToTest, LocalDate.now().minusDays(1), 80.0, 2) //80g of apple
+        FoodRegistration appleRegistrationToUpdateYesterday = personService.registerFood(LocalDate.now().minusDays(1), 80.0, 2) //80g of apple
         Integer remainingCaloriesForYesterdayBeforeUpdate = personUsedToTest.remainingCaloriesForTheActualDay()
         Integer eatenCaloriesYesterdayBeforeUpdate = personUsedToTest.eatenCaloriesOnActualDay
 
