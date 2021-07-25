@@ -1,5 +1,9 @@
 package com.fitness.tracker.person.service
 
+import com.fitness.tracker.exercise.model.Exercise
+import com.fitness.tracker.exercise.model.ExerciseRegistration
+import com.fitness.tracker.exercise.repository.ExerciseRegistrationRepository
+import com.fitness.tracker.exercise.repository.ExerciseRepository
 import com.fitness.tracker.person.model.Credentials
 import com.fitness.tracker.person.model.Person
 import com.fitness.tracker.person.repository.CredentialsRepository
@@ -23,17 +27,23 @@ import java.time.LocalDate
 @CompileStatic
 class PersonService implements UserDetailsService{
 
+    @Autowired
     final PersonRepository personRepository
-    final CredentialsRepository credentialsRepository
-    final BCryptPasswordEncoder bCryptPasswordEncoder
-    final static String PERSON_NOT_FOUND_MSG = "user with email %s not found"
 
     @Autowired
-    PersonService(PersonRepository personRepository, CredentialsRepository credentialsRepository, BCryptPasswordEncoder bCryptPasswordEncoder){
-        this.personRepository = personRepository
-        this.credentialsRepository = credentialsRepository
-        this.bCryptPasswordEncoder = bCryptPasswordEncoder
-    }
+    final CredentialsRepository credentialsRepository
+
+    @Autowired
+    final BCryptPasswordEncoder bCryptPasswordEncoder
+
+    @Autowired
+    final ExerciseRepository exerciseRepository
+
+    @Autowired
+    final ExerciseRegistrationRepository exerciseRegistrationRepository
+
+    final static String PERSON_NOT_FOUND_MSG = "user with email %s not found"
+
 
     @Override
     UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
@@ -99,5 +109,21 @@ class PersonService implements UserDetailsService{
         }
     }
 
+
+    List<ExerciseRegistration> getExercisesRegistrationsByDate(LocalDate date) {
+        Person person = getPrincipal()
+        person.getExercisesRegistrationsByDate(date)
+    }
+
+    @Transactional
+    void registerExercise(LocalDate registrationDate, BigDecimal time, BigDecimal weight, Long exerciseId) {
+        Person person = getPrincipal()
+        Exercise exercise = exerciseRepository.findExerciseById(exerciseId).orElseThrow({
+            new IllegalStateException("Exercise with id ${exerciseId} does not exists")
+        })
+        ExerciseRegistration registration = new ExerciseRegistration(person: person, registrationDate: registrationDate, time: time, weight: weight, exercise: exercise)
+        person.registerExercise(registration)
+        exerciseRegistrationRepository.save(registration)
+    }
 
 }

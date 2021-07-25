@@ -1,5 +1,6 @@
 package com.fitness.tracker.person.model
 
+import com.fitness.tracker.exercise.model.ExerciseRegistration
 import com.fitness.tracker.food.model.DailyNutrientsEaten
 import com.fitness.tracker.food.model.DailyNutritionalObjective
 import com.fitness.tracker.food.model.FoodRegistration
@@ -14,10 +15,12 @@ import org.springframework.security.core.userdetails.UserDetails
 import javax.persistence.CascadeType
 import javax.persistence.Column
 import javax.persistence.Entity
+import javax.persistence.FetchType
 import javax.persistence.GeneratedValue
 import javax.persistence.GenerationType
 import javax.persistence.Id
 import javax.persistence.JoinColumn
+import javax.persistence.OneToMany
 import javax.persistence.OneToOne
 import javax.persistence.PrimaryKeyJoinColumn
 import javax.persistence.SequenceGenerator
@@ -72,15 +75,13 @@ class Person implements UserDetails{
     @PrimaryKeyJoinColumn
     DailyNutritionalObjective nutritionalObjective = new DailyNutritionalObjective()
 
-    /*@NotNull
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "nutrients_id", referencedColumnName = "id")
-    Nutrients dailyNutrientsEaten = new Nutrients(carbohydrates: 0, proteins: 0, fats: 0)*/
-
-
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "daily_nutrients_eaten_id", referencedColumnName = "id")
     DailyNutrientsEaten actualDailyNutrientsEaten = new DailyNutrientsEaten(nutrients: new Nutrients(carbohydrates: 0, proteins: 0, fats: 0), eatenDay: LocalDate.now(), person: this)
+
+    @OneToMany(fetch = FetchType.EAGER)
+    @JoinColumn(name = "person_id")
+    Set<ExerciseRegistration> exerciseRegistrations = new HashSet<>()
 
     @Override
     Collection<? extends GrantedAuthority> getAuthorities() {
@@ -168,7 +169,19 @@ class Person implements UserDetails{
         actualDailyNutrientsEaten
     }
 
+    List<ExerciseRegistration> getExercisesRegistrationsByDate(LocalDate date){
+        exerciseRegistrations.findAll {registration -> registration.wasRegisteredOn(date)}.toList()
+    }
+
     /*void updateFoodRegistration(FoodRegistration foodRegistration, BigDecimal newAmount) {
         todayNutrientsEaten.updateNutrientsBasedOn(foodRegistration, newAmount)
     }*/
+
+    void registerExercise(ExerciseRegistration exerciseRegistration) {
+        exerciseRegistrations.add(exerciseRegistration)
+    }
+
+    void deleteExerciseRegistration(ExerciseRegistration exerciseRegistration){
+        exerciseRegistrations.remove(exerciseRegistration)
+    }
 }
