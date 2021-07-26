@@ -18,9 +18,12 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Service
 import org.springframework.validation.BindingResult
 import org.springframework.validation.FieldError
+import org.springframework.web.server.ResponseStatusException
 
 import javax.transaction.Transactional
 import java.time.LocalDate
+
+import static org.springframework.http.HttpStatus.NOT_FOUND
 
 
 @Service
@@ -122,8 +125,35 @@ class PersonService implements UserDetailsService{
             new IllegalStateException("Exercise with id ${exerciseId} does not exists")
         })
         ExerciseRegistration registration = new ExerciseRegistration(person: person, registrationDate: registrationDate, time: time, weight: weight, exercise: exercise)
-        person.registerExercise(registration)
+        person.addExerciseRegistration(registration)
         exerciseRegistrationRepository.save(registration)
+    }
+
+    @Transactional
+    void updateExerciseRegistration(Long registrationId, BigDecimal newTime, BigDecimal newWeight) {
+        Person person = getPrincipal()
+        println person.findExerciseRegistrationWithId(registrationId)
+        ExerciseRegistration registration = Optional.ofNullable(person.findExerciseRegistrationWithId(registrationId) as ExerciseRegistration)
+                .orElseThrow({
+                    new ResponseStatusException(NOT_FOUND, "No exerciseRegistration with id: ${registrationId} was found")
+                })
+        person.deleteExerciseRegistration(registration)
+        registration.time = newTime
+        registration.weight = newWeight
+        person.addExerciseRegistration(registration)
+        exerciseRegistrationRepository.save(registration)
+        registration
+    }
+
+    @Transactional
+    void deleteExerciseRegistration(Long registrationId) {
+        Person person = getPrincipal()
+        ExerciseRegistration registration = Optional.ofNullable(person.findExerciseRegistrationWithId(registrationId) as ExerciseRegistration)
+                .orElseThrow({
+                    new ResponseStatusException(NOT_FOUND, "No exerciseRegistration with id: ${registrationId} was found")
+                })
+        person.deleteExerciseRegistration(registration)
+        exerciseRegistrationRepository.deleteById(registrationId)
     }
 
 }

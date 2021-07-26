@@ -67,18 +67,16 @@ class ExerciseRegistrationController {
     @PutMapping("/exercise/registration/{registrationId}")
     @ResponseBody
     String modifyARegistration(@PathVariable Long registrationId, @RequestBody Map<String, String> payload){
-        Person loggedPerson = personService.getPrincipal()
         BigDecimal time = payload.get("time").toBigDecimal()
         BigDecimal weight = payload.get("weight").toBigDecimal()
-        exerciseRegistrationService.update(registrationId, time, weight, loggedPerson)
+        personService.updateExerciseRegistration(registrationId, time, weight)
         "Updated"
     }
 
     @DeleteMapping("/exercise/registration/{registrationId}")
     @ResponseBody
     String deleteARegistration(@PathVariable Long registrationId){
-        Person loggedPerson = personService.getPrincipal()
-        exerciseRegistrationService.deleteRegistrationById(registrationId, loggedPerson)
+        personService.deleteExerciseRegistration(registrationId)
         "Deleted"
     }
 }

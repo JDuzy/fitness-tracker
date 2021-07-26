@@ -173,15 +173,22 @@ class Person implements UserDetails{
         exerciseRegistrations.findAll {registration -> registration.wasRegisteredOn(date)}.toList()
     }
 
-    /*void updateFoodRegistration(FoodRegistration foodRegistration, BigDecimal newAmount) {
-        todayNutrientsEaten.updateNutrientsBasedOn(foodRegistration, newAmount)
-    }*/
 
-    void registerExercise(ExerciseRegistration exerciseRegistration) {
+    void addExerciseRegistration(ExerciseRegistration exerciseRegistration) {
         exerciseRegistrations.add(exerciseRegistration)
     }
 
-    void deleteExerciseRegistration(ExerciseRegistration exerciseRegistration){
+    void deleteExerciseRegistration(ExerciseRegistration exerciseRegistration) {
         exerciseRegistrations.remove(exerciseRegistration)
+
     }
+
+    List<ExerciseRegistration> getExerciseRegistrationsByDate(LocalDate date) {
+        exerciseRegistrations.findAll {registration -> registration.wasRegisteredOn(date) }.toList()
+    }
+
+    ExerciseRegistration findExerciseRegistrationWithId(Long registrationId) {
+        exerciseRegistrations.find({registration -> registration.id == registrationId})
+    }
+
 }
