@@ -3,17 +3,21 @@ package com.fitness.tracker.person.service
 import com.fitness.tracker.person.model.Credentials
 import com.fitness.tracker.person.model.Person
 import com.fitness.tracker.person.repository.CredentialsRepository
+import groovy.transform.CompileStatic
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
+import org.springframework.stereotype.Service
 import org.springframework.validation.BindingResult
 import org.springframework.validation.FieldError
 
 import javax.transaction.Transactional
 
+@Service
+@CompileStatic
 class CredentialsService implements UserDetailsService{
 
     @Autowired
@@ -21,7 +25,6 @@ class CredentialsService implements UserDetailsService{
 
     @Autowired
     final BCryptPasswordEncoder bCryptPasswordEncoder
-
 
     @Override
     UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
