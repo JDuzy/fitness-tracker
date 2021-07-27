@@ -70,9 +70,9 @@ class PersonService implements UserDetailsService{
             person = (Person) SecurityContextHolder.getContext().getAuthentication().getPrincipal()
         }
 
-        Optional.ofNullable(person).map(
-                {personRepository.findById(it.id).orElseThrow( {new IllegalStateException("User not on DB")})}
-        ).orElse(null)
+        Optional.ofNullable(person).map({personRepository.findById(it.id)
+                .orElseThrow( {new IllegalStateException("User not on DB")})})
+                .orElse(null)
 
     }
 
@@ -95,7 +95,6 @@ class PersonService implements UserDetailsService{
         person.weightChangePerWeek = payload.get("objective").toBigDecimal()
         person.physicalActivity = payload.get("physicalActivity").toBigDecimal()
         person.setNutritionalObjective()
-        personRepository.save(person)
     }
 
     @Transactional
@@ -120,15 +119,11 @@ class PersonService implements UserDetailsService{
     @Transactional
     FoodRegistration registerFood(LocalDate registrationDate, BigDecimal amountOfGrams, Long foodId) {
         Person person = getPrincipal()
-        Food food = foodRepository.findFoodById(foodId).orElseThrow({
-            new IllegalStateException("Food with id ${foodId} does not exists")
-        })
+        Food food = foodRepository.findFoodById(foodId).orElseThrow({new IllegalStateException("Food with id ${foodId} does not exists")})
         FoodRegistration registration = new FoodRegistration(person: person, registrationDate: registrationDate, amountOfGrams: amountOfGrams, food: food)
         foodRegistrationRepository.save(registration)
-        dailyNutrientsEatenService.updateActualNutrientsEatenByEatenDayAndPerson(registrationDate, person)
-        person.addFoodRegistration(registration)
-        println("ACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
-        println registration
+        //dailyNutrientsEatenService.updateActualNutrientsEatenByEatenDayAndPerson(registrationDate, person)
+        person.addFoodRegistration(registration, registrationDate)
         registration
     }
 
@@ -140,25 +135,18 @@ class PersonService implements UserDetailsService{
     @Transactional
     void updateFoodRegistration(Long registrationId, BigDecimal newAmount) {
         Person person = getPrincipal()
-        println person.findFoodRegistrationWithId(registrationId)
-        FoodRegistration registration = Optional.ofNullable(person.findFoodRegistrationWithId(registrationId) as FoodRegistration).orElseThrow({
-            new ResponseStatusException(NOT_FOUND, "No foodRegistration with id: ${registrationId} was found")
-        })
-        dailyNutrientsEatenService.updateActualNutrientsEatenByEatenDayAndPerson(registration.registrationDate, person)
-        person.deleteFoodRegistration(registration)
-        registration.amountOfGrams = newAmount
-        person.addFoodRegistration(registration)
-        registration
+        person.updateFoodRegistrationWithId(registrationId, newAmount)
     }
 
     @Transactional
     void deleteFoodRegistration(Long registrationId) {
         Person person = getPrincipal()
-        FoodRegistration registration =  Optional.ofNullable(person.findFoodRegistrationWithId(registrationId) as FoodRegistration).orElseThrow({
+        person.deleteFoodRegistrationWithId(registrationId)
+        /*FoodRegistration registration =  Optional.ofNullable(person.findFoodRegistrationWithId(registrationId) as FoodRegistration).orElseThrow({
             new ResponseStatusException(NOT_FOUND, "No foodRegistration with id: ${registrationId} was found")
         })
         dailyNutrientsEatenService.updateActualNutrientsEatenByEatenDayAndPerson(registration.registrationDate, person)
-        person.deleteFoodRegistration(registration)
+        person.deleteFoodRegistration(registration, registration.registrationDate)*/
         foodRegistrationRepository.deleteById(registrationId)
     }
 }

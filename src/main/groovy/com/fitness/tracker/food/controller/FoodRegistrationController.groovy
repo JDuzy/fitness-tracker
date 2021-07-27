@@ -46,7 +46,7 @@ class FoodRegistrationController {
         Person loggedPerson = personService.getPrincipal()
         model.addAttribute("person", loggedPerson)
 
-        dailyNutrientsEatenService.updateActualNutrientsEatenByEatenDayAndPerson(registrationDate, loggedPerson)
+        //dailyNutrientsEatenService.updateActualNutrientsEatenByEatenDayAndPerson(registrationDate, loggedPerson)
 
         List<Food> foods = foodService.findAll()
         List<FoodRegistration> dailyFoodsRegistrations = personService.getFoodRegistrationsByDate(loggedPerson, registrationDate)
@@ -54,7 +54,7 @@ class FoodRegistrationController {
         //TO DO: Use model.addAttributes in 1 line
         model.addAttribute("foodRegistrations", dailyFoodsRegistrations)
         model.addAttribute("foods", foods)
-        model.addAttribute("today", registrationDate.toString())
+        model.addAttribute("today", registrationDate)
         model.addAttribute("yesterday", registrationDate.minusDays(1).toString())
         model.addAttribute("tomorrow", registrationDate.plusDays(1).toString())
 

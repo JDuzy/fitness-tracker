@@ -38,4 +38,7 @@ class FoodRegistration extends Registration{
         registrationDate.equals(date)
     }
 
+    Nutrients calculateNutrientsIfAmountWere(BigDecimal amount) {
+        food.getNutrientsPerAmount(amount)
+    }
 }

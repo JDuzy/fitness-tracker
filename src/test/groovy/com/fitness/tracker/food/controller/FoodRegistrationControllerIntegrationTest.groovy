@@ -23,8 +23,6 @@ import org.springframework.http.MediaType
 import java.time.LocalDate
 
 import static org.mockito.Mockito.doReturn
-import static org.mockito.Mockito.when
-
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -85,7 +83,7 @@ class FoodRegistrationControllerIntegrationTest {
         */
         Integer bananaCaloriesPer100g = 84
         Integer appleCaloriesPer80g = 72
-        Integer remainingCaloriesBeforeRegistrations = personUsedToTest.remainingCaloriesForTheActualDay()
+        Integer remainingCaloriesBeforeRegistrations = personUsedToTest.remainingCaloriesFor()
         Integer objectiveCalories = personUsedToTest.objectiveCalories
 
         //WHEN
@@ -101,7 +99,7 @@ class FoodRegistrationControllerIntegrationTest {
                 .content("{\"foodId\": \"2\", \"amount\": \"160\" }")
         )
 
-        Integer remainingCaloriesAfterRegistrations = personUsedToTest.remainingCaloriesForTheActualDay()
+        Integer remainingCaloriesAfterRegistrations = personUsedToTest.remainingCaloriesFor()
         Integer eatenCaloriesAfterRegistration = personUsedToTest.eatenCaloriesOnActualDay
 
         //THEN
@@ -121,14 +119,14 @@ class FoodRegistrationControllerIntegrationTest {
 
         Integer initialCaloriesEaten = personUsedToTest.eatenCaloriesOnActualDay
         Integer caloriesToDelete = registrationToDelete.calories
-        Integer remainingCaloriesBeforeDelete = personUsedToTest.remainingCaloriesForTheActualDay()
+        Integer remainingCaloriesBeforeDelete = personUsedToTest.remainingCaloriesFor()
 
         //WHEN
         mockMvc.perform(MockMvcRequestBuilders.delete(("/food/registration/${registrationToDelete.id}"))
                 .with(SecurityMockMvcRequestPostProcessors.user(personUsedToTest))
         )
 
-        Integer remainingCaloriesAfterDelete = personUsedToTest.remainingCaloriesForTheActualDay()
+        Integer remainingCaloriesAfterDelete = personUsedToTest.remainingCaloriesFor()
         Integer eatenCaloriesAfterDelete = personUsedToTest.eatenCaloriesOnActualDay
 
 
@@ -154,7 +152,7 @@ class FoodRegistrationControllerIntegrationTest {
         Integer initialCaloriesEaten = personUsedToTest.eatenCaloriesOnActualDay
         Integer caloriesOfBananaRegistrationBeforeUpdate = bananaRegistrationToUpdate.calories
         Integer caloriesOfAppleRegistrationWhichStays = appleRegistrationWhichStays.calories
-        Integer remainingCaloriesBeforeDelete = personUsedToTest.remainingCaloriesForTheActualDay()
+        Integer remainingCaloriesBeforeDelete = personUsedToTest.remainingCaloriesFor()
 
         //WHEN
         mockMvc.perform(MockMvcRequestBuilders.put(("/food/registration/${bananaRegistrationToUpdate.id}"))
@@ -171,8 +169,8 @@ class FoodRegistrationControllerIntegrationTest {
         //THEN
         Assertions.assertEquals(caloriesOfAppleRegistrationWhichStays + caloriesOfBananaRegistrationAfterUpdate, personUsedToTest.eatenCaloriesOnActualDay)
         Assertions.assertEquals((initialCaloriesEaten - personUsedToTest.eatenCaloriesOnActualDay).abs(), amountOfModifiedCalories.abs())
-        Assertions.assertEquals((personUsedToTest.remainingCaloriesForTheActualDay() - remainingCaloriesBeforeDelete).abs(), amountOfModifiedCalories.abs())
-        Assertions.assertEquals(personUsedToTest.objectiveCalories - personUsedToTest.eatenCaloriesOnActualDay, personUsedToTest.remainingCaloriesForTheActualDay())
+        Assertions.assertEquals((personUsedToTest.remainingCaloriesFor() - remainingCaloriesBeforeDelete).abs(), amountOfModifiedCalories.abs())
+        Assertions.assertEquals(personUsedToTest.objectiveCalories - personUsedToTest.eatenCaloriesOnActualDay, personUsedToTest.remainingCaloriesFor())
     }
 
     @Test
@@ -183,7 +181,7 @@ class FoodRegistrationControllerIntegrationTest {
         */
         Integer bananaCaloriesPer100g = 84
         Integer appleCaloriesPer80g = 72
-        Integer remainingCaloriesBeforeRegistrations = personUsedToTest.remainingCaloriesForTheActualDay()
+        Integer remainingCaloriesBeforeRegistrations = personUsedToTest.remainingCaloriesFor()
         Integer objectiveCaloriesBefore = personUsedToTest.objectiveCalories
 
         //WHEN
@@ -195,7 +193,7 @@ class FoodRegistrationControllerIntegrationTest {
 
         //THEN
         Assertions.assertEquals(bananaCaloriesPer100g, personUsedToTest.eatenCaloriesOnActualDay)
-        Assertions.assertEquals(remainingCaloriesBeforeRegistrations - bananaCaloriesPer100g, personUsedToTest.remainingCaloriesForTheActualDay())
+        Assertions.assertEquals(remainingCaloriesBeforeRegistrations - bananaCaloriesPer100g, personUsedToTest.remainingCaloriesFor())
         Assertions.assertEquals(objectiveCaloriesBefore, personUsedToTest.objectiveCalories)
 
         //WHEN
@@ -207,7 +205,7 @@ class FoodRegistrationControllerIntegrationTest {
 
         //THEN
         Assertions.assertEquals(appleCaloriesPer80g, personUsedToTest.eatenCaloriesOnActualDay)
-        Assertions.assertEquals(remainingCaloriesBeforeRegistrations - appleCaloriesPer80g, personUsedToTest.remainingCaloriesForTheActualDay())
+        Assertions.assertEquals(remainingCaloriesBeforeRegistrations - appleCaloriesPer80g, personUsedToTest.remainingCaloriesFor())
         Assertions.assertEquals(objectiveCaloriesBefore, personUsedToTest.objectiveCalories)
     }
 
@@ -219,12 +217,12 @@ class FoodRegistrationControllerIntegrationTest {
         */
         //Today
         FoodRegistration bananaRegistrationToDeleteToday = personService.registerFood(LocalDate.now(), 100.0, 1) //100g of banana
-        Integer remainingCaloriesForTodayBeforeDelete = personUsedToTest.remainingCaloriesForTheActualDay()
+        Integer remainingCaloriesForTodayBeforeDelete = personUsedToTest.remainingCaloriesFor()
         Integer eatenCaloriesTodayBeforeDelete = personUsedToTest.eatenCaloriesOnActualDay
 
         //Yesterday
         FoodRegistration appleRegistrationToDeleteYesterday = personService.registerFood(LocalDate.now().minusDays(1), 80.0, 2) //80g of apple
-        Integer remainingCaloriesForYesterdayBeforeDelete = personUsedToTest.remainingCaloriesForTheActualDay()
+        Integer remainingCaloriesForYesterdayBeforeDelete = personUsedToTest.remainingCaloriesFor()
         Integer eatenCaloriesYesterdayBeforeDelete = personUsedToTest.eatenCaloriesOnActualDay
 
         Integer objectiveCalories = personUsedToTest.objectiveCalories
@@ -239,8 +237,8 @@ class FoodRegistrationControllerIntegrationTest {
         //THEN
         Assertions.assertEquals(objectiveCalories, personUsedToTest.objectiveCalories)
         Assertions.assertEquals(eatenCaloriesTodayBeforeDelete - caloriesFromBanana, personUsedToTest.eatenCaloriesOnActualDay)
-        Assertions.assertEquals(objectiveCalories - personUsedToTest.eatenCaloriesOnActualDay, personUsedToTest.remainingCaloriesForTheActualDay())
-        Assertions.assertEquals(remainingCaloriesForTodayBeforeDelete + caloriesFromBanana, personUsedToTest.remainingCaloriesForTheActualDay())
+        Assertions.assertEquals(objectiveCalories - personUsedToTest.eatenCaloriesOnActualDay, personUsedToTest.remainingCaloriesFor())
+        Assertions.assertEquals(remainingCaloriesForTodayBeforeDelete + caloriesFromBanana, personUsedToTest.remainingCaloriesFor())
 
         //WHEN
         mockMvc.perform(MockMvcRequestBuilders.delete(("/food/registration/${appleRegistrationToDeleteYesterday.id}"))
@@ -250,23 +248,23 @@ class FoodRegistrationControllerIntegrationTest {
         //THEN
         Assertions.assertEquals(objectiveCalories, personUsedToTest.objectiveCalories)
         Assertions.assertEquals(eatenCaloriesYesterdayBeforeDelete - caloriesFromApple, personUsedToTest.eatenCaloriesOnActualDay)
-        Assertions.assertEquals(objectiveCalories - personUsedToTest.eatenCaloriesOnActualDay, personUsedToTest.remainingCaloriesForTheActualDay())
-        Assertions.assertEquals(remainingCaloriesForYesterdayBeforeDelete + caloriesFromApple, personUsedToTest.remainingCaloriesForTheActualDay())
+        Assertions.assertEquals(objectiveCalories - personUsedToTest.eatenCaloriesOnActualDay, personUsedToTest.remainingCaloriesFor())
+        Assertions.assertEquals(remainingCaloriesForYesterdayBeforeDelete + caloriesFromApple, personUsedToTest.remainingCaloriesFor())
 
     }
 
     @Test
-    void updateAFoodRegistrationFromTodayAndOneFromYesterday(){
+     void updateAFoodRegistrationFromTodayAndOneFromYesterday(){
 
         /*GIVEN: food with id: 1 -> 'Banana' with 84kcal per 100g
         food with id: 2 -> 'Apple' with 72kcal per 80g
         */
         FoodRegistration bananaRegistrationToUpdateToday = personService.registerFood(LocalDate.now(), 100.0, 1) //100g of banana
-        Integer remainingCaloriesForTodayBeforeUpdate = personUsedToTest.remainingCaloriesForTheActualDay()
+        Integer remainingCaloriesForTodayBeforeUpdate = personUsedToTest.remainingCaloriesFor()
         Integer eatenCaloriesTodayBeforeUpdate = personUsedToTest.eatenCaloriesOnActualDay
 
         FoodRegistration appleRegistrationToUpdateYesterday = personService.registerFood(LocalDate.now().minusDays(1), 80.0, 2) //80g of apple
-        Integer remainingCaloriesForYesterdayBeforeUpdate = personUsedToTest.remainingCaloriesForTheActualDay()
+        Integer remainingCaloriesForYesterdayBeforeUpdate = personUsedToTest.remainingCaloriesFor()
         Integer eatenCaloriesYesterdayBeforeUpdate = personUsedToTest.eatenCaloriesOnActualDay
 
         Integer objectiveCalories = personUsedToTest.objectiveCalories
@@ -285,8 +283,8 @@ class FoodRegistrationControllerIntegrationTest {
         //THEN
         Assertions.assertEquals(objectiveCalories, personUsedToTest.objectiveCalories)
         Assertions.assertEquals(bananaFoodRegistrationAfterUpdate.calories, personUsedToTest.eatenCaloriesOnActualDay)
-        Assertions.assertEquals(objectiveCalories - personUsedToTest.eatenCaloriesOnActualDay, personUsedToTest.remainingCaloriesForTheActualDay())
-        Assertions.assertEquals((eatenCaloriesTodayBeforeUpdate - personUsedToTest.eatenCaloriesOnActualDay).abs(), (remainingCaloriesForTodayBeforeUpdate - personUsedToTest.remainingCaloriesForTheActualDay()).abs())
+        Assertions.assertEquals(objectiveCalories - personUsedToTest.eatenCaloriesOnActualDay, personUsedToTest.remainingCaloriesFor())
+        Assertions.assertEquals((eatenCaloriesTodayBeforeUpdate - personUsedToTest.eatenCaloriesOnActualDay).abs(), (remainingCaloriesForTodayBeforeUpdate - personUsedToTest.remainingCaloriesFor()).abs())
 
         //WHEN the person updates the amount of apple from 80g to 160g
         mockMvc.perform(MockMvcRequestBuilders.put(("/food/registration/${appleRegistrationToUpdateYesterday.id}"))
@@ -302,8 +300,8 @@ class FoodRegistrationControllerIntegrationTest {
         //THEN
         Assertions.assertEquals(objectiveCalories, personUsedToTest.objectiveCalories)
         Assertions.assertEquals(appleFoodRegistrationAfterUpdate.calories, personUsedToTest.eatenCaloriesOnActualDay)
-        Assertions.assertEquals(objectiveCalories - personUsedToTest.eatenCaloriesOnActualDay, personUsedToTest.remainingCaloriesForTheActualDay())
-        Assertions.assertEquals((eatenCaloriesYesterdayBeforeUpdate - personUsedToTest.eatenCaloriesOnActualDay).abs(), (remainingCaloriesForYesterdayBeforeUpdate - personUsedToTest.remainingCaloriesForTheActualDay()).abs())
+        Assertions.assertEquals(objectiveCalories - personUsedToTest.eatenCaloriesOnActualDay, personUsedToTest.remainingCaloriesFor())
+        Assertions.assertEquals((eatenCaloriesYesterdayBeforeUpdate - personUsedToTest.eatenCaloriesOnActualDay).abs(), (remainingCaloriesForYesterdayBeforeUpdate - personUsedToTest.remainingCaloriesFor()).abs())
     }
 
 

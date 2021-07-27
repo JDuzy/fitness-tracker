@@ -36,7 +36,7 @@ class DailyNutrientsEaten {
     @NotNull
     LocalDate eatenDay
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "person_id", referencedColumnName = "id")
     Person person
 
@@ -50,5 +50,14 @@ class DailyNutrientsEaten {
 
     Integer getCalories(){
         nutrients.calories
+    }
+
+    Boolean wereEatenOn(LocalDate date){
+        eatenDay.equals(date)
+    }
+
+    void updateEatenNutrientsBasedOn(FoodRegistration foodRegistration, BigDecimal newAmount) {
+        nutrients.updateNutrientsBasedOn(foodRegistration, newAmount)
+
     }
 }

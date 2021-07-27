@@ -19,11 +19,11 @@ class DailyNutrientsEatenService {
     final DailyNutrientsEatenRepository dailyNutrientsEatenRepository
 
 
-    @Transactional
+    /*@Transactional
     void updateActualNutrientsEatenByEatenDayAndPerson(LocalDate eatenDay, Person person){
         Optional<DailyNutrientsEaten> dailyNutrientsEatenOptional = dailyNutrientsEatenRepository.findByEatenDayAndPersonId(eatenDay, person.id)
-        DailyNutrientsEaten dailyNutrientsEatenForCertainDate = dailyNutrientsEatenOptional.orElse(new DailyNutrientsEaten(nutrients: new Nutrients(carbohydrates: 0, proteins: 0, fats: 0),eatenDay: eatenDay, person: person))
+        DailyNutrientsEaten dailyNutrientsEatenForCertainDate = dailyNutrientsEatenOptional.orElse(new DailyNutrientsEaten(nutrients: new Nutrients(carbohydrates: 0, proteins: 0, fats: 0),eatenDay: eatenDay))
         person.actualDailyNutrientsEaten = dailyNutrientsEatenForCertainDate
-    }
+    }*/
 
 }
