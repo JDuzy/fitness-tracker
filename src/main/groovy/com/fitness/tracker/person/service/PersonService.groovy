@@ -60,8 +60,9 @@ class PersonService {
             credentials = (Credentials) SecurityContextHolder.getContext().getAuthentication().getPrincipal()
         }
 
-        Optional.ofNullable(credentials).map({credentialsRepository.findPersonById(it.id)
-                .orElseThrow( {new IllegalStateException("User not on DB")})})
+        Optional.ofNullable(credentials)
+                .map({credentialsRepository.findById(it.id).map({it.person})})
+                .orElseThrow( {new IllegalStateException("User not on DB")})
                 .orElse(null)
     }
 

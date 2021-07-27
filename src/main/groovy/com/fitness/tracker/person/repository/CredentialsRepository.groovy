@@ -11,6 +11,4 @@ import org.springframework.transaction.annotation.Transactional
 interface CredentialsRepository extends JpaRepository<Credentials, Long> {
 
     Optional<Credentials> findCredentialsByEmail(String email)
-
-    Optional<Person> findPersonById(Long credentialsId)
 }
