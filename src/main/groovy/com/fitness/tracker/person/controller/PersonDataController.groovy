@@ -27,7 +27,7 @@ class PersonDataController {
 
     @GetMapping("/person/update")
     String getUpdateDataForm(Model model){
-        Person loggedPerson = personService.getPrincipal()
+        Person loggedPerson = personService.getLoggedPerson()
         model.addAttribute("person", loggedPerson)
         model.addAttribute("credentials", credentialsService.getPrincipal())
         "updateData"
@@ -36,9 +36,8 @@ class PersonDataController {
     @PutMapping("/person/update")
     @ResponseBody
     String putUpdateDataForm(@RequestBody Map<String, String> payload){
-        Person loggedPerson = personService.getPrincipal()
+        Person loggedPerson = personService.getLoggedPerson()
         personService.update(loggedPerson, payload)
-
         "Updated"
     }
 }

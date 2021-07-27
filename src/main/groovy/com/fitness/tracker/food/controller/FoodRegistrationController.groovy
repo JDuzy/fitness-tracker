@@ -47,7 +47,7 @@ class FoodRegistrationController {
 
     @GetMapping("/food/registration")
     String getFoodRegistrations(Model model, @RequestParam(required = false, defaultValue = "#{T(java.time.LocalDate).now().toString()}") @DateTimeFormat(iso = DATE) LocalDate registrationDate){
-        Person loggedPerson = personService.getPrincipal()
+        Person loggedPerson = personService.getLoggedPerson()
         model.addAttribute("credentials", credentialsService.getPrincipal())
         model.addAttribute("person", loggedPerson)
 

@@ -166,4 +166,14 @@ class Person{
         dailyNutrientsEatenOn(registration.registrationDate).deleteNutrientsBasedOn(registration)
         foodRegistrations.remove(registration)
     }
+
+    void updateData(String sex, LocalDate dateOfBirth, Integer height, BigDecimal weight, BigDecimal weightChangePerWeek, BigDecimal physicalActivity) {
+        this.sex = sex
+        this.dateOfBirth = dateOfBirth
+        this.height = height
+        this.weight = weight
+        this.weightChangePerWeek = weightChangePerWeek
+        this.physicalActivity = physicalActivity
+        setNutritionalObjective()
+    }
 }

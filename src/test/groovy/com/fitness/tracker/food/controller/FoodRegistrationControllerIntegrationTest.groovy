@@ -71,7 +71,7 @@ class FoodRegistrationControllerIntegrationTest {
         personUsedToTest = person
         personRepository.save(person)
 
-        doReturn(personRepository.findById(person.id).orElseThrow({new IllegalStateException("Error seting up Person on testSetUp")})).when(personService).getPrincipal()
+        doReturn(personRepository.findById(person.id).orElseThrow({new IllegalStateException("Error seting up Person on testSetUp")})).when(personService).getLoggedPerson()
         //when(personService.getPrincipal()).thenReturn(person)
     }
 
