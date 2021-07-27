@@ -1,7 +1,7 @@
 package com.fitness.tracker.person.controller
 
-import com.fitness.tracker.person.model.Person
-import com.fitness.tracker.person.service.PersonService
+import com.fitness.tracker.person.model.Credentials
+import com.fitness.tracker.person.service.CredentialsService
 import groovy.transform.CompileStatic
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Controller
@@ -16,7 +16,7 @@ import java.time.LocalDate
 class LoginController {
 
     @Autowired
-    final PersonService personService
+    final CredentialsService credentialsService
 
     @GetMapping("/")
     String index(){
@@ -25,8 +25,8 @@ class LoginController {
 
     @GetMapping("/login")
     String login(){
-        Person person = personService.getPrincipal()
-        if (person != null){
+        Credentials credentials = credentialsService.getPrincipal()
+        if (credentials != null){
             return "redirect:/food/registration?registrationDate=${LocalDate.now().toString()}"
         }
         "login"

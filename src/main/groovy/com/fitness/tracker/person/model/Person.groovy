@@ -38,7 +38,7 @@ import static org.springframework.http.HttpStatus.NOT_FOUND
 @Entity
 @Table(name = "person")
 @CompileStatic
-class Person implements UserDetails{
+class Person{
 
     @Id
     @SequenceGenerator(name = 'person_sequence', sequenceName = 'person_sequence', allocationSize = 1)
@@ -66,17 +66,16 @@ class Person implements UserDetails{
     @NotNull
     BigDecimal weightChangePerWeek
 
-    @NotNull
+    /*@NotNull
     @OneToOne(cascade = CascadeType.ALL)
     @PrimaryKeyJoinColumn
     @Valid
-    Credentials credentials = new Credentials()
+    Credentials credentials = new Credentials()*/
 
     @NotNull
     @OneToOne(cascade = CascadeType.ALL)
     @PrimaryKeyJoinColumn
     DailyNutritionalObjective nutritionalObjective = new DailyNutritionalObjective()
-
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "person_id")
@@ -86,14 +85,8 @@ class Person implements UserDetails{
     @OrderBy("id ASC")
     Set<FoodRegistration> foodRegistrations = new OrderedHashSet<>()
 
-    @Override
-    Collection<? extends GrantedAuthority> getAuthorities() {
-        SimpleGrantedAuthority authority = new SimpleGrantedAuthority("USER")
-        Collections.singletonList(authority)
-    }
 
-    @Override
-    String getPassword() {
+    /*String getPassword() {
         return credentials.password
     }
 
@@ -101,41 +94,16 @@ class Person implements UserDetails{
         credentials.password = newPassword
     }
 
-    @Override
     String getUsername() {
-        return credentials.email
+        return credentials.userName
     }
 
     String getEmail() {
         return credentials.email
-    }
-
-    @Override
-    boolean isAccountNonExpired() {
-        return true
-    }
-
-    @Override
-    boolean isAccountNonLocked() {
-        return true
-    }
-
-    @Override
-    boolean isCredentialsNonExpired() {
-        return true
-    }
-
-    @Override
-    boolean isEnabled() {
-        return true
-    }
+    }*/
 
     Integer getAge(){
         Period.between(this.dateOfBirth, LocalDate.now()).getYears()
-    }
-
-    Boolean passwordsMatch() {
-        credentials.passwordsMatch()
     }
 
     void setNutritionalObjective(){

@@ -14,64 +14,64 @@
         <div class="col col-md-5">
             <!--/*@thymesVar id="person" type="com.fitness.tracker.person.model.Person"*/-->
             <!--/*@thymesVar id="credentials" type="com.fitness.tracker.person.model.Credentials"*/-->
-            <form method="post" th:action="@{/registration}" th:object="${person}" class="text-start">
+            <form method="post" th:action="@{/registration}" th:object="${credentials}" class="text-start">
                 <h1 class="display-4 text-center">Sign Up</h1>
 
                 <div class="form-row py-1 text-left">
                     <label>User Name</label>
-                    <input type="text" class="form-control" name="credentials.userName" th:value="*{credentials.userName}" th:errorClass="is-invalid">
-                    <div th:if="${#fields.hasErrors('credentials.userName')}" th:errors="*{credentials.userName}" class="invalid-feedback"></div>
+                    <input type="text" class="form-control" name="userName" th:value="*{userName}" th:errorClass="is-invalid">
+                    <div th:if="${#fields.hasErrors('userName')}" th:errors="*{userName}" class="invalid-feedback"></div>
                 </div>
 
                 <div class="form-row py-1">
                     <label>Email</label>
-                    <input type="text" class="form-control" name="credentials.email" th:value="*{credentials.email}" th:errorClass="is-invalid">
-                    <div th:if="${#fields.hasErrors('credentials.email')}" th:errors="*{credentials.email}" class="invalid-feedback"></div>
+                    <input type="text" class="form-control" name="email" th:value="*{email}" th:errorClass="is-invalid">
+                    <div th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="invalid-feedback"></div>
                 </div>
 
                 <div class="form-row py-1">
                     <label>Password</label>
-                    <input type="password" class="form-control" name="credentials.password" th:value="*{credentials.password}" th:errorClass="is-invalid">
-                    <div th:if="${#fields.hasErrors('credentials.password')}" th:errors="*{credentials.password}" class="invalid-feedback"></div>
+                    <input type="password" class="form-control" name="credentials.password" th:value="*{password}" th:errorClass="is-invalid">
+                    <div th:if="${#fields.hasErrors('credentials.password')}" th:errors="*{password}" class="invalid-feedback"></div>
                 </div>
 
                 <div class="form-row py-1">
                     <label>Re-enter Password</label>
-                    <input type="password" class="form-control" name="credentials.rpassword" th:value="*{credentials.rpassword}" th:errorClass="is-invalid">
-                    <div th:if="${#fields.hasErrors('credentials.rpassword')}" th:errors="*{credentials.rpassword}" class="invalid-feedback"></div>
+                    <input type="password" class="form-control" name="rpassword" th:value="*{rpassword}" th:errorClass="is-invalid">
+                    <div th:if="${#fields.hasErrors('rpassword')}" th:errors="*{rpassword}" class="invalid-feedback"></div>
                 </div>
 
                 <div class="form-row py-1">
                     <label>Sex</label>
-                    <select required="true" class="form-select form-control" aria-label="Default select example" name="sex" th:value="*{sex}" th:errorClass="is-invalid">
+                    <select required="true" class="form-select form-control" aria-label="Default select example" name="person.sex" th:value="*{person.sex}" th:errorClass="is-invalid">
                         <option value="" selected>Select your sex</option>
                         <option value="Male">Male</option>
                         <option value="Female">Female</option>
                     </select>
-                    <div th:if="${#fields.hasErrors('sex')}" th:errors="*{sex}" class="invalid-feedback"></div>
+                    <div th:if="${#fields.hasErrors('person.sex')}" th:errors="*{person.sex}" class="invalid-feedback"></div>
                 </div>
 
                 <div class="form-row py-1">
                     <label>Date of Birth</label>
-                    <input type="date" class="form-control" name="dateOfBirth" th:value="*{dateOfBirth}" th:errorClass="is-invalid">
-                    <div th:if="${#fields.hasErrors('dateOfBirth')}" th:errors="*{dateOfBirth}" class="invalid-feedback"></div>
+                    <input type="date" class="form-control" name="person.dateOfBirth" th:value="*{person.dateOfBirth}" th:errorClass="is-invalid">
+                    <div th:if="${#fields.hasErrors('person.dateOfBirth')}" th:errors="*{person.dateOfBirth}" class="invalid-feedback"></div>
                 </div>
 
                 <div class="form-row py-1">
                     <label>Height (cm)</label>
-                    <input type="number" min="100" max="250" step="1" class="form-control" name="height" th:value="*{height}" th:errorClass="is-invalid">
-                    <div th:if="${#fields.hasErrors('height')}" th:errors="*{height}" class="invalid-feedback"></div>
+                    <input type="number" min="100" max="250" step="1" class="form-control" name="person.height" th:value="*{person.height}" th:errorClass="is-invalid">
+                    <div th:if="${#fields.hasErrors('person.height')}" th:errors="*{person.height}" class="invalid-feedback"></div>
                 </div>
 
                 <div class="form-row py-1">
                     <label>Weight (kg)</label>
-                    <input type="number" min="30" step="0.01" class="form-control" name="weight" th:value="*{weight}" th:errorClass="is-invalid">
-                    <div th:if="${#fields.hasErrors('weight')}" th:errors="*{weight}" class="invalid-feedback"></div>
+                    <input type="number" min="30" step="0.01" class="form-control" name="person.weight" th:value="*{person.weight}" th:errorClass="is-invalid">
+                    <div th:if="${#fields.hasErrors('person.weight')}" th:errors="*{person.weight}" class="invalid-feedback"></div>
                 </div>
 
                 <div class="form-row py-1">
                     <label>Weekly objective</label>
-                    <select required="true" class="form-select form-control" aria-label="Default select example" name="weightChangePerWeek" th:value="*{weightChangePerWeek}" th:errorClass="is-invalid">
+                    <select required="true" class="form-select form-control" aria-label="Default select example" name="person.weightChangePerWeek" th:value="*{person.weightChangePerWeek}" th:errorClass="is-invalid">
                         <option value="" selected>Select your objective</option>
                         <option value="300">Gain muscle - faster</option>
                         <option value="150">Gain muscle - slower</option>
@@ -79,12 +79,12 @@
                         <option value="-150">Loose fat - faster</option>
                         <option value="-300">Loose fat - slower</option>
                     </select>
-                    <div th:if="${#fields.hasErrors('weightChangePerWeek')}" th:errors="*{weightChangePerWeek}" class="invalid-feedback"></div>
+                    <div th:if="${#fields.hasErrors('person.weightChangePerWeek')}" th:errors="*{person.weightChangePerWeek}" class="invalid-feedback"></div>
                 </div>
 
                 <div class="form-row py-1">
                     <label>Weekly amount of physical activity</label>
-                    <select required="true" class="form-select form-control" aria-label="Default select example" name="physicalActivity" th:value="*{physicalActivity}" th:errorClass="is-invalid">
+                    <select required="true" class="form-select form-control" aria-label="Default select example" name="person.physicalActivity" th:value="*{person.physicalActivity}" th:errorClass="is-invalid">
                         <option value="" selected>Select your physical activity</option>
                         <option value="1.2">Sedentary (little to no exercise + work a desk job)</option>
                         <option value="1.375">Lightly Active (light exercise 1-3 days / week)</option>
@@ -92,7 +92,7 @@
                         <option value="1.725">Very Active (heavy exercise 6-7 days / week)</option>
                         <option value="1.9">Extremely Active (very heavy exercise, hard labor job, training 2x / day)</option>
                     </select>
-                    <div th:if="${#fields.hasErrors('physicalActivity')}" th:errors="*{physicalActivity}" class="invalid-feedback"></div>
+                    <div th:if="${#fields.hasErrors('person.physicalActivity')}" th:errors="*{person.physicalActivity}" class="invalid-feedback"></div>
                 </div>
 
                 <div class="form-row py-1 text-center">

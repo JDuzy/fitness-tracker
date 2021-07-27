@@ -32,7 +32,7 @@ import static org.springframework.http.HttpStatus.NOT_FOUND
 
 @Service
 @CompileStatic
-class PersonService implements UserDetailsService{
+class PersonService {
 
     @Autowired
     final PersonRepository personRepository
@@ -43,40 +43,29 @@ class PersonService implements UserDetailsService{
     @Autowired
     final FoodRepository foodRepository
 
-    @Autowired
-    final BCryptPasswordEncoder bCryptPasswordEncoder
-
-    @Autowired
-    final DailyNutrientsEatenService dailyNutrientsEatenService
+    /*@Autowired
+    final DailyNutrientsEatenService dailyNutrientsEatenService*/
 
     @Autowired
     final FoodRegistrationRepository foodRegistrationRepository
 
-    final static String PERSON_NOT_FOUND_MSG = "user with email %s not found"
 
-
-    @Override
-    UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        findPersonByEmail(email).orElseThrow( { new UsernameNotFoundException(String.format(PERSON_NOT_FOUND_MSG, email)) })
-    }
-
-    boolean emailUsedExists(Person person){
+    /*boolean emailUsedExists(Person person){
         credentialsRepository.findCredentialsByEmail(person.email).isPresent()
-    }
+    }*/
 
     Person getPrincipal(){
-        Person person = null
-        if (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof Person){
-            person = (Person) SecurityContextHolder.getContext().getAuthentication().getPrincipal()
+        Credentials credentials = null
+        if (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof Credentials){
+            credentials = (Credentials) SecurityContextHolder.getContext().getAuthentication().getPrincipal()
         }
 
-        Optional.ofNullable(person).map({personRepository.findById(it.id)
+        Optional.ofNullable(credentials).map({credentialsRepository.findPersonById(it.id)
                 .orElseThrow( {new IllegalStateException("User not on DB")})})
                 .orElse(null)
-
     }
 
-    @Transactional
+    /*@Transactional
     Person register(Person person){
         if (emailUsedExists(person)){
             throw new IllegalStateException("Email already taken")
@@ -85,7 +74,7 @@ class PersonService implements UserDetailsService{
         person.password = encodedPassword
         person.setNutritionalObjective()
         personRepository.save(person)
-    }
+    }*/
 
     Person update(Person person, Map<String, String> payload){
         person.sex = payload.get("sex")
@@ -97,17 +86,17 @@ class PersonService implements UserDetailsService{
         person.setNutritionalObjective()
     }
 
-    @Transactional
+    /*@Transactional
     Optional<Person> findPersonByEmail(String email){
-        /*Optional<Credentials> credentials = credentialsRepository.findCredentialsByEmail(email)
+        *//*Optional<Credentials> credentials = credentialsRepository.findCredentialsByEmail(email)
         Optional<Person> person = Optional.empty()
         credentials.ifPresent({ person = personRepository.findPersonByCredentials(credentials.get())})
-        person*/
+        person*//*
         credentialsRepository.findCredentialsByEmail(email).map({personRepository.findPersonByCredentials(it)}).orElse(Optional.empty())
-    }
+    }*/
 
 
-    void wasRegisteredValidly(Person person, BindingResult bindingResult) {
+    /*void wasRegisteredValidly(Person person, BindingResult bindingResult) {
         if (emailUsedExists(person)){
             bindingResult.addError(new FieldError("user", "credentials.email", "Email adress already in use"))
         }
@@ -115,7 +104,7 @@ class PersonService implements UserDetailsService{
         if (!person.passwordsMatch()){
             bindingResult.addError(new FieldError("user", "credentials.rpassword", "Passwords must match"))
         }
-    }
+    }*/
 
     @Transactional
     FoodRegistration registerFood(LocalDate registrationDate, BigDecimal amountOfGrams, Long foodId) {

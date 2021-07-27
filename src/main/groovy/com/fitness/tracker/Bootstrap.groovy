@@ -6,6 +6,7 @@ import com.fitness.tracker.food.model.Nutrients
 import com.fitness.tracker.food.repository.FoodRepository
 import com.fitness.tracker.person.model.Credentials
 import com.fitness.tracker.person.model.Person
+import com.fitness.tracker.person.repository.CredentialsRepository
 import com.fitness.tracker.person.repository.PersonRepository
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -31,20 +32,23 @@ class Bootstrap implements InitializingBean {
     @Autowired
     BCryptPasswordEncoder passwordEncoder
 
+    @Autowired
+    CredentialsRepository credentialsRepository
+
 
     @Override
     void afterPropertiesSet() throws Exception {
         LOG.info("Bootstrapping data")
         //Set up credentials for the person
         String password = passwordEncoder.encode("123456")
-        Credentials credentials = new Credentials(userName: "user1", email: "mail@mail.com", password: password, rpassword: password)
 
         //Set up the Person
-        //DailyNutrientsEaten ints created on the attribute
         LocalDate dob = LocalDate.now().minusYears(18)
-        Person person = new Person(credentials: credentials, dateOfBirth: dob, weight: 80, height: 180, sex: "male", physicalActivity: 1.725, weightChangePerWeek: 150)
+        Person person = new Person(dateOfBirth: dob, weight: 80, height: 180, sex: "male", physicalActivity: 1.725, weightChangePerWeek: 150)
         person.setNutritionalObjective()
-        userRepository.save(person)
+
+        Credentials credentials = new Credentials(person: person, userName: "user1", email: "mail@mail.com", password: password, rpassword: password)
+        credentialsRepository.save(credentials)
 
         //Set up foods
         Characteristics characteristics = new Characteristics(isVegan: false, isPescetarian: false, isVegetarian: false)
