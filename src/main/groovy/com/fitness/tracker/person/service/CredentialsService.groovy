@@ -44,11 +44,11 @@ class CredentialsService implements UserDetailsService{
     }
     void wasRegisteredValidly(Credentials credentials, BindingResult bindingResult) {
         if (emailUsedExists(credentials)){
-            bindingResult.addError(new FieldError("user", "credentials.email", "Email adress already in use"))
+            bindingResult.addError(new FieldError("credentials", "email", "Email adress already in use"))
         }
 
         if (!credentials.passwordsMatch()){
-            bindingResult.addError(new FieldError("user", "credentials.rpassword", "Passwords must match"))
+            bindingResult.addError(new FieldError("credentials", "rpassword", "Passwords must match"))
         }
     }
 

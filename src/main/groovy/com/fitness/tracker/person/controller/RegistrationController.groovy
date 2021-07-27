@@ -49,7 +49,6 @@ class RegistrationController {
 
     @PostMapping
     String saveRegistration(@Valid Credentials credentials, BindingResult bindingResult, RedirectAttributes redirectAttributes){
-
         credentialsService.wasRegisteredValidly(credentials, bindingResult)
         if(bindingResult.hasErrors()){
             return "registration"

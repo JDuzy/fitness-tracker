@@ -31,8 +31,8 @@
 
                 <div class="form-row py-1">
                     <label>Password</label>
-                    <input type="password" class="form-control" name="credentials.password" th:value="*{password}" th:errorClass="is-invalid">
-                    <div th:if="${#fields.hasErrors('credentials.password')}" th:errors="*{password}" class="invalid-feedback"></div>
+                    <input type="password" class="form-control" name="password" th:value="*{password}" th:errorClass="is-invalid">
+                    <div th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="invalid-feedback"></div>
                 </div>
 
                 <div class="form-row py-1">

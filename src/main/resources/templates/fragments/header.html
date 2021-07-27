@@ -34,7 +34,7 @@
           <li class="nav-item dropdown ">
             <a class="nav-link dropdown-toggle " href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                 <!--/*@thymesVar id="person" type="com.fitness.tracker.person.model.Person"*/-->
-              <Span th:if="${credentials}" th:text="${credentials.getUsername()}"></Span>
+              <Span th:if="${credentials}" th:text="${credentials.userName}"></Span>
             </a>
             <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
               <li>

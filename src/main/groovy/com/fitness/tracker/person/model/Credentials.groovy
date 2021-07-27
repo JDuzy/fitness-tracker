@@ -70,36 +70,36 @@ These characters can't be used consecutively and must not be the first or last c
 
     @Override
     String getPassword() {
-        return password
+        password
     }
 
     @Override
     String getUsername() {
-        return email
+        email
     }
 
     String getEmail() {
-        return email
+        email
     }
 
     @Override
     boolean isAccountNonExpired() {
-        return true
+        true
     }
 
     @Override
     boolean isAccountNonLocked() {
-        return true
+        true
     }
 
     @Override
     boolean isCredentialsNonExpired() {
-        return true
+        true
     }
 
     @Override
     boolean isEnabled() {
-        return true
+        true
     }
 
     boolean passwordsMatch(){
