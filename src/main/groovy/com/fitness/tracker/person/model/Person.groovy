@@ -77,15 +77,11 @@ class Person implements UserDetails{
     @PrimaryKeyJoinColumn
     DailyNutritionalObjective nutritionalObjective = new DailyNutritionalObjective()
 
-    /*@OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "daily_nutrients_eaten_id", referencedColumnName = "id")
-    DailyNutrientsEaten actualDailyNutrientsEaten = new DailyNutrientsEaten(nutrients: new Nutrients(carbohydrates: 0, proteins: 0, fats: 0), eatenDay: LocalDate.now(), person: this)*/
-    //TODO: FetchType lazy
+
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "person_id")
     Set<DailyNutrientsEaten> dailyNutrientsEaten = []
 
-    //TODO: FetchType lazy
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @OrderBy("id ASC")
     Set<FoodRegistration> foodRegistrations = new OrderedHashSet<>()
@@ -190,13 +186,15 @@ class Person implements UserDetails{
 
 
     void updateFoodRegistrationWithId(Long registrationId, BigDecimal newAmount) {
-        FoodRegistration registration = Optional.ofNullable(foodRegistrations.find{it.id.equals(registrationId)}).orElseThrow({new ResponseStatusException(NOT_FOUND, "No foodRegistration with id: ${registrationId} was found")})
+        FoodRegistration registration = Optional.ofNullable(foodRegistrations.find{it.id.equals(registrationId)})
+                .orElseThrow({new ResponseStatusException(NOT_FOUND, "No foodRegistration with id: ${registrationId} was found")})
         dailyNutrientsEatenOn(registration.registrationDate).updateEatenNutrientsBasedOn(registration, newAmount)
         registration.setAmountOfGrams(newAmount)
     }
 
     void deleteFoodRegistrationWithId(Long registrationId) {
-        FoodRegistration registration = Optional.ofNullable(foodRegistrations.find{it.id.equals(registrationId)}).orElseThrow({new ResponseStatusException(NOT_FOUND, "No foodRegistration with id: ${registrationId} was found")})
+        FoodRegistration registration = Optional.ofNullable(foodRegistrations.find{it.id.equals(registrationId)})
+                .orElseThrow({new ResponseStatusException(NOT_FOUND, "No foodRegistration with id: ${registrationId} was found")})
         dailyNutrientsEatenOn(registration.registrationDate).deleteNutrientsBasedOn(registration)
         foodRegistrations.remove(registration)
     }

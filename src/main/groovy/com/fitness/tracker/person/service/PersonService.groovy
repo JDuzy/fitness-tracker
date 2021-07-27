@@ -99,10 +99,11 @@ class PersonService implements UserDetailsService{
 
     @Transactional
     Optional<Person> findPersonByEmail(String email){
-        Optional<Credentials> credentials = credentialsRepository.findCredentialsByEmail(email)
+        /*Optional<Credentials> credentials = credentialsRepository.findCredentialsByEmail(email)
         Optional<Person> person = Optional.empty()
         credentials.ifPresent({ person = personRepository.findPersonByCredentials(credentials.get())})
-        person
+        person*/
+        credentialsRepository.findCredentialsByEmail(email).map({personRepository.findPersonByCredentials(it)}).orElse(Optional.empty())
     }
 
 
