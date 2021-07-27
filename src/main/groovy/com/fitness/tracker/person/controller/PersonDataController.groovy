@@ -1,6 +1,7 @@
 package com.fitness.tracker.person.controller
 
 import com.fitness.tracker.person.model.Person
+import com.fitness.tracker.person.service.CredentialsService
 import com.fitness.tracker.person.service.PersonService
 import groovy.transform.CompileStatic
 import org.springframework.beans.factory.annotation.Autowired
@@ -21,10 +22,14 @@ class PersonDataController {
     @Autowired
     PersonService personService
 
+    @Autowired
+    CredentialsService credentialsService
+
     @GetMapping("/person/update")
     String getUpdateDataForm(Model model){
         Person loggedPerson = personService.getPrincipal()
         model.addAttribute("person", loggedPerson)
+        model.addAttribute("credentials", credentialsService.getPrincipal())
         "updateData"
     }
 

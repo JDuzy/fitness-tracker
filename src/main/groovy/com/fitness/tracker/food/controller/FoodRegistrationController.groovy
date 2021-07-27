@@ -5,6 +5,7 @@ import com.fitness.tracker.person.model.Person
 import com.fitness.tracker.food.model.FoodRegistration
 import com.fitness.tracker.food.service.DailyNutrientsEatenService
 import com.fitness.tracker.food.service.FoodService
+import com.fitness.tracker.person.service.CredentialsService
 import com.fitness.tracker.person.service.PersonService
 import groovy.transform.CompileStatic
 import org.springframework.beans.factory.annotation.Autowired
@@ -41,9 +42,13 @@ class FoodRegistrationController {
     @Autowired
     final DailyNutrientsEatenService dailyNutrientsEatenService
 
+    @Autowired
+    final CredentialsService credentialsService
+
     @GetMapping("/food/registration")
     String getFoodRegistrations(Model model, @RequestParam(required = false, defaultValue = "#{T(java.time.LocalDate).now().toString()}") @DateTimeFormat(iso = DATE) LocalDate registrationDate){
         Person loggedPerson = personService.getPrincipal()
+        model.addAttribute("credentials", credentialsService.getPrincipal())
         model.addAttribute("person", loggedPerson)
 
         //dailyNutrientsEatenService.updateActualNutrientsEatenByEatenDayAndPerson(registrationDate, loggedPerson)
