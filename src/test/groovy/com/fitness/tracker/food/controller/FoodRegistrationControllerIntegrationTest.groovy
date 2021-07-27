@@ -71,7 +71,7 @@ class FoodRegistrationControllerIntegrationTest {
         personUsedToTest = person
         personRepository.save(person)
 
-        doReturn(person).when(personService).getPrincipal()
+        doReturn(personRepository.findById(person.id).orElseThrow({new IllegalStateException("Error seting up Person on testSetUp")})).when(personService).getPrincipal()
         //when(personService.getPrincipal()).thenReturn(person)
     }
 
@@ -83,24 +83,25 @@ class FoodRegistrationControllerIntegrationTest {
         */
         Integer bananaCaloriesPer100g = 84
         Integer appleCaloriesPer80g = 72
-        Integer remainingCaloriesBeforeRegistrations = personUsedToTest.remainingCaloriesFor()
+        LocalDate today = LocalDate.now()
+        Integer remainingCaloriesBeforeRegistrations = personUsedToTest.remainingCaloriesFor(today)
         Integer objectiveCalories = personUsedToTest.objectiveCalories
 
         //WHEN
-        mockMvc.perform(MockMvcRequestBuilders.post(("/food/registration?registrationDate=${LocalDate.now().toString()}"))
+        mockMvc.perform(MockMvcRequestBuilders.post(("/food/registration?registrationDate=${today.toString()}"))
                 .with(SecurityMockMvcRequestPostProcessors.user(personUsedToTest))
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"foodId\": \"1\", \"amount\": \"100\" }")
         )
 
-        mockMvc.perform(MockMvcRequestBuilders.post(("/food/registration?registrationDate=${LocalDate.now().toString()}"))
+        mockMvc.perform(MockMvcRequestBuilders.post(("/food/registration?registrationDate=${today.toString()}"))
                 .with(SecurityMockMvcRequestPostProcessors.user(personUsedToTest))
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"foodId\": \"2\", \"amount\": \"160\" }")
         )
 
-        Integer remainingCaloriesAfterRegistrations = personUsedToTest.remainingCaloriesFor()
-        Integer eatenCaloriesAfterRegistration = personUsedToTest.eatenCaloriesOnActualDay
+        Integer remainingCaloriesAfterRegistrations = personUsedToTest.remainingCaloriesFor(today)
+        Integer eatenCaloriesAfterRegistration = personUsedToTest.eatenCaloriesFor(today)
 
         //THEN
         Assertions.assertEquals(bananaCaloriesPer100g + appleCaloriesPer80g * 2, eatenCaloriesAfterRegistration)
@@ -114,20 +115,21 @@ class FoodRegistrationControllerIntegrationTest {
         /*GIVEN: food with id: 1 -> 'Banana' with 84kcal per 100g
         food with id: 2 -> 'Apple' with 72kcal per 80g
         */
+        LocalDate today = LocalDate.now()
         FoodRegistration registrationToDelete = personService.registerFood(LocalDate.now(), 100.0, 1) //100g of banana
         personService.registerFood(LocalDate.now(), 80.0, 2) //80g of apple
 
-        Integer initialCaloriesEaten = personUsedToTest.eatenCaloriesOnActualDay
+        Integer initialCaloriesEaten = personUsedToTest.eatenCaloriesFor(today)
         Integer caloriesToDelete = registrationToDelete.calories
-        Integer remainingCaloriesBeforeDelete = personUsedToTest.remainingCaloriesFor()
+        Integer remainingCaloriesBeforeDelete = personUsedToTest.remainingCaloriesFor(today)
 
         //WHEN
         mockMvc.perform(MockMvcRequestBuilders.delete(("/food/registration/${registrationToDelete.id}"))
                 .with(SecurityMockMvcRequestPostProcessors.user(personUsedToTest))
         )
 
-        Integer remainingCaloriesAfterDelete = personUsedToTest.remainingCaloriesFor()
-        Integer eatenCaloriesAfterDelete = personUsedToTest.eatenCaloriesOnActualDay
+        Integer remainingCaloriesAfterDelete = personUsedToTest.remainingCaloriesFor(today)
+        Integer eatenCaloriesAfterDelete = personUsedToTest.eatenCaloriesFor(today)
 
 
         //THEN

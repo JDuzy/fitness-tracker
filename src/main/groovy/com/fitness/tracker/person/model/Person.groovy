@@ -81,12 +81,12 @@ class Person implements UserDetails{
     @JoinColumn(name = "daily_nutrients_eaten_id", referencedColumnName = "id")
     DailyNutrientsEaten actualDailyNutrientsEaten = new DailyNutrientsEaten(nutrients: new Nutrients(carbohydrates: 0, proteins: 0, fats: 0), eatenDay: LocalDate.now(), person: this)*/
     //TODO: FetchType lazy
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "person_id")
     Set<DailyNutrientsEaten> dailyNutrientsEaten = []
 
     //TODO: FetchType lazy
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @OrderBy("id ASC")
     Set<FoodRegistration> foodRegistrations = new OrderedHashSet<>()
 
