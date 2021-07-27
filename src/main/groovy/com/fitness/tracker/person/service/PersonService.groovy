@@ -123,7 +123,6 @@ class PersonService implements UserDetailsService{
         FoodRegistration registration = new FoodRegistration(person: person, registrationDate: registrationDate, amountOfGrams: amountOfGrams, food: food)
         //dailyNutrientsEatenService.updateActualNutrientsEatenByEatenDayAndPerson(registrationDate, person)
         person.addFoodRegistration(registration, registrationDate)
-        println person.foodRegistrations.size()
         registration
     }
 

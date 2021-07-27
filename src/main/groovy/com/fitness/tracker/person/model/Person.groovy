@@ -181,7 +181,6 @@ class Person implements UserDetails{
 
     void addFoodRegistration(FoodRegistration foodRegistration, LocalDate date) {
         foodRegistrations.add(foodRegistration)
-        println foodRegistrations.size()
         dailyNutrientsEatenOn(date).addNutrientsBasedOn(foodRegistration)
     }
 

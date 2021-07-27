@@ -50,7 +50,6 @@ class FoodRegistrationController {
 
         List<Food> foods = foodService.findAll()
         Set<FoodRegistration> dailyFoodsRegistrations = personService.getFoodRegistrationsByDate(loggedPerson, registrationDate)
-        println dailyFoodsRegistrations.size()
         //TO DO: Use model.addAttributes in 1 line
         model.addAttribute("foodRegistrations", dailyFoodsRegistrations)
         model.addAttribute("foods", foods)
