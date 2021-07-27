@@ -121,14 +121,14 @@ class PersonService implements UserDetailsService{
         Person person = getPrincipal()
         Food food = foodRepository.findFoodById(foodId).orElseThrow({new IllegalStateException("Food with id ${foodId} does not exists")})
         FoodRegistration registration = new FoodRegistration(person: person, registrationDate: registrationDate, amountOfGrams: amountOfGrams, food: food)
-        foodRegistrationRepository.save(registration)
         //dailyNutrientsEatenService.updateActualNutrientsEatenByEatenDayAndPerson(registrationDate, person)
         person.addFoodRegistration(registration, registrationDate)
+        println person.foodRegistrations.size()
         registration
     }
 
     @Transactional
-    List<FoodRegistration> getFoodRegistrationsByDate(Person person, LocalDate date){
+    Set<FoodRegistration> getFoodRegistrationsByDate(Person person, LocalDate date){
         person.getFoodRegistrationsByDate(date)
     }
 

@@ -5,6 +5,7 @@ import com.fitness.tracker.food.model.DailyNutritionalObjective
 import com.fitness.tracker.food.model.FoodRegistration
 import com.fitness.tracker.food.model.Nutrients
 import groovy.transform.CompileStatic
+import groovyjarjarantlr4.v4.runtime.misc.OrderedHashSet
 import org.springframework.format.annotation.DateTimeFormat
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.SimpleGrantedAuthority
@@ -21,6 +22,7 @@ import javax.persistence.Id
 import javax.persistence.JoinColumn
 import javax.persistence.OneToMany
 import javax.persistence.OneToOne
+import javax.persistence.OrderBy
 import javax.persistence.PrimaryKeyJoinColumn
 import javax.persistence.SequenceGenerator
 import javax.persistence.Table
@@ -79,13 +81,14 @@ class Person implements UserDetails{
     @JoinColumn(name = "daily_nutrients_eaten_id", referencedColumnName = "id")
     DailyNutrientsEaten actualDailyNutrientsEaten = new DailyNutrientsEaten(nutrients: new Nutrients(carbohydrates: 0, proteins: 0, fats: 0), eatenDay: LocalDate.now(), person: this)*/
     //TODO: FetchType lazy
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST  )
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "person_id")
-    Set<DailyNutrientsEaten> dailyNutrientsEaten = [new DailyNutrientsEaten(nutrients: new Nutrients(carbohydrates: 0, proteins: 0, fats: 0),eatenDay: LocalDate.now())] as Set
+    Set<DailyNutrientsEaten> dailyNutrientsEaten = []
 
     //TODO: FetchType lazy
-    @OneToMany(fetch = FetchType.EAGER)
-    List<FoodRegistration> foodRegistrations = new ArrayList<>()
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OrderBy("id ASC")
+    Set<FoodRegistration> foodRegistrations = new OrderedHashSet<>()
 
     @Override
     Collection<? extends GrantedAuthority> getAuthorities() {
@@ -146,7 +149,7 @@ class Person implements UserDetails{
     DailyNutrientsEaten dailyNutrientsEatenOn(LocalDate date){
         Optional.ofNullable(dailyNutrientsEaten.find {it.wereEatenOn(date)}).orElseGet({
             dailyNutrientsEaten.add(new DailyNutrientsEaten(nutrients: new Nutrients(carbohydrates: 0, proteins: 0, fats: 0),eatenDay: date))
-            dailyNutrientsEaten.find {it.wereEatenOn(date)}
+            dailyNutrientsEaten.find({it.wereEatenOn(date)})
         })
 
         /*.ifPresentOrElse({return it}, {
@@ -176,14 +179,14 @@ class Person implements UserDetails{
         dailyNutrientsEatenOn(date).calories
     }
 
-    DailyNutrientsEaten addFoodRegistration(FoodRegistration foodRegistration, LocalDate date) {
+    void addFoodRegistration(FoodRegistration foodRegistration, LocalDate date) {
         foodRegistrations.add(foodRegistration)
+        println foodRegistrations.size()
         dailyNutrientsEatenOn(date).addNutrientsBasedOn(foodRegistration)
-        dailyNutrientsEatenOn(date)
     }
 
-    List<FoodRegistration> getFoodRegistrationsByDate(LocalDate date) {
-        foodRegistrations.findAll {registration -> registration.wasRegisteredOn(date) }.toList()
+    Set<FoodRegistration> getFoodRegistrationsByDate(LocalDate date) {
+        foodRegistrations.findAll {registration -> registration.wasRegisteredOn(date) }
     }
 
 

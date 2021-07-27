@@ -14,7 +14,6 @@ function registerFood(date){
         foodId: foodAnchor.id,
         amount: amount.value
     }))
-    return
 }
 
 function updatePerson(){

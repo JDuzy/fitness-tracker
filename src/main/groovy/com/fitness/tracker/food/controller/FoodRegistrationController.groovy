@@ -49,8 +49,8 @@ class FoodRegistrationController {
         //dailyNutrientsEatenService.updateActualNutrientsEatenByEatenDayAndPerson(registrationDate, loggedPerson)
 
         List<Food> foods = foodService.findAll()
-        List<FoodRegistration> dailyFoodsRegistrations = personService.getFoodRegistrationsByDate(loggedPerson, registrationDate)
-
+        Set<FoodRegistration> dailyFoodsRegistrations = personService.getFoodRegistrationsByDate(loggedPerson, registrationDate)
+        println dailyFoodsRegistrations.size()
         //TO DO: Use model.addAttributes in 1 line
         model.addAttribute("foodRegistrations", dailyFoodsRegistrations)
         model.addAttribute("foods", foods)
