@@ -40,14 +40,16 @@ class PersonService {
             credentials = (Credentials) SecurityContextHolder.getContext().getAuthentication().getPrincipal()
         }
 
-        Optional.ofNullable(credentials)
+        Person person1 = Optional.ofNullable(credentials)
                 .map({credentialsRepository.findById(it.id).map({it.person})})
                 .orElseThrow( {new IllegalStateException("User not on DB")})
                 .orElse(null)
+        println person1.weight
+        person1
     }
 
-
-    Person update(Person person, Map<String, String> payload){
+    @Transactional
+    void updateData(Person person, Map<String, String> payload){
         person.updateData(payload.get("sex"), LocalDate.parse(payload.get("dateOfBirth")), payload.get("height").toInteger(), payload.get("weight").toBigDecimal(), payload.get("objective").toBigDecimal(), payload.get("physicalActivity").toBigDecimal())
     }
 

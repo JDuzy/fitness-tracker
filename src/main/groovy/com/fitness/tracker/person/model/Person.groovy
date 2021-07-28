@@ -113,8 +113,9 @@ class Person{
     DailyNutrientsEaten dailyNutrientsEatenOn(LocalDate date){
         Optional.ofNullable(dailyNutrientsEaten.find {it.wereEatenOn(date)}).orElseGet({
             dailyNutrientsEaten.add(new DailyNutrientsEaten(nutrients: new Nutrients(carbohydrates: 0, proteins: 0, fats: 0),eatenDay: date))
-            dailyNutrientsEaten.find({it.wereEatenOn(date)})
+            dailyNutrientsEaten.find({it.wereEatenOn(date)}) //Intellij cant resolve but it works
         })
+
 
         /*.ifPresentOrElse({return it}, {
             dailyNutrientsEaten.add(new DailyNutrientsEaten(nutrients: new Nutrients(carbohydrates: 0, proteins: 0, fats: 0),eatenDay: date))
@@ -167,7 +168,7 @@ class Person{
         foodRegistrations.remove(registration)
     }
 
-    void updateData(String sex, LocalDate dateOfBirth, Integer height, BigDecimal weight, BigDecimal weightChangePerWeek, BigDecimal physicalActivity) {
+    void updateData(String newSex, LocalDate dateOfBirth, Integer height, BigDecimal weight, BigDecimal weightChangePerWeek, BigDecimal physicalActivity) {
         this.sex = sex
         this.dateOfBirth = dateOfBirth
         this.height = height

@@ -37,7 +37,7 @@ class PersonDataController {
     @ResponseBody
     String putUpdateDataForm(@RequestBody Map<String, String> payload){
         Person loggedPerson = personService.getLoggedPerson()
-        personService.update(loggedPerson, payload)
+        personService.updateData(loggedPerson, payload)
         "Updated"
     }
 }

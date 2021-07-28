@@ -39,12 +39,11 @@ class Bootstrap implements InitializingBean {
     @Override
     void afterPropertiesSet() throws Exception {
         LOG.info("Bootstrapping data")
-        //Set up credentials for the person
-        String password = passwordEncoder.encode("123456")
 
         //Set up the Person
+        String password = passwordEncoder.encode("123456")
         LocalDate dob = LocalDate.now().minusYears(18)
-        Person person = new Person(dateOfBirth: dob, weight: 80, height: 180, sex: "male", physicalActivity: 1.725, weightChangePerWeek: 150)
+        Person person = new Person(dateOfBirth: dob, weight: 80, height: 180, sex: "Male", physicalActivity: 1.725, weightChangePerWeek: 150)
         person.setNutritionalObjective()
 
         Credentials credentials = new Credentials(person: person, userName: "user1", email: "mail@mail.com", password: password, rpassword: password)
