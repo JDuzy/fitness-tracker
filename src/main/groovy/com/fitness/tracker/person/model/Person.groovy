@@ -71,7 +71,7 @@ class Person{
     @JoinColumn(name = "person_id")
     Set<DailyNutrientsEaten> dailyNutrientsEaten = []
 
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "person_id")
     Set<ExerciseRegistration> exerciseRegistrations = new HashSet<>()
 

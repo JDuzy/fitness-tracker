@@ -126,7 +126,6 @@ function registerExercise(date){
         time: time.value,
         weight: weight.value
     }))
-    return
 }
 
 function openExerciseRegistrationEditModal(name, registrationId, date){

@@ -2,7 +2,7 @@ package com.fitness.tracker.exercise.controller
 
 import com.fitness.tracker.exercise.model.Exercise
 import com.fitness.tracker.exercise.model.ExerciseRegistration
-import com.fitness.tracker.exercise.service.ExerciseRegistrationService
+
 import com.fitness.tracker.exercise.service.ExerciseService
 import com.fitness.tracker.person.model.Person
 import com.fitness.tracker.person.service.PersonService
@@ -27,20 +27,16 @@ class ExerciseRegistrationController {
     final PersonService personService
 
     @Autowired
-    final ExerciseRegistrationService exerciseRegistrationService
-
-    @Autowired
     final ExerciseService exerciseService
 
     @GetMapping("/exercise/registration")
     String getExerciseRegistrations(Model model, @RequestParam(required = false, defaultValue = "#{T(java.time.LocalDate).now().toString()}") @DateTimeFormat(iso = DATE) LocalDate registrationDate){
-        Person loggedPerson = personService.getPrincipal()
+        Person loggedPerson = personService.getLoggedPerson()
         model.addAttribute("person", loggedPerson)
 
         List<Exercise> exercises = exerciseService.findAll()
 
         List<ExerciseRegistration> dailyExercisesRegistrations = personService.getExercisesRegistrationsByDate(registrationDate)
-        //List<ExerciseRegistration> dailyExercisesRegistrations = exerciseRegistrationService.findAllExerciseRegistrationByPersonAndRegistrationDate(loggedPerson, registrationDate)
 
         //TO DO: Use model.addAttributes in 1 line
         model.addAttribute("exerciseRegistrations", dailyExercisesRegistrations)
