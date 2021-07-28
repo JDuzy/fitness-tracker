@@ -1,0 +1,46 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Fitness Tracker - Register your exercise </title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+
+</head>
+<body>
+<!--/*@thymesVar id="person" type="com.fitness.tracker.person.model.Person"*/-->
+<header>
+  <div th:insert="fragments/header :: header">...</div>
+</header>
+
+<div class="card" th:object="${person}">
+
+  <div class="card-header row pb-1">
+
+    <a th:href="@{'/exercise/registration?registrationDate=' + ${lastMonth}}" class="bi bi-chevron-left col text-center mt-4"></a>
+
+    <div class="col">
+      <div class="row">
+        <h5 class="col text-center fs-3 fw-bold" th:text="${thisMonth}">Featured</h5>
+      </div>
+      <div class="row">
+        <h5 class="col text-center fs-6" th:text="${thisYear}">Featured</h5>
+      </div>
+    </div>
+
+    <a th:href="@{'/exercise/registration?registrationDate=' + ${nextMonth}}" class="bi bi-chevron-right col text-center mt-4"></a>
+
+  </div>
+
+
+
+</div>
+
+<script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+<script th:src="@{/scripts.js}"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
+</body>
+</html>

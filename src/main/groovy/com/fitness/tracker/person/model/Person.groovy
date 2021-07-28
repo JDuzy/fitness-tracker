@@ -5,6 +5,7 @@ import com.fitness.tracker.food.model.DailyNutrientsEaten
 import com.fitness.tracker.food.model.DailyNutritionalObjective
 import com.fitness.tracker.food.model.FoodRegistration
 import com.fitness.tracker.food.model.Nutrients
+import com.fitness.tracker.weight.model.WeightRegistration
 import groovy.transform.CompileStatic
 import groovy.transform.ToString
 import org.springframework.format.annotation.DateTimeFormat
@@ -82,6 +83,10 @@ class Person implements UserDetails{
     @OneToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "person_id")
     Set<ExerciseRegistration> exerciseRegistrations = new HashSet<>()
+
+    @OneToMany(fetch = FetchType.EAGER)
+    @JoinColumn(name = "person_id")
+    Set<WeightRegistration> weightRegistrations = new HashSet<>()
 
     @Override
     Collection<? extends GrantedAuthority> getAuthorities() {
@@ -173,6 +178,9 @@ class Person implements UserDetails{
         exerciseRegistrations.findAll {registration -> registration.wasRegisteredOn(date)}.toList()
     }
 
+    List<WeightRegistration> getWeightRegistrationsByDate(LocalDate date) {
+        weightRegistrations.findAll {registration -> registration.wasRegisteredOn(date) }.toList()
+    }
 
     void addExerciseRegistration(ExerciseRegistration exerciseRegistration) {
         exerciseRegistrations.add(exerciseRegistration)
@@ -183,12 +191,20 @@ class Person implements UserDetails{
 
     }
 
-    List<ExerciseRegistration> getExerciseRegistrationsByDate(LocalDate date) {
-        exerciseRegistrations.findAll {registration -> registration.wasRegisteredOn(date) }.toList()
-    }
-
     ExerciseRegistration findExerciseRegistrationWithId(Long registrationId) {
         exerciseRegistrations.find({registration -> registration.id == registrationId})
     }
 
+    void addWeightRegistration(WeightRegistration weightRegistration) {
+        weightRegistrations.add(weightRegistration)
+        this.weight = weightRegistration.weight
+    }
+
+    void findWeightRegistrationWithId(long registrationId) {
+        weightRegistrations.find({registration -> registration.id == registrationId})
+    }
+
+    void deleteWeightRegistration(WeightRegistration weightRegistration) {
+        weightRegistrations.remove(weightRegistration)
+    }
 }

@@ -2,7 +2,6 @@ package com.fitness.tracker.exercise.controller
 
 import com.fitness.tracker.exercise.model.Exercise
 import com.fitness.tracker.exercise.model.ExerciseRegistration
-import com.fitness.tracker.exercise.service.ExerciseRegistrationService
 import com.fitness.tracker.exercise.service.ExerciseService
 import com.fitness.tracker.person.model.Person
 import com.fitness.tracker.person.service.PersonService
@@ -27,9 +26,6 @@ class ExerciseRegistrationController {
     final PersonService personService
 
     @Autowired
-    final ExerciseRegistrationService exerciseRegistrationService
-
-    @Autowired
     final ExerciseService exerciseService
 
     @GetMapping("/exercise/registration")
@@ -40,7 +36,6 @@ class ExerciseRegistrationController {
         List<Exercise> exercises = exerciseService.findAll()
 
         List<ExerciseRegistration> dailyExercisesRegistrations = personService.getExercisesRegistrationsByDate(registrationDate)
-        //List<ExerciseRegistration> dailyExercisesRegistrations = exerciseRegistrationService.findAllExerciseRegistrationByPersonAndRegistrationDate(loggedPerson, registrationDate)
 
         //TO DO: Use model.addAttributes in 1 line
         model.addAttribute("exerciseRegistrations", dailyExercisesRegistrations)
@@ -52,7 +47,6 @@ class ExerciseRegistrationController {
         "exerciseRegistration"
     }
 
-    //Request body should have exerciseId: exerciseId, amount: amount
     @PostMapping("/exercise/registration")
     @ResponseBody
     String registerAExercise(@RequestParam @DateTimeFormat(iso = DATE) LocalDate registrationDate, @RequestBody Map<String, String> payload){
@@ -63,7 +57,6 @@ class ExerciseRegistrationController {
         "Exercise registered"
     }
 
-    //Request body should have amount: amount
     @PutMapping("/exercise/registration/{registrationId}")
     @ResponseBody
     String modifyARegistration(@PathVariable Long registrationId, @RequestBody Map<String, String> payload){

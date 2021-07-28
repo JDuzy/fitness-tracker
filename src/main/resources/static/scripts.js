@@ -1,3 +1,11 @@
+/*//registration.html
+$('.text-start').on('submit', function () {
+    alert('Form submitted!');
+    var weightInput = document.getElementById("weightInput")
+    var currentDate = getDate()
+    registerWeight(date, weight)
+});*/
+
 //Person
 function updatePerson(){
     var sexInput = document.getElementById("sexInput")
@@ -20,6 +28,43 @@ function updatePerson(){
         objective: objective.value,
         physicalActivity: physicalActivity.value
     }))
+}
+
+//WeightRegistration
+function registerWeight(date){
+    var weight = document.getElementById("weight-input");
+    var xhr = new XMLHttpRequest();
+    var url = "/weight/registration?registrationDate="
+    xhr.onreadystatechange = function() { // listen for state changes
+        if (xhr.readyState == 4 && xhr.status == 200) { // when completed we can move away
+            window.location = url.concat(date);
+        }
+    }
+    xhr.open("POST", url.concat(date), true);
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.send(JSON.stringify({
+        weight: weight
+    }))
+    return
+}
+
+function registerWeight(date){
+    var foodAnchor = document.getElementsByClassName("list-group-item active")[0];
+    var weight = document.getElementById("weight-input");
+    var xhr = new XMLHttpRequest();
+    var url = "/weight/registration?registrationDate="
+    xhr.onreadystatechange = function() { // listen for state changes
+        if (xhr.readyState == 4 && xhr.status == 200) { // when completed we can move away
+            window.location = url.concat(date);
+        }
+    }
+    xhr.open("POST", url.concat(date), true);
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.send(JSON.stringify({
+        foodId: foodAnchor.id,
+        amount: amount.value
+    }))
+    return
 }
 
 //FoodRegistration
@@ -185,4 +230,15 @@ function openExerciseRegistrationDeleteModal(name, registrationId, date){
     //show dialo
     $modal.modal('show');
 
+}
+
+//utility
+var getDate(){
+    var today = new Date();
+    var dd = String(today.getDate()).padStart(2, '0');
+    var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+    var yyyy = today.getFullYear();
+
+    today = mm + '/' + dd + '/' + yyyy;
+    return today
 }

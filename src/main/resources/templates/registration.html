@@ -19,19 +19,19 @@
 
                 <div class="form-row py-1 text-left">
                     <label>User Name</label>
-                    <input type="text" class="form-control" name="credentials.userName" th:value="*{credentials.userName}" th:errorClass="is-invalid">
+                    <input id="nameInput" type="text" class="form-control" name="credentials.userName" th:value="*{credentials.userName}" th:errorClass="is-invalid">
                     <div th:if="${#fields.hasErrors('credentials.userName')}" th:errors="*{credentials.userName}" class="invalid-feedback"></div>
                 </div>
 
                 <div class="form-row py-1">
                     <label>Email</label>
-                    <input type="text" class="form-control" name="credentials.email" th:value="*{credentials.email}" th:errorClass="is-invalid">
+                    <input id="emailInput" type="text" class="form-control" name="credentials.email" th:value="*{credentials.email}" th:errorClass="is-invalid">
                     <div th:if="${#fields.hasErrors('credentials.email')}" th:errors="*{credentials.email}" class="invalid-feedback"></div>
                 </div>
 
                 <div class="form-row py-1">
                     <label>Password</label>
-                    <input type="password" class="form-control" name="credentials.password" th:value="*{credentials.password}" th:errorClass="is-invalid">
+                    <input id="passwordInput" type="password" class="form-control" name="credentials.password" th:value="*{credentials.password}" th:errorClass="is-invalid">
                     <div th:if="${#fields.hasErrors('credentials.password')}" th:errors="*{credentials.password}" class="invalid-feedback"></div>
                 </div>
 
@@ -43,7 +43,7 @@
 
                 <div class="form-row py-1">
                     <label>Sex</label>
-                    <select required="true" class="form-select form-control" aria-label="Default select example" name="sex" th:value="*{sex}" th:errorClass="is-invalid">
+                    <select id="sexInput" required="true" class="form-select form-control" aria-label="Default select example" name="sex" th:value="*{sex}" th:errorClass="is-invalid">
                         <option value="" selected>Select your sex</option>
                         <option value="Male">Male</option>
                         <option value="Female">Female</option>
@@ -53,19 +53,19 @@
 
                 <div class="form-row py-1">
                     <label>Date of Birth</label>
-                    <input type="date" class="form-control" name="dateOfBirth" th:value="*{dateOfBirth}" th:errorClass="is-invalid">
+                    <input id="birthDateInput" type="date" class="form-control" name="dateOfBirth" th:value="*{dateOfBirth}" th:errorClass="is-invalid">
                     <div th:if="${#fields.hasErrors('dateOfBirth')}" th:errors="*{dateOfBirth}" class="invalid-feedback"></div>
                 </div>
 
                 <div class="form-row py-1">
                     <label>Height (cm)</label>
-                    <input type="number" min="100" max="250" step="1" class="form-control" name="height" th:value="*{height}" th:errorClass="is-invalid">
+                    <input id="heightInput" type="number" min="100" max="250" step="1" class="form-control" name="height" th:value="*{height}" th:errorClass="is-invalid">
                     <div th:if="${#fields.hasErrors('height')}" th:errors="*{height}" class="invalid-feedback"></div>
                 </div>
 
                 <div class="form-row py-1">
                     <label>Weight (kg)</label>
-                    <input type="number" min="30" step="0.01" class="form-control" name="weight" th:value="*{weight}" th:errorClass="is-invalid">
+                    <input id="weightInput" type="number" min="30" step="0.01" class="form-control" name="weight" th:value="*{weight}" th:errorClass="is-invalid">
                     <div th:if="${#fields.hasErrors('weight')}" th:errors="*{weight}" class="invalid-feedback"></div>
                 </div>
 
@@ -108,6 +108,9 @@
         </div>
 
     </div>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+    <script th:src="@{/scripts.js}"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 </body>
 </html>

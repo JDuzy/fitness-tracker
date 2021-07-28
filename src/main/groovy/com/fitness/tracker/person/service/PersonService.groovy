@@ -8,6 +8,7 @@ import com.fitness.tracker.person.model.Credentials
 import com.fitness.tracker.person.model.Person
 import com.fitness.tracker.person.repository.CredentialsRepository
 import com.fitness.tracker.person.repository.PersonRepository
+import com.fitness.tracker.weight.model.WeightRegistration
 import groovy.transform.CompileStatic
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.core.context.SecurityContextHolder
@@ -118,6 +119,11 @@ class PersonService implements UserDetailsService{
         person.getExercisesRegistrationsByDate(date)
     }
 
+    List<WeightRegistration> getWeightRegistrationsByDate(LocalDate date) {
+        Person person = getPrincipal()
+        person.getWeightRegistrationsByDate(date)
+    }
+
     @Transactional
     void registerExercise(LocalDate registrationDate, BigDecimal time, BigDecimal weight, Long exerciseId) {
         Person person = getPrincipal()
@@ -156,4 +162,32 @@ class PersonService implements UserDetailsService{
         exerciseRegistrationRepository.deleteById(registrationId)
     }
 
+    void registerWeight(LocalDate registrationDate, BigDecimal weight) {
+        Person person = getPrincipal()
+        WeightRegistration registration = new WeightRegistration(person: person, registrationDate: registrationDate, weight: weight)
+        person.addWeightRegistration(registration)
+    }
+
+    @Transactional
+    void updateWeightRegistration(Long registrationId, BigDecimal newWeight) {
+        Person person = getPrincipal()
+        WeightRegistration registration = Optional.ofNullable(person.findWeightRegistrationWithId(registrationId) as WeightRegistration)
+                .orElseThrow({
+                    new ResponseStatusException(NOT_FOUND, "No weightRegistration with id: ${registrationId} was found")
+                })
+        person.deleteWeightRegistration(registration)
+        registration.weight = newWeight
+        person.addWeightRegistration(registration)
+        registration
+    }
+
+    @Transactional
+    void deleteWeightRegistration(Long registrationId) {
+        Person person = getPrincipal()
+        WeightRegistration registration = Optional.ofNullable(person.findWeightRegistrationWithId(registrationId) as WeightRegistration)
+                .orElseThrow({
+                    new ResponseStatusException(NOT_FOUND, "No weightRegistration with id: ${registrationId} was found")
+                })
+        person.deleteWeightRegistration(registration)
+    }
 }
