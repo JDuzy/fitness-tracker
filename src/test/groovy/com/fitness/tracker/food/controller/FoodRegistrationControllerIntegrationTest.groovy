@@ -278,13 +278,13 @@ class FoodRegistrationControllerIntegrationTest {
         */
         //Today
         LocalDate today = LocalDate.now()
-        FoodRegistration bananaRegistrationToUpdateToday = personService.registerFood(LocalDate.now(), 100.0, 1) //100g of banana
+        FoodRegistration bananaRegistrationToUpdateToday = personService.registerFood(today, 100.0, 1) //100g of banana
         Integer remainingCaloriesForTodayBeforeUpdate = personUsedToTest.remainingCaloriesFor(today)
         Integer eatenCaloriesTodayBeforeUpdate = personUsedToTest.eatenCaloriesFor(today)
 
         //Yesterday
         LocalDate yesterday = LocalDate.now().minusDays(1)
-        FoodRegistration appleRegistrationToUpdateYesterday = personService.registerFood(LocalDate.now().minusDays(1), 80.0, 2) //80g of apple
+        FoodRegistration appleRegistrationToUpdateYesterday = personService.registerFood(yesterday, 80.0, 2) //80g of apple
         Integer remainingCaloriesForYesterdayBeforeUpdate = personUsedToTest.remainingCaloriesFor(yesterday)
         Integer eatenCaloriesYesterdayBeforeUpdate = personUsedToTest.eatenCaloriesFor(yesterday)
 

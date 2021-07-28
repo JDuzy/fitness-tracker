@@ -7,9 +7,6 @@ import com.fitness.tracker.food.model.Nutrients
 import groovy.transform.CompileStatic
 import groovyjarjarantlr4.v4.runtime.misc.OrderedHashSet
 import org.springframework.format.annotation.DateTimeFormat
-import org.springframework.security.core.GrantedAuthority
-import org.springframework.security.core.authority.SimpleGrantedAuthority
-import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.web.server.ResponseStatusException
 
 import javax.persistence.CascadeType
@@ -83,7 +80,7 @@ class Person{
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @OrderBy("id ASC")
-    Set<FoodRegistration> foodRegistrations = new OrderedHashSet<>()
+    Set<FoodRegistration> foodRegistrations = new LinkedHashSet<>() //TODO: OrderBy or LinkedHashSet
 
 
     /*String getPassword() {

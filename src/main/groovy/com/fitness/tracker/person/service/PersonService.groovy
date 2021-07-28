@@ -44,7 +44,6 @@ class PersonService {
                 .map({credentialsRepository.findById(it.id).map({it.person})})
                 .orElseThrow( {new IllegalStateException("User not on DB")})
                 .orElse(null)
-        println person1.weight
         person1
     }
 
