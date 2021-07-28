@@ -25,7 +25,7 @@ class WeightRegistrationController {
 
     @GetMapping("/weight/registration")
     String getWeightRegistrations(Model model, @RequestParam(required = false, defaultValue = "#{T(java.time.LocalDate).now().toString()}") @DateTimeFormat(iso = DATE) LocalDate registrationDate){
-        Person loggedPerson = personService.getPrincipal()
+        Person loggedPerson = personService.getLoggedPerson()
         model.addAttribute("person", loggedPerson)
 
         List<WeightRegistration> dailyWeightRegistrations = personService.getWeightRegistrationsByDate(registrationDate)

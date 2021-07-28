@@ -61,7 +61,8 @@ class Nutrients {
         update(this - foodRegistration.nutrients)
     }
 
-    /*void updateNutrientsBasedOn(FoodRegistration foodRegistration, BigDecimal newAmount) {
-
-    }*/
+    void updateNutrientsBasedOn(FoodRegistration foodRegistration, BigDecimal newAmount) {
+        update(this - foodRegistration.nutrients)
+        update(this + foodRegistration.calculateNutrientsIfAmountWere(newAmount))
+    }
 }

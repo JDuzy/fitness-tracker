@@ -34,13 +34,13 @@ class DailyNutritionalObjective {
     void calculateObjective(Integer age, BigDecimal weight, Integer height, String sex, BigDecimal physicalActivity, BigDecimal weightChangePerWeek){
         BigDecimal brm
         if (sex == "Male"){
-            brm =  66 + (13.7 * weight) + (5 * height) - (6.8 * age)
+            brm =  66 + (13.7 * weight) + (5 * height) - (6.8 * age)   //Harris-Benedict Equation
         }
         else{
-            brm =  655 + (9.6 * weight) + (1.8 * height) - (4.7 * age)
+            brm =  655 + (9.6 * weight) + (1.8 * height) - (4.7 * age) // Harris-Benedict Equation
         }
 
-        BigDecimal objectiveCalories = (brm * physicalActivity) + weightChangePerWeek
+        BigDecimal objectiveCalories = (brm * physicalActivity) + weightChangePerWeek    //Katch-McArdle multipliers
 
         distributePersonNutrients(objectiveCalories, weight)
     }

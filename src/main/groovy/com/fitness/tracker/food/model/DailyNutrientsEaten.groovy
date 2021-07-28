@@ -36,10 +36,6 @@ class DailyNutrientsEaten {
     @NotNull
     LocalDate eatenDay
 
-    @ManyToOne
-    @JoinColumn(name = "person_id", referencedColumnName = "id")
-    Person person
-
     void addNutrientsBasedOn(FoodRegistration foodRegistration) {
         nutrients.addNutrientsBasedOn(foodRegistration)
     }
@@ -50,5 +46,14 @@ class DailyNutrientsEaten {
 
     Integer getCalories(){
         nutrients.calories
+    }
+
+    Boolean wereEatenOn(LocalDate date){
+        eatenDay.equals(date)
+    }
+
+    void updateEatenNutrientsBasedOn(FoodRegistration foodRegistration, BigDecimal newAmount) {
+        nutrients.updateNutrientsBasedOn(foodRegistration, newAmount)
+
     }
 }

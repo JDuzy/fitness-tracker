@@ -171,7 +171,6 @@ function registerExercise(date){
         time: time.value,
         weight: weight.value
     }))
-    return
 }
 
 function openExerciseRegistrationEditModal(name, registrationId, date){
@@ -233,7 +232,7 @@ function openExerciseRegistrationDeleteModal(name, registrationId, date){
 }
 
 //utility
-var getDate(){
+function getDate(){
     var today = new Date();
     var dd = String(today.getDate()).padStart(2, '0');
     var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!

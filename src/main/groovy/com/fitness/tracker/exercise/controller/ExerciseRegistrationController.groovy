@@ -30,7 +30,7 @@ class ExerciseRegistrationController {
 
     @GetMapping("/exercise/registration")
     String getExerciseRegistrations(Model model, @RequestParam(required = false, defaultValue = "#{T(java.time.LocalDate).now().toString()}") @DateTimeFormat(iso = DATE) LocalDate registrationDate){
-        Person loggedPerson = personService.getPrincipal()
+        Person loggedPerson = personService.getLoggedPerson()
         model.addAttribute("person", loggedPerson)
 
         List<Exercise> exercises = exerciseService.findAll()

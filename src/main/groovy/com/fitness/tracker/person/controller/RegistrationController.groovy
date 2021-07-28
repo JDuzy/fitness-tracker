@@ -1,6 +1,7 @@
 package com.fitness.tracker.person.controller
 
-import com.fitness.tracker.person.model.Person
+import com.fitness.tracker.person.model.Credentials
+import com.fitness.tracker.person.service.CredentialsService
 import com.fitness.tracker.person.service.PersonService
 import groovy.transform.CompileStatic
 import org.springframework.beans.factory.annotation.Autowired
@@ -27,6 +28,9 @@ class RegistrationController {
     @Autowired
     final PersonService personService
 
+    @Autowired
+    final CredentialsService credentialsService
+
     @InitBinder
     void initBinder(WebDataBinder dataBinder){
         StringTrimmerEditor stringTrimmerEditor = new StringTrimmerEditor(true)
@@ -34,24 +38,23 @@ class RegistrationController {
     }
 
     @GetMapping
-    String register(@ModelAttribute Person person, Model model){
-        Person principal = personService.getPrincipal()
+    String register(@ModelAttribute Credentials credentials, Model model){
+        Credentials principal = credentialsService.getPrincipal()
         if (principal != null){
             return "redirect:/food/registration"
         }
-        model.addAttribute("person", person)
+        model.addAttribute("credentials", credentials)
         "registration"
     }
 
     @PostMapping
-    String saveRegistration(@Valid Person person, BindingResult bindingResult, RedirectAttributes redirectAttributes){
-
-        personService.wasRegisteredValidly(person, bindingResult)
+    String saveRegistration(@Valid Credentials credentials, BindingResult bindingResult, RedirectAttributes redirectAttributes){
+        credentialsService.wasRegisteredValidly(credentials, bindingResult)
         if(bindingResult.hasErrors()){
             return "registration"
         }
         redirectAttributes.addFlashAttribute("message", "Succes! Your registration is now complete")
-        personService.register(person)
+        credentialsService.register(credentials)
         "redirect:/login"
     }
 }
