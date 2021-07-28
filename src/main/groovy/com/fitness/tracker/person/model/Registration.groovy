@@ -29,4 +29,8 @@ class Registration {
 
     @NotNull
     LocalDate registrationDate
+
+    Boolean wasRegisteredOn(date){
+        this.registrationDate.equals(date)
+    }
 }

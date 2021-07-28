@@ -4,6 +4,10 @@ import com.fitness.tracker.food.model.Food
 import com.fitness.tracker.food.model.FoodRegistration
 import com.fitness.tracker.food.repository.FoodRegistrationRepository
 import com.fitness.tracker.food.repository.FoodRepository
+import com.fitness.tracker.exercise.model.Exercise
+import com.fitness.tracker.exercise.model.ExerciseRegistration
+import com.fitness.tracker.exercise.repository.ExerciseRegistrationRepository
+import com.fitness.tracker.exercise.repository.ExerciseRepository
 import com.fitness.tracker.person.model.Credentials
 import com.fitness.tracker.person.model.Person
 import com.fitness.tracker.person.repository.CredentialsRepository
@@ -11,21 +15,42 @@ import groovy.transform.CompileStatic
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Service
+import org.springframework.validation.BindingResult
+import org.springframework.validation.FieldError
+import org.springframework.web.server.ResponseStatusException
 
 
 import javax.transaction.Transactional
 import java.time.LocalDate
+
+import static org.springframework.http.HttpStatus.NOT_FOUND
 
 
 @Service
 @CompileStatic
 class PersonService {
 
-    @Autowired
-    final CredentialsRepository credentialsRepository
 
     @Autowired
     final FoodRepository foodRepository
+
+    /*@Autowired
+    final PersonRepository personRepository*/
+
+    @Autowired
+    final CredentialsRepository credentialsRepository
+
+    /*@Autowired
+    final BCryptPasswordEncoder bCryptPasswordEncoder*/
+
+    @Autowired
+    final ExerciseRepository exerciseRepository
+
+    @Autowired
+    final ExerciseRegistrationRepository exerciseRegistrationRepository
+
+    final static String PERSON_NOT_FOUND_MSG = "user with email %s not found"
+
 
     @Autowired
     final FoodRegistrationRepository foodRegistrationRepository
@@ -74,4 +99,48 @@ class PersonService {
         person.deleteFoodRegistrationWithId(registrationId)
         foodRegistrationRepository.deleteById(registrationId)
     }
+
+    List<ExerciseRegistration> getExercisesRegistrationsByDate(LocalDate date) {
+        Person person = getLoggedPerson()
+        person.getExercisesRegistrationsByDate(date)
+    }
+
+    @Transactional
+    void registerExercise(LocalDate registrationDate, BigDecimal time, BigDecimal weight, Long exerciseId) {
+        Person person = getLoggedPerson()
+        Exercise exercise = exerciseRepository.findExerciseById(exerciseId).orElseThrow({
+            new IllegalStateException("Exercise with id ${exerciseId} does not exists")
+        })
+        ExerciseRegistration registration = new ExerciseRegistration(person: person, registrationDate: registrationDate, time: time, weight: weight, exercise: exercise)
+        person.addExerciseRegistration(registration)
+        exerciseRegistrationRepository.save(registration)
+    }
+
+    @Transactional
+    void updateExerciseRegistration(Long registrationId, BigDecimal newTime, BigDecimal newWeight) {
+        Person person = getLoggedPerson()
+        println person.findExerciseRegistrationWithId(registrationId)
+        ExerciseRegistration registration = Optional.ofNullable(person.findExerciseRegistrationWithId(registrationId) as ExerciseRegistration)
+                .orElseThrow({
+                    new ResponseStatusException(NOT_FOUND, "No exerciseRegistration with id: ${registrationId} was found")
+                })
+        person.deleteExerciseRegistration(registration)
+        registration.time = newTime
+        registration.weight = newWeight
+        person.addExerciseRegistration(registration)
+        exerciseRegistrationRepository.save(registration)
+        registration
+    }
+
+    @Transactional
+    void deleteExerciseRegistration(Long registrationId) {
+        Person person = getLoggedPerson()
+        ExerciseRegistration registration = Optional.ofNullable(person.findExerciseRegistrationWithId(registrationId) as ExerciseRegistration)
+                .orElseThrow({
+                    new ResponseStatusException(NOT_FOUND, "No exerciseRegistration with id: ${registrationId} was found")
+                })
+        person.deleteExerciseRegistration(registration)
+        exerciseRegistrationRepository.deleteById(registrationId)
+    }
+
 }

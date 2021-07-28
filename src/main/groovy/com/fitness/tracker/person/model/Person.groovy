@@ -1,5 +1,6 @@
 package com.fitness.tracker.person.model
 
+import com.fitness.tracker.exercise.model.ExerciseRegistration
 import com.fitness.tracker.food.model.DailyNutrientsEaten
 import com.fitness.tracker.food.model.DailyNutritionalObjective
 import com.fitness.tracker.food.model.FoodRegistration
@@ -69,6 +70,10 @@ class Person{
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "person_id")
     Set<DailyNutrientsEaten> dailyNutrientsEaten = []
+
+    @OneToMany(fetch = FetchType.EAGER)
+    @JoinColumn(name = "person_id")
+    Set<ExerciseRegistration> exerciseRegistrations = new HashSet<>()
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @OrderBy("id ASC")
@@ -142,4 +147,25 @@ class Person{
         this.physicalActivity = physicalActivity
         setNutritionalObjective()
     }
+
+    List<ExerciseRegistration> getExercisesRegistrationsByDate(LocalDate date){
+        exerciseRegistrations.findAll {registration -> registration.wasRegisteredOn(date)}.toList()
+    }
+
+    void addExerciseRegistration(ExerciseRegistration exerciseRegistration) {
+        exerciseRegistrations.add(exerciseRegistration)
+    }
+
+    void deleteExerciseRegistration(ExerciseRegistration exerciseRegistration) {
+        exerciseRegistrations.remove(exerciseRegistration)
+    }
+
+    List<ExerciseRegistration> getExerciseRegistrationsByDate(LocalDate date) {
+        exerciseRegistrations.findAll {registration -> registration.wasRegisteredOn(date) }.toList()
+    }
+
+    ExerciseRegistration findExerciseRegistrationWithId(Long registrationId) {
+        exerciseRegistrations.find({registration -> registration.id == registrationId})
+    }
+
 }
