@@ -79,7 +79,7 @@ class FoodRegistrationControllerIntegrationTest {
     }
 
     @Test
-    @Transactional
+    @Transactional //TODO: Transactional on tests? Otherwise -> Lazy initialization error
     void registerSomeFoodsForTodayWithoutPreviousFoodRegistrations(){
 
         /*GIVEN: food with id: 1 -> 'Banana' with 84kcal per 100g
@@ -245,6 +245,8 @@ class FoodRegistrationControllerIntegrationTest {
         Integer caloriesFromBanana = bananaRegistrationToDeleteToday.calories
         Integer caloriesFromApple = appleRegistrationToDeleteYesterday.calories
 
+        foodRegistrationRepository.save(appleRegistrationToDeleteYesterday) //TODO: Same here, if not id would be null
+
         //WHEN
         mockMvc.perform(MockMvcRequestBuilders.delete(("/food/registration/${bananaRegistrationToDeleteToday.id}"))
                 .with(SecurityMockMvcRequestPostProcessors.user(credentialsUsedForTest))
@@ -289,6 +291,8 @@ class FoodRegistrationControllerIntegrationTest {
         Integer eatenCaloriesYesterdayBeforeUpdate = personUsedToTest.eatenCaloriesFor(yesterday)
 
         Integer objectiveCalories = personUsedToTest.objectiveCalories
+
+        foodRegistrationRepository.save(appleRegistrationToUpdateYesterday) //TODO: Why its needed?
 
         //WHEN the person updates the amount of banana from 100g to 50g
         mockMvc.perform(MockMvcRequestBuilders.put(("/food/registration/${bananaRegistrationToUpdateToday.id}"))

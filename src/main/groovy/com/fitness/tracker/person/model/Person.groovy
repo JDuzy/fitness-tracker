@@ -5,7 +5,6 @@ import com.fitness.tracker.food.model.DailyNutritionalObjective
 import com.fitness.tracker.food.model.FoodRegistration
 import com.fitness.tracker.food.model.Nutrients
 import groovy.transform.CompileStatic
-import groovyjarjarantlr4.v4.runtime.misc.OrderedHashSet
 import org.springframework.format.annotation.DateTimeFormat
 import org.springframework.web.server.ResponseStatusException
 
@@ -23,7 +22,6 @@ import javax.persistence.OrderBy
 import javax.persistence.PrimaryKeyJoinColumn
 import javax.persistence.SequenceGenerator
 import javax.persistence.Table
-import javax.validation.Valid
 import javax.validation.constraints.NotBlank
 import javax.validation.constraints.NotNull
 import javax.validation.constraints.Past
@@ -63,12 +61,6 @@ class Person{
     @NotNull
     BigDecimal weightChangePerWeek
 
-    /*@NotNull
-    @OneToOne(cascade = CascadeType.ALL)
-    @PrimaryKeyJoinColumn
-    @Valid
-    Credentials credentials = new Credentials()*/
-
     @NotNull
     @OneToOne(cascade = CascadeType.ALL)
     @PrimaryKeyJoinColumn
@@ -81,23 +73,6 @@ class Person{
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @OrderBy("id ASC")
     Set<FoodRegistration> foodRegistrations = new LinkedHashSet<>() //TODO: OrderBy or LinkedHashSet
-
-
-    /*String getPassword() {
-        return credentials.password
-    }
-
-    void setPassword(String newPassword){
-        credentials.password = newPassword
-    }
-
-    String getUsername() {
-        return credentials.userName
-    }
-
-    String getEmail() {
-        return credentials.email
-    }*/
 
     Integer getAge(){
         Period.between(this.dateOfBirth, LocalDate.now()).getYears()
@@ -112,14 +87,7 @@ class Person{
             dailyNutrientsEaten.add(new DailyNutrientsEaten(nutrients: new Nutrients(carbohydrates: 0, proteins: 0, fats: 0),eatenDay: date))
             dailyNutrientsEaten.find({it.wereEatenOn(date)}) //Intellij cant resolve but it works
         })
-
-
-        /*.ifPresentOrElse({return it}, {
-            dailyNutrientsEaten.add(new DailyNutrientsEaten(nutrients: new Nutrients(carbohydrates: 0, proteins: 0, fats: 0),eatenDay: date))
-            return dailyNutrientsEaten.find{it.wereEatenOn(date)}
-        })*/
     }
-
 
     Nutrients remainingNutrientsForTheActualDay(LocalDate date){
         nutritionalObjective.calculateRemainingNutrients(dailyNutrientsEatenOn(date))
@@ -149,7 +117,6 @@ class Person{
     Set<FoodRegistration> getFoodRegistrationsByDate(LocalDate date) {
         foodRegistrations.findAll {registration -> registration.wasRegisteredOn(date) }
     }
-
 
     void updateFoodRegistrationWithId(Long registrationId, BigDecimal newAmount) {
         FoodRegistration registration = Optional.ofNullable(foodRegistrations.find{it.id.equals(registrationId)})
