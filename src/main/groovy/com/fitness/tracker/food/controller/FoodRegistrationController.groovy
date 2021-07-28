@@ -3,7 +3,6 @@ package com.fitness.tracker.food.controller
 import com.fitness.tracker.food.model.Food
 import com.fitness.tracker.person.model.Person
 import com.fitness.tracker.food.model.FoodRegistration
-import com.fitness.tracker.food.service.DailyNutrientsEatenService
 import com.fitness.tracker.food.service.FoodService
 import com.fitness.tracker.person.service.CredentialsService
 import com.fitness.tracker.person.service.PersonService
@@ -40,9 +39,6 @@ class FoodRegistrationController {
     final FoodService foodService
 
     @Autowired
-    final DailyNutrientsEatenService dailyNutrientsEatenService
-
-    @Autowired
     final CredentialsService credentialsService
 
     @GetMapping("/food/registration")
@@ -51,7 +47,6 @@ class FoodRegistrationController {
         model.addAttribute("credentials", credentialsService.getPrincipal())
         model.addAttribute("person", loggedPerson)
 
-        //dailyNutrientsEatenService.updateActualNutrientsEatenByEatenDayAndPerson(registrationDate, loggedPerson)
 
         List<Food> foods = foodService.findAll()
         Set<FoodRegistration> dailyFoodsRegistrations = personService.getFoodRegistrationsByDate(loggedPerson, registrationDate)

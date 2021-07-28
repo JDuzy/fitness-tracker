@@ -27,10 +27,6 @@ class Registration {
     @Column( name = "id", updatable = false, nullable = false)
     Long id
 
-    @ManyToOne(cascade = CascadeType.MERGE)
-    @JoinColumn(name = "person_id", referencedColumnName = "id")
-    Person person
-
     @NotNull
     LocalDate registrationDate
 }

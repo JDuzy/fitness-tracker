@@ -2,6 +2,7 @@ package com.fitness.tracker.food.model
 
 
 import com.fitness.tracker.person.model.Registration
+import groovy.transform.CompileStatic
 import groovy.transform.EqualsAndHashCode
 import groovy.transform.ToString
 
@@ -16,6 +17,7 @@ import java.time.LocalDate
 @Entity
 @Table(name = "food_registration")
 @ToString
+@CompileStatic
 class FoodRegistration extends Registration{
 
     @NotNull

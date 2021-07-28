@@ -7,7 +7,7 @@ import com.fitness.tracker.food.repository.FoodRepository
 import com.fitness.tracker.person.model.Credentials
 import com.fitness.tracker.person.model.Person
 import com.fitness.tracker.person.repository.CredentialsRepository
-import com.fitness.tracker.person.repository.PersonRepository
+import groovy.transform.CompileStatic
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.InitializingBean
@@ -19,6 +19,7 @@ import java.time.LocalDate
 
 
 @Service
+@CompileStatic
 class Bootstrap implements InitializingBean {
 
     final Logger LOG = LoggerFactory.getLogger(Bootstrap.class)
@@ -26,8 +27,6 @@ class Bootstrap implements InitializingBean {
     @Autowired
     FoodRepository foodRepository
 
-    @Autowired
-    PersonRepository userRepository
 
     @Autowired
     BCryptPasswordEncoder passwordEncoder

@@ -72,6 +72,7 @@ class Person{
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @OrderBy("id ASC")
+    @JoinColumn(name = "person_id")
     Set<FoodRegistration> foodRegistrations = new LinkedHashSet<>() //TODO: OrderBy or LinkedHashSet
 
     Integer getAge(){

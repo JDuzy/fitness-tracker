@@ -7,7 +7,6 @@ import com.fitness.tracker.food.repository.FoodRepository
 import com.fitness.tracker.person.model.Credentials
 import com.fitness.tracker.person.model.Person
 import com.fitness.tracker.person.repository.CredentialsRepository
-import com.fitness.tracker.person.repository.PersonRepository
 import groovy.transform.CompileStatic
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.core.context.SecurityContextHolder
@@ -21,9 +20,6 @@ import java.time.LocalDate
 @Service
 @CompileStatic
 class PersonService {
-
-    @Autowired
-    final PersonRepository personRepository
 
     @Autowired
     final CredentialsRepository credentialsRepository
@@ -56,7 +52,7 @@ class PersonService {
     FoodRegistration registerFood(LocalDate registrationDate, BigDecimal amountOfGrams, Long foodId) {
         Person person = getLoggedPerson()
         Food food = foodRepository.findFoodById(foodId).orElseThrow({new IllegalStateException("Food with id ${foodId} does not exists")})
-        FoodRegistration registration = new FoodRegistration(person: person, registrationDate: registrationDate, amountOfGrams: amountOfGrams, food: food)
+        FoodRegistration registration = new FoodRegistration( registrationDate: registrationDate, amountOfGrams: amountOfGrams, food: food)
         person.addFoodRegistration(registration, registrationDate)
         registration
     }

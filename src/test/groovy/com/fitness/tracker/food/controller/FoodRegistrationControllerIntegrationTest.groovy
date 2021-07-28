@@ -1,7 +1,6 @@
 package com.fitness.tracker.food.controller
 
 import com.fitness.tracker.food.model.FoodRegistration
-import com.fitness.tracker.food.repository.DailyNutrientsEatenRepository
 import com.fitness.tracker.food.repository.FoodRegistrationRepository
 import com.fitness.tracker.person.model.Credentials
 import com.fitness.tracker.person.model.Person
@@ -46,9 +45,6 @@ class FoodRegistrationControllerIntegrationTest {
     BCryptPasswordEncoder passwordEncoder
 
     @Autowired
-    DailyNutrientsEatenRepository dailyNutrientsEatenRepository
-
-    @Autowired
     CredentialsRepository credentialsRepository
 
     Person personUsedToTest
@@ -58,11 +54,6 @@ class FoodRegistrationControllerIntegrationTest {
     @BeforeEach
     void setUp(){
 
-        foodRegistrationRepository.deleteAll()
-        dailyNutrientsEatenRepository.findAll().forEach({
-            it.setPerson(null)
-            dailyNutrientsEatenRepository.delete(it)
-        })
         personRepository.deleteAll()
 
         //Set up the Person
