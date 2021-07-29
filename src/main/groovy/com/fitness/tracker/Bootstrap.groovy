@@ -57,8 +57,8 @@ class Bootstrap implements InitializingBean {
         Food apple = new Food(name: "Apple",  nutrientsPer100Gram: new Nutrients(carbohydrates: 20,proteins: 0.5, fats: 2), characteristics: characteristics, gramsInOnePortion: 80)
         Food pizza = new Food(name: "Pizza", nutrientsPer100Gram: new Nutrients(carbohydrates: 28,proteins: 5, fats: 9), characteristics: characteristics, gramsInOnePortion: 150)
         Food chickenBreast = new Food(name: "Chicken breast", nutrientsPer100Gram: new Nutrients(carbohydrates: 20,proteins: 22, fats: 5), characteristics: characteristics, gramsInOnePortion: 120)
-        Food hamburguer = new Food(name: "Hamburguer",nutrientsPer100Gram: new Nutrients(carbohydrates: 38,proteins: 9, fats: 15), characteristics: characteristics, gramsInOnePortion: 300)
-        foodRepository.saveAll(Arrays.asList(banana, apple, pizza, chickenBreast, hamburguer))
+        Food hamburger = new Food(name: "Hamburger",nutrientsPer100Gram: new Nutrients(carbohydrates: 38,proteins: 9, fats: 15), characteristics: characteristics, gramsInOnePortion: 300)
+        foodRepository.saveAll(Arrays.asList(banana, apple, pizza, chickenBreast, hamburger))
 
         //Set up exercises
         Exercise pechoPlano = new Exercise(name: "Bench Press", type: Exercise.Type.AEROBIC, caloriesBurnedPerMinute: 100)

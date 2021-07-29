@@ -71,7 +71,7 @@ class Person{
     @JoinColumn(name = "person_id")
     Set<DailyNutrientsEaten> dailyNutrientsEaten = []
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "person_id")
     Set<ExerciseRegistration> exerciseRegistrations = new LinkedHashSet<>()
 
@@ -148,7 +148,6 @@ class Person{
         dailyNutrientsEatenOn(registration.registrationDate).deleteNutrientsBasedOn(registration)
         foodRegistrations.remove(registration)
     }
-
 
     Set<ExerciseRegistration> getExercisesRegistrationsByDate(LocalDate date){
         exerciseRegistrations.findAll {registration -> registration.wasRegisteredOn(date)}
