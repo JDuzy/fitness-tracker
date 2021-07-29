@@ -36,10 +36,6 @@ class FoodRegistration extends Registration{
         food.getCaloriesPerAmount(amountOfGrams)
     }
 
-    Boolean wasRegisteredOn(LocalDate date){
-        registrationDate.equals(date)
-    }
-
     Nutrients calculateNutrientsIfAmountWere(BigDecimal amount) {
         food.getNutrientsPerAmount(amount)
     }

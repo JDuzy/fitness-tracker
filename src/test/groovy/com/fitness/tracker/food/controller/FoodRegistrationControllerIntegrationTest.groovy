@@ -2,9 +2,9 @@ package com.fitness.tracker.food.controller
 
 import com.fitness.tracker.food.model.FoodRegistration
 import com.fitness.tracker.food.repository.FoodRegistrationRepository
-import com.fitness.tracker.person.model.Credentials
+import com.fitness.tracker.security.Credentials
 import com.fitness.tracker.person.model.Person
-import com.fitness.tracker.person.repository.CredentialsRepository
+import com.fitness.tracker.security.repository.CredentialsRepository
 import com.fitness.tracker.person.repository.PersonRepository
 import com.fitness.tracker.person.service.PersonService
 import org.junit.jupiter.api.Assertions

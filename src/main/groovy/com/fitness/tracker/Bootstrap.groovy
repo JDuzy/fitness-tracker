@@ -6,9 +6,9 @@ import com.fitness.tracker.food.model.Characteristics
 import com.fitness.tracker.food.model.Food
 import com.fitness.tracker.food.model.Nutrients
 import com.fitness.tracker.food.repository.FoodRepository
-import com.fitness.tracker.person.model.Credentials
+import com.fitness.tracker.security.Credentials
 import com.fitness.tracker.person.model.Person
-import com.fitness.tracker.person.repository.CredentialsRepository
+import com.fitness.tracker.security.repository.CredentialsRepository
 import groovy.transform.CompileStatic
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory

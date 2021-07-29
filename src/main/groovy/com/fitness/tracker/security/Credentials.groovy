@@ -1,5 +1,6 @@
-package com.fitness.tracker.person.model
+package com.fitness.tracker.security
 
+import com.fitness.tracker.person.model.Person
 import groovy.transform.CompileStatic
 import org.hibernate.validator.constraints.Length
 import org.springframework.security.core.GrantedAuthority

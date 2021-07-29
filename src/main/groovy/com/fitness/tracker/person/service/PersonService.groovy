@@ -7,9 +7,9 @@ import com.fitness.tracker.food.repository.FoodRepository
 import com.fitness.tracker.exercise.model.Exercise
 import com.fitness.tracker.exercise.model.ExerciseRegistration
 import com.fitness.tracker.exercise.repository.ExerciseRepository
-import com.fitness.tracker.person.model.Credentials
+import com.fitness.tracker.security.Credentials
 import com.fitness.tracker.person.model.Person
-import com.fitness.tracker.person.repository.CredentialsRepository
+import com.fitness.tracker.security.repository.CredentialsRepository
 import groovy.transform.CompileStatic
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.core.context.SecurityContextHolder
@@ -35,9 +35,6 @@ class PersonService {
 
     @Autowired
     final ExerciseRepository exerciseRepository
-
-    final static String PERSON_NOT_FOUND_MSG = "user with email %s not found"
-
 
     @Autowired
     final FoodRegistrationRepository foodRegistrationRepository

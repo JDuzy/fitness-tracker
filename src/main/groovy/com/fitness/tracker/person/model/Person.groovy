@@ -138,7 +138,7 @@ class Person{
         foodRegistrations.remove(registration)
     }
 
-    void updateData(String newSex, LocalDate dateOfBirth, Integer height, BigDecimal weight, BigDecimal weightChangePerWeek, BigDecimal physicalActivity) {
+    void updateData(String sex, LocalDate dateOfBirth, Integer height, BigDecimal weight, BigDecimal weightChangePerWeek, BigDecimal physicalActivity) {
         this.sex = sex
         this.dateOfBirth = dateOfBirth
         this.height = height

@@ -33,4 +33,5 @@ class Registration {
     Boolean wasRegisteredOn(date){
         this.registrationDate.equals(date)
     }
+
 }
