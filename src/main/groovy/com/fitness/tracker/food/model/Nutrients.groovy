@@ -12,6 +12,7 @@ import javax.persistence.SequenceGenerator
 import javax.persistence.Table
 import javax.validation.constraints.NotNull
 import java.math.RoundingMode
+import java.util.stream.Collectors
 
 @Entity
 @Table(name = "nutrients")
@@ -25,32 +26,32 @@ class Nutrients {
     long id
 
     @NotNull
-    BigDecimal carbohydrates
+    BigDecimal gramsOfCarbohydrates
 
     @NotNull
-    BigDecimal proteins
+    BigDecimal gramsOfProtein
 
     @NotNull
-    BigDecimal fats
+    BigDecimal gramsOfFats
 
 
     Integer getCalories(){
-        BigDecimal calories = (carbohydrates * 4 + proteins * 4 + fats * 4).setScale(0, RoundingMode.HALF_UP)
+        BigDecimal calories = (gramsOfCarbohydrates * 4 + gramsOfProtein * 4 + gramsOfFats * 4).setScale(0, RoundingMode.HALF_UP)
         calories.toInteger()
     }
 
     Nutrients minus(Nutrients other){
-        new Nutrients(carbohydrates: this.carbohydrates - other.carbohydrates, proteins: this.proteins - other.proteins, fats: this.fats - other.fats)
+        new Nutrients(gramsOfCarbohydrates: this.gramsOfCarbohydrates - other.gramsOfCarbohydrates, gramsOfProtein: this.gramsOfProtein - other.gramsOfProtein, gramsOfFats: this.gramsOfFats - other.gramsOfFats)
     }
 
     Nutrients plus(Nutrients other){
-        new Nutrients(carbohydrates: this.carbohydrates + other.carbohydrates, proteins: this.proteins + other.proteins, fats: this.fats + other.fats)
+        new Nutrients(gramsOfCarbohydrates: this.gramsOfCarbohydrates + other.gramsOfCarbohydrates, gramsOfProtein: this.gramsOfProtein + other.gramsOfProtein, gramsOfFats: this.gramsOfFats + other.gramsOfFats)
     }
 
     void update(Nutrients other) {
-        this.carbohydrates = other.carbohydrates
-        this.proteins = other.proteins
-        this.fats = other.fats
+        this.gramsOfCarbohydrates = other.gramsOfCarbohydrates
+        this.gramsOfProtein = other.gramsOfProtein
+        this.gramsOfFats = other.gramsOfFats
     }
 
     void addNutrientsBasedOn(FoodRegistration foodRegistration) {
@@ -64,5 +65,22 @@ class Nutrients {
     void updateNutrientsBasedOn(FoodRegistration foodRegistration, BigDecimal newAmount) {
         update(this - foodRegistration.nutrients)
         update(this + foodRegistration.calculateNutrientsIfAmountWere(newAmount))
+    }
+
+    Boolean hasSameMainNutrient(Nutrients other){
+        Map<String, BigDecimal> thisGramsPerNutrient = ["carbs" : this.gramsOfCarbohydrates, "proteins" : this.gramsOfProtein, "fats" : this.gramsOfFats]
+        BigDecimal thisTotalGrams = thisGramsPerNutrient.values().stream().reduce(BigDecimal.ZERO, BigDecimal::add)
+        Map.Entry<String, BigDecimal> thisMainNutrient =  thisGramsPerNutrient.entrySet().find {nutrientWithItsPercentage-> ((nutrientWithItsPercentage.getValue() * 100)/ thisTotalGrams) > 50}
+
+        Map<String, BigDecimal> otherGramsPerNutrient = ["carbs" : other.gramsOfCarbohydrates, "proteins" : other.gramsOfProtein, "fats" : other.gramsOfFats]
+        BigDecimal otherTotalGrams = thisGramsPerNutrient.values().stream().reduce(BigDecimal.ZERO, BigDecimal::add)
+
+        Map.Entry<String, BigDecimal> otherMainNutrient =  thisGramsPerNutrient.entrySet().find {nutrientWithItsPercentage-> ((nutrientWithItsPercentage.getValue() * 100)/ otherTotalGrams) > 50}
+
+
+    }
+
+    void func(){
+        List<Integer> lists = new ArrayList<Integer>()
     }
 }

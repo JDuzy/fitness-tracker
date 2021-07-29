@@ -50,14 +50,14 @@ class DailyNutritionalObjective {
         this.objectiveNutrients - dailyNutrientsEaten.nutrients
     }
 
-    void distributePersonNutrients(BigDecimal objectiveCalories, BigDecimal weight){
+    private void distributePersonNutrients(BigDecimal objectiveCalories, BigDecimal weight){
         BigDecimal proteins = weight * 2
         BigDecimal fats = weight
         BigDecimal caloriesFromProteinAndFats = proteins * 4 + fats * 9
         BigDecimal caloriesForCarbohydrates = objectiveCalories - caloriesFromProteinAndFats
         BigDecimal carbohydrates = caloriesForCarbohydrates / 4
 
-        objectiveNutrients.update(new Nutrients(carbohydrates: carbohydrates, proteins: proteins, fats: fats))
+        objectiveNutrients.update(new Nutrients(gramsOfCarbohydrates: carbohydrates, gramsOfProtein: proteins, gramsOfFats: fats))
     }
 
 

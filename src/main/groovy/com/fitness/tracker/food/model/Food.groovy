@@ -48,23 +48,27 @@ class Food {
     }
 
     BigDecimal getCarbohydrates(){
-        nutrientsPer100Gram.carbohydrates
+        nutrientsPer100Gram.gramsOfCarbohydrates
     }
 
     BigDecimal getProteins(){
-        nutrientsPer100Gram.proteins
+        nutrientsPer100Gram.gramsOfProtein
     }
 
     BigDecimal getFats(){
-        nutrientsPer100Gram.fats
+        nutrientsPer100Gram.gramsOfFats
     }
 
     Nutrients getNutrientsPerAmount(BigDecimal amountOfGrams){
-        new Nutrients(carbohydrates: (amountOfGrams * carbohydrates)/100 , proteins: (amountOfGrams * proteins)/100, fats: (amountOfGrams * fats)/100)
+        new Nutrients(gramsOfCarbohydrates: (amountOfGrams * carbohydrates)/100 , gramsOfProtein: (amountOfGrams * proteins)/100, gramsOfFats: (amountOfGrams * fats)/100)
     }
 
     Integer getCaloriesPerAmount(BigDecimal amountOfGrams){
         getNutrientsPerAmount(amountOfGrams).calories
+    }
+
+    Boolean hasSameMainNutrient(Nutrients otherNutrients){
+        this.nutrientsPer100Gram.hasSameMainNutrient(otherNutrients)
     }
 
 

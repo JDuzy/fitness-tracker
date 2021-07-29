@@ -101,7 +101,7 @@ class Person{
 
     DailyNutrientsEaten dailyNutrientsEatenOn(LocalDate date){
         Optional.ofNullable(dailyNutrientsEaten.find {it.wereEatenOn(date)}).orElseGet({
-            DailyNutrientsEaten nutrientsEaten = new DailyNutrientsEaten(nutrients: new Nutrients(carbohydrates: 0, proteins: 0, fats: 0),eatenDay: date)
+            DailyNutrientsEaten nutrientsEaten = new DailyNutrientsEaten(nutrients: new Nutrients(gramsOfCarbohydrates: 0, gramsOfProtein: 0, gramsOfFats: 0),eatenDay: date)
             dailyNutrientsEaten.add(nutrientsEaten)
             nutrientsEaten
         })
