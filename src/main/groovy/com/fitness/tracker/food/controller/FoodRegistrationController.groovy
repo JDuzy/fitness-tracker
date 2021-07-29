@@ -46,17 +46,7 @@ class FoodRegistrationController {
         Person loggedPerson = personService.getLoggedPerson()
         List<Food> foods = foodService.findAll()
         Set<FoodRegistration> dailyFoodsRegistrations = personService.getFoodRegistrationsByDate(loggedPerson, registrationDate)
-        //TO DO: Use model.addAttributes in 1 line
         model.addAllAttributes([ "credentials":credentialsService.getPrincipal(), "person":loggedPerson, "foodRegistrations":dailyFoodsRegistrations, "foods":foods ,"today":registrationDate, "yesterday":registrationDate.minusDays(1).toString(), "tomorrow":registrationDate.plusDays(1).toString()])
-
-        /*model.addAttribute("credentials", credentialsService.getPrincipal())
-        model.addAttribute("person", loggedPerson)
-        model.addAttribute("foodRegistrations", dailyFoodsRegistrations)
-        model.addAttribute("foods", foods)
-        model.addAttribute("today", registrationDate)
-        model.addAttribute("yesterday", registrationDate.minusDays(1).toString())
-        model.addAttribute("tomorrow", registrationDate.plusDays(1).toString())*/
-
         "foodRegistration"
     }
 

@@ -73,7 +73,7 @@ class Person{
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "person_id")
-    Set<ExerciseRegistration> exerciseRegistrations = new HashSet<>()
+    Set<ExerciseRegistration> exerciseRegistrations = new LinkedHashSet<>()
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @OrderBy("id ASC")
@@ -90,8 +90,9 @@ class Person{
 
     DailyNutrientsEaten dailyNutrientsEatenOn(LocalDate date){
         Optional.ofNullable(dailyNutrientsEaten.find {it.wereEatenOn(date)}).orElseGet({
-            dailyNutrientsEaten.add(new DailyNutrientsEaten(nutrients: new Nutrients(carbohydrates: 0, proteins: 0, fats: 0),eatenDay: date))
-            dailyNutrientsEaten.find({it.wereEatenOn(date)}) //Intellij cant resolve but it works
+            DailyNutrientsEaten nutrientsEaten = new DailyNutrientsEaten(nutrients: new Nutrients(carbohydrates: 0, proteins: 0, fats: 0),eatenDay: date)
+            dailyNutrientsEaten.add(nutrientsEaten)
+            nutrientsEaten
         })
     }
 
@@ -148,8 +149,8 @@ class Person{
         setNutritionalObjective()
     }
 
-    List<ExerciseRegistration> getExercisesRegistrationsByDate(LocalDate date){
-        exerciseRegistrations.findAll {registration -> registration.wasRegisteredOn(date)}.toList()
+    Set<ExerciseRegistration> getExercisesRegistrationsByDate(LocalDate date){
+        exerciseRegistrations.findAll {registration -> registration.wasRegisteredOn(date)}
     }
 
     void addExerciseRegistration(ExerciseRegistration exerciseRegistration) {
@@ -158,10 +159,6 @@ class Person{
 
     void deleteExerciseRegistration(ExerciseRegistration exerciseRegistration) {
         exerciseRegistrations.remove(exerciseRegistration)
-    }
-
-    List<ExerciseRegistration> getExerciseRegistrationsByDate(LocalDate date) {
-        exerciseRegistrations.findAll {registration -> registration.wasRegisteredOn(date) }.toList()
     }
 
     ExerciseRegistration findExerciseRegistrationWithId(Long registrationId) {

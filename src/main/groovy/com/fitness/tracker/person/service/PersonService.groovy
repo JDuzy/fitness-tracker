@@ -83,7 +83,7 @@ class PersonService {
         person.deleteFoodRegistrationWithId(registrationId)
     }
 
-    List<ExerciseRegistration> getExercisesRegistrationsByDate(LocalDate date) {
+    Set<ExerciseRegistration> getExercisesRegistrationsByDate(LocalDate date) {
         Person person = getLoggedPerson()
         person.getExercisesRegistrationsByDate(date)
     }
