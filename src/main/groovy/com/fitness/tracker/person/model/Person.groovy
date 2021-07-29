@@ -72,11 +72,12 @@ class Person{
     Set<DailyNutrientsEaten> dailyNutrientsEaten = []
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OrderBy("id ASC")
     @JoinColumn(name = "person_id")
     Set<ExerciseRegistration> exerciseRegistrations = new LinkedHashSet<>()
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    //@OrderBy("id ASC")
+    @OrderBy("id ASC")
     @JoinColumn(name = "person_id") //TODO: If joined by that column removing a registration must use foodRegistrationRepository.remove()
     Set<FoodRegistration> foodRegistrations = new LinkedHashSet<>()
 
