@@ -76,12 +76,22 @@ class Person{
     Set<ExerciseRegistration> exerciseRegistrations = new LinkedHashSet<>()
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @OrderBy("id ASC")
-    @JoinColumn(name = "person_id")
-    Set<FoodRegistration> foodRegistrations = new LinkedHashSet<>() //TODO: OrderBy or LinkedHashSet
+    //@OrderBy("id ASC")
+    @JoinColumn(name = "person_id") //TODO: If joined by that column removing a registration must use foodRegistrationRepository.remove()
+    Set<FoodRegistration> foodRegistrations = new LinkedHashSet<>()
 
     Integer getAge(){
         Period.between(this.dateOfBirth, LocalDate.now()).getYears()
+    }
+
+    void updateData(String sex, LocalDate dateOfBirth, Integer height, BigDecimal weight, BigDecimal weightChangePerWeek, BigDecimal physicalActivity) {
+        this.sex = sex
+        this.dateOfBirth = dateOfBirth
+        this.height = height
+        this.weight = weight
+        this.weightChangePerWeek = weightChangePerWeek
+        this.physicalActivity = physicalActivity
+        setNutritionalObjective()
     }
 
     void setNutritionalObjective(){
@@ -139,15 +149,6 @@ class Person{
         foodRegistrations.remove(registration)
     }
 
-    void updateData(String sex, LocalDate dateOfBirth, Integer height, BigDecimal weight, BigDecimal weightChangePerWeek, BigDecimal physicalActivity) {
-        this.sex = sex
-        this.dateOfBirth = dateOfBirth
-        this.height = height
-        this.weight = weight
-        this.weightChangePerWeek = weightChangePerWeek
-        this.physicalActivity = physicalActivity
-        setNutritionalObjective()
-    }
 
     Set<ExerciseRegistration> getExercisesRegistrationsByDate(LocalDate date){
         exerciseRegistrations.findAll {registration -> registration.wasRegisteredOn(date)}
@@ -157,12 +158,16 @@ class Person{
         exerciseRegistrations.add(exerciseRegistration)
     }
 
-    void deleteExerciseRegistration(ExerciseRegistration exerciseRegistration) {
-        exerciseRegistrations.remove(exerciseRegistration)
+    void updateExerciseRegistrationWithId(Long registrationId, BigDecimal newTime, BigDecimal newWeight) {
+        ExerciseRegistration registration = Optional.ofNullable(exerciseRegistrations.find{it.id.equals(registrationId)})
+                .orElseThrow({new ResponseStatusException(NOT_FOUND, "No exerciseRegistration with id: ${registrationId} was found")})
+        registration.setTime(newTime)
+        registration.setWeight(newWeight)
     }
 
-    ExerciseRegistration findExerciseRegistrationWithId(Long registrationId) {
-        exerciseRegistrations.find({registration -> registration.id == registrationId})
+    void deleteExerciseRegistrationWithId(Long registrationId) {
+        ExerciseRegistration registration = Optional.ofNullable(exerciseRegistrations.find{it.id.equals(registrationId)})
+                .orElseThrow({new ResponseStatusException(NOT_FOUND, "No exerciseRegistration with id: ${registrationId} was found")})
+        exerciseRegistrations.remove(registration)
     }
-
 }

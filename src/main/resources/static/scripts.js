@@ -39,7 +39,6 @@ function registerFood(date){
         foodId: foodAnchor.id,
         amount: amount.value
     }))
-    return
 }
 
 function setXhrRedirect(xhr, urlForGet){
@@ -73,7 +72,6 @@ function openFoodRegistrationEditModal(name, registrationId, date){
         xhr.send(JSON.stringify({
             amount: $amount.val()
         }))
-        return
     };
 
     $btnModify.click(handler);
@@ -97,7 +95,6 @@ function openFoodRegistrationDeleteModal(name, registrationId, date){
 
         xhr.open("DELETE", urlForDelete, true);
         xhr.send();
-        return
     };
 
     $btnDelete.click(handler);
@@ -152,7 +149,6 @@ function openExerciseRegistrationEditModal(name, registrationId, date){
             time: $time.val(),
             weight: $weight.val()
         }))
-        return
     };
 
     $btnModify.click(handler);
@@ -176,7 +172,6 @@ function openExerciseRegistrationDeleteModal(name, registrationId, date){
 
         xhr.open("DELETE", urlForDelete, true);
         xhr.send();
-        return
     };
 
     $btnDelete.click(handler);

@@ -8,6 +8,5 @@ import org.springframework.stereotype.Repository
 
 @Repository
 interface PersonRepository extends JpaRepository<Person, Long>{
-    //TODO: Delete usage in tests
 
 }

@@ -53,7 +53,6 @@ class FoodRegistrationControllerIntegrationTest {
 
     @BeforeEach
     void setUp(){
-
         personRepository.deleteAll()
 
         //Set up the Person
@@ -66,7 +65,7 @@ class FoodRegistrationControllerIntegrationTest {
         credentialsRepository.save(credentialsUsedForTest)
 
         doReturn(personRepository.findById(personUsedToTest.id).orElseThrow({new IllegalStateException("Error seting up Person on testSetUp")})).when(personService).getLoggedPerson()
-        //when(personService.getPrincipal()).thenReturn(person)
+
     }
 
     @Test
