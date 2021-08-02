@@ -44,9 +44,15 @@ class FoodRegistrationController {
     @GetMapping("/food/registration")
     String getFoodRegistrations(Model model, @RequestParam(required = false, defaultValue = "#{T(java.time.LocalDate).now().toString()}") @DateTimeFormat(iso = DATE) LocalDate registrationDate){
         Person loggedPerson = personService.getLoggedPerson()
-        List<Food> foods = foodService.findAll()
+        List<Food> allFoods = foodService.findAll()
+        List<Food> recommendedFoods = personService.getRecommendedFoods(allFoods, registrationDate);
         Set<FoodRegistration> dailyFoodsRegistrations = personService.getFoodRegistrationsByDate( registrationDate)
-        model.addAllAttributes([ "credentials":credentialsService.getPrincipal(), "person":loggedPerson, "foodRegistrations":dailyFoodsRegistrations, "foods":foods ,"today":registrationDate, "yesterday":registrationDate.minusDays(1).toString(), "tomorrow":registrationDate.plusDays(1).toString()])
+
+        //Delete
+        String remainingNutrients = loggedPerson.remainingNutrientsForTheActualDay(registrationDate).toString()
+
+        model.addAllAttributes([ "remainingNutrients":remainingNutrients,"credentials":credentialsService.getPrincipal(), "person":loggedPerson, "foodRegistrations":dailyFoodsRegistrations, "foods":allFoods, "recommendedFoods": recommendedFoods,
+                                 "today":registrationDate, "yesterday":registrationDate.minusDays(1).toString(), "tomorrow":registrationDate.plusDays(1).toString()])
         "foodRegistration"
     }
 

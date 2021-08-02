@@ -25,19 +25,26 @@ function updatePerson(){
 //FoodRegistration
 function registerFood(date){
     var foodAnchor = document.getElementsByClassName("list-group-item active")[0];
-    var amount = document.getElementById("amount-input");
+    var inputs = document.getElementsByName("amount-input");
+    var amount = null;
+    for (let input of inputs){
+        if (input.value != ""){
+            amount = input.value
+        }
+    }
     var xhr = new XMLHttpRequest();
-    var url = "/food/registration?registrationDate="
-    xhr.onreadystatechange = function() { // listen for state changes
+    var url = "/food/registration?registrationDate=".concat(date)
+    setXhrRedirect(xhr, url)
+    /*xhr.onreadystatechange = function() { // listen for state changes
         if (xhr.readyState == 4 && xhr.status == 200) { // when completed we can move away
             window.location = url.concat(date);
         }
-    }
-    xhr.open("POST", url.concat(date), true);
+    }*/
+    xhr.open("POST", url, true);
     xhr.setRequestHeader('Content-Type', 'application/json');
     xhr.send(JSON.stringify({
-        foodId: foodAnchor.id,
-        amount: amount.value
+        foodId: foodAnchor.getAttribute("value"),
+        amount: amount
     }))
 }
 

@@ -102,4 +102,7 @@ class PersonService {
         getLoggedPerson().deleteExerciseRegistrationWithId(registrationId)
     }
 
+    List<Food> getRecommendedFoods(List<Food> allFoods, LocalDate date) {
+        getLoggedPerson().receiveFoodRecommendations(allFoods, date)
+    }
 }

@@ -67,8 +67,8 @@ class Food {
         getNutrientsPerAmount(amountOfGrams).calories
     }
 
-    Boolean hasSameMainNutrient(Nutrients otherNutrients){
-        this.nutrientsPer100Gram.hasSameMainNutrient(otherNutrients)
+    Boolean hasSimilarNutrientDistributionTo(Nutrients otherNutrients){
+        this.nutrientsPer100Gram.hasSimilarNutrientDistributionTo(otherNutrients)
     }
 
 

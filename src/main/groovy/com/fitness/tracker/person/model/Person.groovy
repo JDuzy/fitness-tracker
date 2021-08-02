@@ -3,6 +3,8 @@ package com.fitness.tracker.person.model
 import com.fitness.tracker.exercise.model.ExerciseRegistration
 import com.fitness.tracker.food.model.DailyNutrientsEaten
 import com.fitness.tracker.food.model.DailyNutritionalObjective
+import com.fitness.tracker.food.model.Food
+import com.fitness.tracker.food.model.FoodRecommender
 import com.fitness.tracker.food.model.FoodRegistration
 import com.fitness.tracker.food.model.Nutrients
 import groovy.transform.CompileStatic
@@ -169,5 +171,10 @@ class Person{
         ExerciseRegistration registration = Optional.ofNullable(exerciseRegistrations.find{it.id.equals(registrationId)})
                 .orElseThrow({new ResponseStatusException(NOT_FOUND, "No exerciseRegistration with id: ${registrationId} was found")})
         exerciseRegistrations.remove(registration)
+    }
+
+    List<Food> receiveFoodRecommendations(List<Food> foods, LocalDate date) {
+        FoodRecommender recommender = new FoodRecommender()
+        recommender.recommendBasedOnRemainingNutrients(foods, remainingNutrientsForTheActualDay(date))
     }
 }

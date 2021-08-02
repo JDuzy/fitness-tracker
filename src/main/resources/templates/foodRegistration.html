@@ -15,41 +15,100 @@
     <div th:insert="fragments/header :: header">...</div>
   </header>
 
-  <!-- Food Registration Modal-->
-  <div class="modal fade" id="FoodModal" tabindex="-1" aria-labelledby="foodsModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable modal-fullscreen-sm-down">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="foodsModalLabel">Search food</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <div class="list-group">
-            <!--/*@thymesVar id="food" type="com.fitness.tracker.food.model.Food"*/-->
-            <a th:each="food : ${foods}" th:id="${food.id}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-start" data-bs-toggle="list">
-              <div class="ms-2 me-auto">
-                <div class="fw-bold" th:text="${food.name}"></div>
-                <span th:text="${food.gramsInOnePortion} + ' g'" th:remove="tag"></span>
-              </div>
-              <span class="badge bg-dark rounded-pill mx-1" th:text="'Carbs ' + ${#numbers.formatDecimal(food.getNutrientsPerAmount(food.gramsInOnePortion).gramsOfCarbohydrates, 1, 1)} + 'g'"></span>
-              <span class="badge bg-dark rounded-pill mx-1" th:text="'Proteins ' + ${#numbers.formatDecimal(food.getNutrientsPerAmount(food.gramsInOnePortion).gramsOfProtein, 1, 1)} + 'g'"></span>
-              <span class="badge bg-dark rounded-pill mx-1" th:text="'Fats ' +${#numbers.formatDecimal(food.getNutrientsPerAmount(food.gramsInOnePortion).GramsOfFats, 1, 1)} + 'g'"></span>
-              <span class="badge bg-primary rounded-pill mx-1" th:text="${food.getCaloriesPerAmount(food.gramsInOnePortion)} + 'kcal'"></span>
-            </a>
+<!-- Food Registration Method Modal-->
+<div class="modal fade" id="food-selection" tabindex="-1" aria-labelledby="foodSelectionModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-l modal-dialog-centered modal-dialog-scrollable modal-fullscreen-sm-down">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="foodSelectionModalLabel">How would you like to register a food?</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form class="form-horizontal" th:value="${today}">
+          <div class="container-fluid my-2 text-center">
+            <button type="button" data-dismiss="modal" data-bs-toggle="modal" data-bs-target="#food-modal" class="btn btn-primary col-9 my-2 text-center">Search for Foods</button>
+            <button type="button" data-dismiss="modal" data-bs-toggle="modal" data-bs-target="#recommended-foods" class="btn btn-primary col-9 my-2 text-center">Get recommended Foods</button>
           </div>
-        </div>
-        <div class="modal-footer">
-          <!--/*@thymesVar id="date" type="java.time.LocalDate"*/-->
-          <form class="form-horizontal" th:value="${today}">
-            <div class="container-fluid row my-2">
-                <input type="number" id="amount-input" min="0" step="1" class="form-control col mx-1"  placeholder="Amount of grams">
-                <button type="button" th:onclick="registerFood([[${today.toString()}]])" class="btn btn-primary col-4 mx-1">Add food</button>
+        </form>
+      </div>
+      <div class="modal-footer"></div>
+    </div>
+  </div>
+</div>
+
+
+
+  <!-- All Foods Registration Modal-->
+<div class="modal fade" id="food-modal" tabindex="-1" aria-labelledby="foodsModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable modal-fullscreen-sm-down">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="foodsModalLabel">Search food</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="list-group">
+          <!--/*@thymesVar id="food" type="com.fitness.tracker.food.model.Food"*/-->
+          <a th:each="food : ${foods}" th:value="${food.id}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-start" data-bs-toggle="list">
+            <div class="ms-2 me-auto">
+              <div class="fw-bold" th:text="${food.name}"></div>
+              <span th:text="${food.gramsInOnePortion} + ' g'" th:remove="tag"></span>
             </div>
-          </form>
+            <span class="badge bg-dark rounded-pill mx-1" th:text="'Carbs ' + ${#numbers.formatDecimal(food.getNutrientsPerAmount(food.gramsInOnePortion).gramsOfCarbohydrates, 1, 1)} + 'g'"></span>
+            <span class="badge bg-dark rounded-pill mx-1" th:text="'Proteins ' + ${#numbers.formatDecimal(food.getNutrientsPerAmount(food.gramsInOnePortion).gramsOfProtein, 1, 1)} + 'g'"></span>
+            <span class="badge bg-dark rounded-pill mx-1" th:text="'Fats ' +${#numbers.formatDecimal(food.getNutrientsPerAmount(food.gramsInOnePortion).gramsOfFats, 1, 1)} + 'g'"></span>
+            <span class="badge bg-primary rounded-pill mx-1" th:text="${food.getCaloriesPerAmount(food.gramsInOnePortion)} + 'kcal'"></span>
+          </a>
         </div>
+      </div>
+      <div class="modal-footer">
+        <!--/*@thymesVar id="date" type="java.time.LocalDate"*/-->
+        <form class="form-horizontal" th:value="${today}">
+          <div class="container-fluid row my-2">
+            <input type="number" name="amount-input" min="0" step="1" class="form-control col mx-1"  placeholder="Amount of grams">
+            <button type="button" th:onclick="registerFood([[${today.toString()}]], false)" class="btn btn-primary col-4 mx-1">Add food</button>
+          </div> <!--TODO: Delete dates.toString() -->
+        </form>
       </div>
     </div>
   </div>
+</div>
+
+<!-- Recommended Foods Registration Modal-->
+<div class="modal fade" id="recommended-foods" tabindex="-1" aria-labelledby="recommendedFoodsModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable modal-fullscreen-sm-down">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="recommendedFoodsModalLabel">Search food</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="list-group">
+          <!--/*@thymesVar id="recommendedFoods" type="List<com.fitness.tracker.food.model.Food>"*/-->
+          <a th:each="food : ${recommendedFoods}" th:value="${food.id}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-start" data-bs-toggle="list">
+            <div class="ms-2 me-auto">
+              <div class="fw-bold" th:text="${food.name}"></div>
+              <span th:text="${food.gramsInOnePortion} + ' g'" th:remove="tag"></span>
+            </div>
+            <span class="badge bg-dark rounded-pill mx-1" th:text="'Carbs ' + ${#numbers.formatDecimal(food.getNutrientsPerAmount(food.gramsInOnePortion).gramsOfCarbohydrates, 1, 1)} + 'g'"></span>
+            <span class="badge bg-dark rounded-pill mx-1" th:text="'Proteins ' + ${#numbers.formatDecimal(food.getNutrientsPerAmount(food.gramsInOnePortion).gramsOfProtein, 1, 1)} + 'g'"></span>
+            <span class="badge bg-dark rounded-pill mx-1" th:text="'Fats ' +${#numbers.formatDecimal(food.getNutrientsPerAmount(food.gramsInOnePortion).gramsOfFats, 1, 1)} + 'g'"></span>
+            <span class="badge bg-primary rounded-pill mx-1" th:text="${food.getCaloriesPerAmount(food.gramsInOnePortion)} + 'kcal'"></span>
+          </a>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <!--/*@thymesVar id="date" type="java.time.LocalDate"*/-->
+        <form class="form-horizontal" th:value="${today}">
+          <div class="container-fluid row my-2">
+            <input type="number" name="amount-input" min="0" step="1" class="form-control col mx-1"  placeholder="Amount of grams">
+            <button type="button" th:onclick="registerFood([[${today.toString()}]], true)" class="btn btn-primary col-4 mx-1">Add food</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
 
   <!-- Update Food Registration Modal-->
     <div class="modal fade" id="ModificationModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -91,6 +150,7 @@
 
   <div class="card" th:object="${person}">
     <div class="card-header row pb-1">
+      <!--<h5 th:text=" 'Eaten nutrients:' + ${remainingNutrients}"></h5>-->
       <a th:href="@{'/food/registration?registrationDate=' + ${yesterday}}" class="bi bi-chevron-left col text-center"></a>
       <h5 class=" col text-center" th:text="${today}">Featured</h5>
       <a th:href="@{'/food/registration?registrationDate=' + ${tomorrow}}" class="bi bi-chevron-right col text-center"></a>
@@ -146,7 +206,7 @@
           </td>
         </tr>
         <tr>
-          <th scope="row"><button type="button" class="btn btn-outline-info" data-bs-toggle="modal" data-bs-target="#FoodModal"> <i class="bi bi-plus-circle mx-1"></i>Add Food</button></th>
+          <th scope="row"><button type="button" class="btn btn-outline-info" data-bs-toggle="modal" data-bs-target="#food-selection"> <i class="bi bi-plus-circle mx-1"></i>Add Food</button></th>
           <td></td><td></td><td></td>
         </tr>
       </tbody>

@@ -2,6 +2,8 @@ package com.fitness.tracker.food.model
 
 
 import groovy.transform.CompileStatic
+import groovy.transform.ToString
+import org.springframework.data.annotation.Transient
 
 import javax.persistence.Column
 import javax.persistence.Entity
@@ -33,6 +35,9 @@ class Nutrients {
 
     @NotNull
     BigDecimal gramsOfFats
+
+    @Transient
+    BigDecimal MINIMUM_PERCENTAGE_TO_BE_MAIN_NUTRIENT = 45
 
 
     Integer getCalories(){
@@ -67,20 +72,25 @@ class Nutrients {
         update(this + foodRegistration.calculateNutrientsIfAmountWere(newAmount))
     }
 
-    Boolean hasSameMainNutrient(Nutrients other){
-        Map<String, BigDecimal> thisGramsPerNutrient = ["carbs" : this.gramsOfCarbohydrates, "proteins" : this.gramsOfProtein, "fats" : this.gramsOfFats]
-        BigDecimal thisTotalGrams = thisGramsPerNutrient.values().stream().reduce(BigDecimal.ZERO, BigDecimal::add)
-        Map.Entry<String, BigDecimal> thisMainNutrient =  thisGramsPerNutrient.entrySet().find {nutrientWithItsPercentage-> ((nutrientWithItsPercentage.getValue() * 100)/ thisTotalGrams) > 50}
-
-        Map<String, BigDecimal> otherGramsPerNutrient = ["carbs" : other.gramsOfCarbohydrates, "proteins" : other.gramsOfProtein, "fats" : other.gramsOfFats]
-        BigDecimal otherTotalGrams = thisGramsPerNutrient.values().stream().reduce(BigDecimal.ZERO, BigDecimal::add)
-
-        Map.Entry<String, BigDecimal> otherMainNutrient =  thisGramsPerNutrient.entrySet().find {nutrientWithItsPercentage-> ((nutrientWithItsPercentage.getValue() * 100)/ otherTotalGrams) > 50}
-
-
+    Boolean hasSimilarNutrientDistributionTo(Nutrients other){
+        /*Nutrients have similar distribution if both Nutrients have 1 specific nutrient representing more than 45% of the grams of the total Nutrients
+         or if both of them have none*/
+        this.mainNutrient() == other.mainNutrient()
     }
 
-    void func(){
-        List<Integer> lists = new ArrayList<Integer>()
+    private String mainNutrient(){
+        Map<String, BigDecimal> gramsPerNutrient = ["carbs" : this.gramsOfCarbohydrates, "proteins" : this.gramsOfProtein, "fats" : this.gramsOfFats]
+        BigDecimal totalGrams = this.gramsOfCarbohydrates + this.gramsOfProtein + this.gramsOfFats
+        Map.Entry<String, BigDecimal> thisMainNutrient =  gramsPerNutrient.entrySet().find {eachNutrient -> ((eachNutrient.getValue() * 100)/ totalGrams) >= MINIMUM_PERCENTAGE_TO_BE_MAIN_NUTRIENT}
+        thisMainNutrient?.getKey()
+    }
+
+    @Override
+     String toString() {
+        return "Nutrients{" +
+                "Carbs=" + gramsOfCarbohydrates +
+                ", Proteins=" + gramsOfProtein +
+                ", Fats=" + gramsOfFats +
+                '}';
     }
 }
