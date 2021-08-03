@@ -36,12 +36,13 @@ class PhysicalObjective {
     }
 
     Boolean isExerciseOptimum(Exercise exercise){
-        if (addedCaloriesFromObjective >= 0){
+        if (addedCaloriesFromObjective > 0){
             return exercise.isStrength()
         }
-        else if (addedCaloriesFromObjective <= 0){
+        else if (addedCaloriesFromObjective < 0){
             return exercise.isAerobic()
         }
+        return true
     }
 
     BigDecimal addObjectiveCalories(BigDecimal maintenanceCalories) {
