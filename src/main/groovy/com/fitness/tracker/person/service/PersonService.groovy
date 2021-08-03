@@ -86,6 +86,7 @@ class PersonService {
         getLoggedPerson().getExercisesRegistrationsByDate(date)
     }
 
+    @Transactional
     List<WeightRegistration> getWeightRegistrationsByDate(LocalDate date) {
         Person person = getLoggedPerson()
         person.getWeightRegistrationsByDate(date)
@@ -114,6 +115,7 @@ class PersonService {
         getLoggedPerson().receiveFoodRecommendations(allFoods, date)
     }
 
+    @Transactional
     void registerWeight(LocalDate registrationDate, BigDecimal weight) {
         Person person = getLoggedPerson()
         WeightRegistration registration = new WeightRegistration(registrationDate: registrationDate, weight: weight)

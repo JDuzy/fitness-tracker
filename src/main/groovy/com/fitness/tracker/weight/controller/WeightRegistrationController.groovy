@@ -44,6 +44,7 @@ class WeightRegistrationController {
             monthlyWeightRegistrations.add( dailyWeightRegistrations )
         }
 
+        println monthlyWeightRegistrations.size()
         //TO DO: Use model.addAttributes in 1 line
         model.addAttribute("monthlyWeightRegistrations", monthlyWeightRegistrations)
         model.addAttribute("daysOfMonth", daysInMonthList)
