@@ -28,7 +28,7 @@ class CalendarLogic {
         int daysOfLastMonthToDisplay = calendarStartingMonthDays[currentMonthStartingWeekday.toString().toLowerCase()]
         List<Integer> daysOfLastMonthList = new ArrayList<Integer>()
 
-        for (int i = daysOfLastMonth - daysOfLastMonthToDisplay; i <= daysOfLastMonth ; i++) {
+        for (int i = daysOfLastMonth - daysOfLastMonthToDisplay + 2; i <= daysOfLastMonth ; i++) {
             daysOfLastMonthList.add(i)
         }
 
