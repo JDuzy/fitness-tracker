@@ -38,11 +38,6 @@ class Food {
     @NotNull
     BigDecimal gramsInOnePortion
 
-    @NotNull
-    @OneToOne(cascade = CascadeType.ALL)
-    @PrimaryKeyJoinColumn
-    Characteristics characteristics
-
     Integer getCalories(){
         nutrientsPer100Gram.calories
     }

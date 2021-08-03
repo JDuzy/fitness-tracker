@@ -79,6 +79,7 @@ class PersonService {
         getLoggedPerson().deleteFoodRegistrationWithId(registrationId)
     }
 
+    @Transactional
     Set<ExerciseRegistration> getExercisesRegistrationsByDate(LocalDate date) {
         getLoggedPerson().getExercisesRegistrationsByDate(date)
     }

@@ -78,12 +78,12 @@ class Person{
     @JoinColumn(name = "person_id")
     Set<DailyNutrientsEaten> dailyNutrientsEaten = []
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     @OrderBy("id ASC")
     @JoinColumn(name = "person_id")
     Set<ExerciseRegistration> exerciseRegistrations = new LinkedHashSet<>()
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     @OrderBy("id ASC")
     @JoinColumn(name = "person_id")
     Set<FoodRegistration> foodRegistrations = new LinkedHashSet<>()
