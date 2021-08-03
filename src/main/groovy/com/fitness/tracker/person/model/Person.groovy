@@ -67,7 +67,7 @@ class Person{
 
     @NotNull
     @Convert(converter = PhysicalObjectiveAttributeConverter.class)
-    PhysicalObjective physicalObjective
+    PhysicalObjective physicalObjective = new PhysicalObjective()
 
     @NotNull
     @OneToOne(cascade = CascadeType.ALL)
@@ -97,7 +97,7 @@ class Person{
         this.dateOfBirth = dateOfBirth
         this.height = height
         this.weight = weight
-        physicalObjective.changeObjective(addedCaloriesToMaintenance)
+        physicalObjective = new PhysicalObjective(addedCaloriesFromObjective: addedCaloriesToMaintenance)
         this.physicalActivity = physicalActivity
         setNutritionalObjective()
     }

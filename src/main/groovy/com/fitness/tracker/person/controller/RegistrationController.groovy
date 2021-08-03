@@ -44,6 +44,7 @@ class RegistrationController {
             return "redirect:/food/registration"
         }
         model.addAttribute("credentials", credentials)
+        model.addAttribute("physycalObjective", credentials.person)
         "registration"
     }
 

@@ -1,11 +1,13 @@
 package com.fitness.tracker.infrastructure
 
 import com.fitness.tracker.person.model.PhysicalObjective
+import groovy.transform.CompileStatic
 
 import javax.persistence.AttributeConverter
 import javax.persistence.Converter
 
 @Converter
+@CompileStatic
 class PhysicalObjectiveAttributeConverter implements AttributeConverter<PhysicalObjective, BigDecimal>{
 
     @Override
@@ -15,6 +17,6 @@ class PhysicalObjectiveAttributeConverter implements AttributeConverter<Physical
 
     @Override
     PhysicalObjective convertToEntityAttribute(BigDecimal dbData) {
-        dbData == null ? null : new PhysicalObjective(addedCaloriesFromObjective: dbData)
+        dbData == null ? null : new PhysicalObjective(dbData)
     }
 }
