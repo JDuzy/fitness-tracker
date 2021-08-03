@@ -84,7 +84,7 @@ class Person{
     @JoinColumn(name = "person_id")
     Set<ExerciseRegistration> exerciseRegistrations = new LinkedHashSet<>()
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     @OrderBy("id ASC")
     @JoinColumn(name = "person_id")
     Set<WeightRegistration> weightRegistrations = new LinkedHashSet<>()
@@ -186,6 +186,7 @@ class Person{
 
     void addWeightRegistration(WeightRegistration weightRegistration) {
         weightRegistrations.add(weightRegistration)
+        println weightRegistrations.size()
         this.weight = weightRegistration.weight
         //TODO: Should this autoupdate NutrientObjective?
     }
