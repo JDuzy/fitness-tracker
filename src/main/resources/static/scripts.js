@@ -231,6 +231,55 @@ function openExerciseRegistrationDeleteModal(name, registrationId, date){
 
 }
 
+//Weight
+function registerWeight(date){
+    var weight = document.getElementById("weight-input");
+    var xhr = new XMLHttpRequest();
+    var url = "/weight/registration?registrationDate="
+    xhr.onreadystatechange = function() { // listen for state changes
+        if (xhr.readyState == 4 && xhr.status == 200) { // when completed we can move away
+            window.location = url.concat(date);
+        }
+    }
+    xhr.open("POST", url.concat(date), true);
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.send(JSON.stringify({
+        weight: weight.value
+    }))
+}
+
+function openWeightRegistrationModal(date){
+    //clone dialog and remove ids to ensure uniqueness
+    //var $modal = $('#ModificationModal*').clone().removeAttr('id');
+    var $originalModal = $('#WeightRegistrationModal')
+    var $modal = $originalModal.clone().removeAttr('id');
+
+    $modal.find('[name="registration-form"]')//establish value as date?
+    $modal.find('[name="modify-update-text"]').text(name);
+    var $btnModify = $modal.find('[name="save-registration"]');
+
+    var register = function(){registerWeight(date)}
+
+    $btnModify.click(register);
+
+    //show dialo
+    $modal.modal('show');
+}
+
+//calendar
+/*function createDaysFromLastMonth(date) {
+    var dateTemp = moment(date, "YYYY-MM-DD")
+    //var monthOfYear = dateTemp.get("month")//0-11
+    //var year = dateTemp.get("year")
+    var daysInMonth = dateTemp.daysInMonth(dateTemp)
+    var x ="", i;
+    for (i=1; i<=daysInMonth; i++) {
+        x = x +
+            '<li><div class="date">'+i+'</div></li>';
+    }
+    document.getElementById("calendar-days").innerHTML = x;
+}*/
+
 //utility
 function getDate(){
     var today = new Date();
@@ -241,3 +290,4 @@ function getDate(){
     today = mm + '/' + dd + '/' + yyyy;
     return today
 }
+

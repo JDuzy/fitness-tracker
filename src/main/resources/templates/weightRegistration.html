@@ -4,13 +4,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <title>Fitness Tracker - Register your exercise </title>
+  <title>Fitness Tracker - Register your weight </title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css">
   <link rel="stylesheet" href="/style.css">
 
+  <script src="https://momentjs.com/downloads/moment.min.js"></script>
+  <script src="/scripts.js"></script>
 
 </head>
 <body>
@@ -23,7 +25,7 @@
 
   <div class="card-header row pb-1">
 
-    <a th:href="@{'/exercise/registration?registrationDate=' + ${lastMonth}}" class="bi bi-chevron-left col text-center mt-4"></a>
+    <a th:href="@{'/weight/registration?registrationDate=' + ${lastMonth}}" class="bi bi-chevron-left col text-center mt-4"></a>
 
     <div class="col">
       <div class="row">
@@ -33,8 +35,7 @@
         <h5 class="col text-center fs-6" th:text="${thisYear}">Featured</h5>
       </div>
     </div>
-
-    <a th:href="@{'/exercise/registration?registrationDate=' + ${nextMonth}}" class="bi bi-chevron-right col text-center mt-4"></a>
+    <a th:href="@{'/weight/registration?registrationDate=' + ${nextMonth}}" class="bi bi-chevron-right col text-center mt-4"></a>
 
   </div>
 
@@ -57,121 +58,56 @@
         </ol>
 
         <ol class="days list-unstyled">
-          <li>
-            <div class="date">1</div>
-            <div class="event bg-success">Event with Long Name</div>
-          </li>
-          <li>
-            <div class="date">2</div>
-          </li>
-          <li>
-            <div class="date">3</div>
-          </li>
-          <li>
-            <div class="date">4</div>
-          </li>
-          <li>
-            <div class="date">5</div>
-          </li>
-          <li>
-            <div class="date">6</div>
-          </li>
-          <li>
-            <div class="date">7</div>
-          </li>
-          <li>
-            <div class="date">8</div>
-          </li>
-          <li>
-            <div class="date">9</div>
-          </li>
-          <li>
-            <div class="date">10</div>
-          </li>
-          <li>
-            <div class="date">11</div>
-          </li>
-          <li>
-            <div class="date">12</div>
-          </li>
-          <li>
-            <div class="date">13</div>
-            <div class="event all-day begin span-2 bg-warning">Event Name</div>
-          </li>
-          <li>
-            <div class="date">14</div>
-          </li>
-          <li>
-            <div class="date">15</div>
-            <div class="event all-day end bg-success">Event Name</div>
-          </li>
-          <li>
-            <div class="date">16</div>
-          </li>
-          <li>
-            <div class="date">17</div>
-          </li>
-          <li>
-            <div class="date">18</div>
-          </li>
-          <li>
-            <div class="date">19</div>
-          </li>
-          <li>
-            <div class="date">20</div>
-          </li>
-          <li>
-            <div class="date">21</div>
-            <div class="event bg-primary">Event Name</div>
-            <div class="event bg-success">Event Name</div>
-          </li>
-          <li>
-            <div class="date">22</div>
-            <div class="event bg-info">Event with Longer Name</div>
-          </li>
-          <li>
-            <div class="date">23</div>
-          </li>
-          <li>
-            <div class="date">24</div>
-          </li>
-          <li>
-            <div class="date">25</div>
-          </li>
-          <li>
-            <div class="date">26</div>
-          </li>
-          <li>
-            <div class="date">27</div>
-          </li>
-          <li>
-            <div class="date">28</div>
-          </li>
-          <li>
-            <div class="date">29</div>
-          </li>
-          <li>
-            <div class="date">30</div>
-          </li>
-          <li>
-            <div class="date">31</div>
-          </li>
-          <li class="outside">
-            <div class="date">1</div>
-          </li>
-          <li class="outside">
-            <div class="date">2</div>
-          </li>
-          <li class="outside">
-            <div class="date">3</div>
-          </li>
-          <li class="outside">
-            <div class="date">4</div>
-          </li>
+          <div id="calendar-days">
+
+            <li th:each="day : ${daysOfLastMonth}" class="grayout">
+              <div class="date" th:text="${day}">
+                <div class = "badge bg-primary rounded-pill py-4 px-4 fs-5" th:text="${monthlyWeightRegistrations[day - 1].Weight} + ' kg'"></div>
+              </div>
+            </li>
+
+            <li th:each="day : ${daysOfMonth}" th:onclick="openWeightRegistrationModal([[${todayLocalDate.withDayOfMonth(day)}]])">
+              <div class="date" th:text="${day}">                                                          <!--array starts at 0-->
+                <div class = "badge bg-primary rounded-pill py-4 px-4 fs-5" th:text="${monthlyWeightRegistrations[day - 1].Weight} + ' kg'" th:onclick="OpenWeightRegistrationEditModal"></div>
+              </div>
+            </li>
+
+            <li th:each="day : ${daysOfNextMonth}" class="grayout">
+              <div class="date" th:text="${day}">
+                <div class = "badge bg-primary rounded-pill py-4 px-4 fs-5" th:text="${monthlyWeightRegistrations[day - 1].Weight} + ' kg'"></div>
+              </div>
+            </li>
+
+          </div>
+          <!--<script> createDaysInMonth("2021-12-15")</script>-->
         </ol>
       </div>
     </div>
 
+    <!-- Weight Registration Modal-->
+    <div class="modal fade" id="WeightRegistrationModal" tabindex="-1" aria-labelledby="weightRegistrationModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable modal-fullscreen-sm-down">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="weightRegistrationModalLabel">Register weight</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <!--/*@thymesVar id="date" type="java.time.LocalDate"*/-->
+            <form class="form-horizontal" name="registration-form">
+              <div class="container-fluid row my-2">
+                <input type="number" id="weight-input" min="0" step="1" class="form-control col mx-1"  placeholder="Weight in kilos">
+                <button type="button" name="save-registration" class="btn btn-primary col-4 mx-1">Register weight</button>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
 
   </div>
 

@@ -11,8 +11,13 @@ html {
 * ==========================================
 *
 */
+.grayout {
+  opacity: 0.6; /* Real browsers */
+  filter: alpha(opacity = 60); /* MSIE */
+}
 
 /*CALENDAR*/
+
 .clearfix::after,
 .calendar ol::after {
   content: ".";
