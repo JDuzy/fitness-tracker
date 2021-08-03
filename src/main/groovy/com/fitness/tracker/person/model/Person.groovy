@@ -76,7 +76,7 @@ class Person{
     @JoinColumn(name = "person_id")
     Set<ExerciseRegistration> exerciseRegistrations = new LinkedHashSet<>()
 
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "person_id")
     Set<WeightRegistration> weightRegistrations = new LinkedHashSet<>()
 
@@ -177,6 +177,7 @@ class Person{
     void addWeightRegistration(WeightRegistration weightRegistration) {
         weightRegistrations.add(weightRegistration)
         this.weight = weightRegistration.weight
+        //TODO: Should this autoupdate NutrientObjective?
     }
 
     void findWeightRegistrationWithId(long registrationId) {

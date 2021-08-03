@@ -233,9 +233,16 @@ function openExerciseRegistrationDeleteModal(name, registrationId, date){
 
 //Weight
 function registerWeight(date){
-    var weight = document.getElementById("weight-input");
+    var weights = document.getElementsByName("weight-input");
     var xhr = new XMLHttpRequest();
     var url = "/weight/registration?registrationDate="
+    var weightInKg = null;
+
+    for (let weight of weights){
+        if (weight.value != ""){
+            weightInKg = weight.value;
+        }
+    }
     xhr.onreadystatechange = function() { // listen for state changes
         if (xhr.readyState == 4 && xhr.status == 200) { // when completed we can move away
             window.location = url.concat(date);
@@ -244,7 +251,7 @@ function registerWeight(date){
     xhr.open("POST", url.concat(date), true);
     xhr.setRequestHeader('Content-Type', 'application/json');
     xhr.send(JSON.stringify({
-        weight: weight.value
+        weight: weightInKg
     }))
 }
 
