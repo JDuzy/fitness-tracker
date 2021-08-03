@@ -9,12 +9,14 @@ import com.fitness.tracker.food.model.Food
 import com.fitness.tracker.food.model.FoodRecommender
 import com.fitness.tracker.food.model.FoodRegistration
 import com.fitness.tracker.food.model.Nutrients
+import com.fitness.tracker.infrastructure.PhysicalObjectiveAttributeConverter
 import groovy.transform.CompileStatic
 import org.springframework.format.annotation.DateTimeFormat
 import org.springframework.web.server.ResponseStatusException
 
 import javax.persistence.CascadeType
 import javax.persistence.Column
+import javax.persistence.Convert
 import javax.persistence.Entity
 import javax.persistence.FetchType
 import javax.persistence.GeneratedValue
@@ -64,8 +66,7 @@ class Person{
     BigDecimal physicalActivity
 
     @NotNull
-
-
+    @Convert(converter = PhysicalObjectiveAttributeConverter.class)
     PhysicalObjective physicalObjective
 
     @NotNull

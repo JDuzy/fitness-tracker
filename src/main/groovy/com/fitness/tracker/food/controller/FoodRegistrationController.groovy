@@ -48,10 +48,10 @@ class FoodRegistrationController {
         List<Food> recommendedFoods = personService.getRecommendedFoods(allFoods, registrationDate);
         Set<FoodRegistration> dailyFoodsRegistrations = personService.getFoodRegistrationsByDate( registrationDate)
 
-        //Delete
-        String remainingNutrients = loggedPerson.remainingNutrientsForTheActualDay(registrationDate).toString()
+        //String remainingNutrients = loggedPerson.remainingNutrientsForTheActualDay(registrationDate).toString()
+        //model.addAttribute("remainingNutrients", remainingNutrients)
 
-        model.addAllAttributes([ "remainingNutrients":remainingNutrients,"credentials":credentialsService.getPrincipal(), "person":loggedPerson, "foodRegistrations":dailyFoodsRegistrations, "foods":allFoods, "recommendedFoods": recommendedFoods,
+        model.addAllAttributes([ "credentials":credentialsService.getPrincipal(), "person":loggedPerson, "foodRegistrations":dailyFoodsRegistrations, "foods":allFoods, "recommendedFoods": recommendedFoods,
                                  "today":registrationDate, "yesterday":registrationDate.minusDays(1).toString(), "tomorrow":registrationDate.plusDays(1).toString()])
         "foodRegistration"
     }

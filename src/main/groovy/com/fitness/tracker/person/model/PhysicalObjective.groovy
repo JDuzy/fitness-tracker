@@ -1,9 +1,11 @@
 package com.fitness.tracker.person.model
 
 import com.fitness.tracker.exercise.model.Exercise
-
+import groovy.transform.EqualsAndHashCode
 import javax.validation.constraints.NotNull
 
+
+@EqualsAndHashCode
 class PhysicalObjective {
 
     @NotNull
@@ -25,4 +27,5 @@ class PhysicalObjective {
     void changeObjective(BigDecimal newAddedCalories) {
         this.addedCaloriesFromObjective = newAddedCalories
     }
+
 }

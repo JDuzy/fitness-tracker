@@ -36,9 +36,10 @@ class ExerciseRegistrationController {
     @GetMapping("/exercise/registration")
     String getExerciseRegistrations(Model model, @RequestParam(required = false, defaultValue = "#{T(java.time.LocalDate).now().toString()}") @DateTimeFormat(iso = DATE) LocalDate registrationDate){
         Person loggedPerson = personService.getLoggedPerson()
-        List<Exercise> exercises = exerciseService.findAll() //TODO: Service calling repository?
+        List<Exercise> allExercises = exerciseService.findAll()
+        List<Exercise> recommendedExercises = personService.getRecommendedExercises(allExercises)
         Set<ExerciseRegistration> dailyExercisesRegistrations = personService.getExercisesRegistrationsByDate(registrationDate)
-        model.addAllAttributes("person": loggedPerson, "credentials": credentialsService.getPrincipal(), "exerciseRegistrations": dailyExercisesRegistrations, "exercises": exercises, "today": registrationDate.toString(), "yesterday": registrationDate.minusDays(1).toString(), "tomorrow": registrationDate.plusDays(1).toString())
+        model.addAllAttributes("person": loggedPerson, "credentials": credentialsService.getPrincipal(), "exerciseRegistrations": dailyExercisesRegistrations, "exercises": allExercises, "recommendedExercises": recommendedExercises, "today": registrationDate.toString(), "yesterday": registrationDate.minusDays(1).toString(), "tomorrow": registrationDate.plusDays(1).toString())
         "exerciseRegistration"
     }
 

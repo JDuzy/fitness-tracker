@@ -31,7 +31,7 @@ class DailyNutrientsEaten {
     @NotNull
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "nutrients_id", referencedColumnName = "id")
-    Nutrients nutrients
+    Nutrients nutrients  //TODO: Transform nutrients to Value object
 
     @NotNull
     LocalDate eatenDay

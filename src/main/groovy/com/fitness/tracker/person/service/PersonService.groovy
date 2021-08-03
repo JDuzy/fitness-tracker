@@ -105,4 +105,8 @@ class PersonService {
     List<Food> getRecommendedFoods(List<Food> allFoods, LocalDate date) {
         getLoggedPerson().receiveFoodRecommendations(allFoods, date)
     }
+
+    List<Exercise> getRecommendedExercises(List<Exercise> allExercises) {
+        getLoggedPerson().receiveExerciseRecommendations(allExercises)
+    }
 }
