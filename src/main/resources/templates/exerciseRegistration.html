@@ -15,8 +15,29 @@
   <div th:insert="fragments/header :: header">...</div>
 </header>
 
-<!-- Exercise Registration Modal-->
-<div class="modal fade" id="ExerciseModal" tabindex="-1" aria-labelledby="exercisesModalLabel" aria-hidden="true">
+<!-- Exercise Registration Method Modal-->
+<div class="modal fade" id="exercise-selection" tabindex="-1" aria-labelledby="exerciseSelectionModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-l modal-dialog-centered modal-dialog-scrollable modal-fullscreen-sm-down">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exerciseSelectionModalLabel">How would you like to register an Exercise?</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form class="form-horizontal" th:value="${today}">
+          <div class="container-fluid my-2 text-center">
+            <button type="button" data-dismiss="modal" data-bs-toggle="modal" data-bs-target="#exercise-modal" class="btn btn-primary col-9 my-2 text-center">Search for Exercises</button>
+            <button type="button" data-dismiss="modal" data-bs-toggle="modal" data-bs-target="#recommended-exercise-modal" class="btn btn-primary col-9 my-2 text-center">Get Exercise recommendations</button>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer"></div>
+    </div>
+  </div>
+</div>
+
+<!-- All Exercise Registration Modal-->
+<div class="modal fade" id="exercise-modal" tabindex="-1" aria-labelledby="exercisesModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable modal-fullscreen-sm-down">
     <div class="modal-content">
       <div class="modal-header">
@@ -26,18 +47,61 @@
       <div class="modal-body">
         <div class="list-group">
           <!--/*@thymesVar id="exercise" type="com.fitness.tracker.exercise.model.Exercise"*/-->
-          <a th:each="exercise : ${exercises}" th:id="${exercise.id}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-start" data-bs-toggle="list">
+          <a th:each="exercise : ${exercises}" th:value="${exercise.id}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-start" data-bs-toggle="list">
             <div class="ms-2 me-auto">
               <div class="fw-bold" th:text="${exercise.name}"></div>
               <span th:text="${#strings.toLowerCase(exercise.type)}" th:remove="tag"></span>
             </div>
             <span>
               <label> Time (M) </label>
-              <input type="number" id="time-input" min="0" step="1" class="form-control col mx-1"  placeholder="Time">
+              <input type="number" name="time-input" min="0" step="1" class="form-control col mx-1"  placeholder="Time">
             </span>
             <span>
               <label> Weight (KG) </label>
-              <input type="number" id="weight-input" min="0" step="1" class="form-control col mx-1"  placeholder="Weight">
+              <input type="number" name="weight-input" min="0" step="1" class="form-control col mx-1"  placeholder="Weight">
+            </span>
+            <span>
+              <label> Burned </label>
+              <div class="badge bg-primary rounded-pill py-2 px-2 fs-5" th:text="${exercise.getCaloriesBurnedPerMinute()} + ' kcal/M'"></div>
+            </span>
+          </a>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <!--/*@thymesVar id="date" type="java.time.LocalDate"*/-->
+        <form class="form-horizontal" th:value="${today}">
+          <div class="container-fluid row my-2">
+            <button type="button" th:onclick="registerExercise([[${today}]])" class="btn btn-primary col-12 mx-1">Add exercise</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Recommended Exercise Registration Modal-->
+<div class="modal fade" id="recommended-exercise-modal" tabindex="-1" aria-labelledby="recommendedExercisesModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable modal-fullscreen-sm-down">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="recommendedExercisesModalLabel">Search exercise</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="list-group">
+          <!--/*@thymesVar id="exercise" type="com.fitness.tracker.exercise.model.Exercise"*/-->
+          <a th:each="exercise : ${recommendedExercises}" th:value="${exercise.id}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-start" data-bs-toggle="list">
+            <div class="ms-2 me-auto">
+              <div class="fw-bold" th:text="${exercise.name}"></div>
+              <span th:text="${#strings.toLowerCase(exercise.type)}" th:remove="tag"></span>
+            </div>
+            <span>
+              <label> Time (M) </label>
+              <input type="number" name="time-input" min="0" step="1" class="form-control col mx-1"  placeholder="Time">
+            </span>
+            <span>
+              <label> Weight (KG) </label>
+              <input type="number" name="weight-input" min="0" step="1" class="form-control col mx-1"  placeholder="Weight">
             </span>
             <span>
               <label> Burned </label>
@@ -143,7 +207,7 @@
       </td>
     </tr>
     <tr>
-      <th scope="row"><button type="button" class="btn btn-outline-info" data-bs-toggle="modal" data-bs-target="#ExerciseModal"> <i class="bi bi-plus-circle mx-1"></i>Add Exercise</button></th>
+      <th scope="row"><button type="button" class="btn btn-outline-info" data-bs-toggle="modal" data-bs-target="#exercise-selection"> <i class="bi bi-plus-circle mx-1"></i>Add Exercise</button></th>
       <td></td><td></td><td></td><td></td><td></td>
     </tr>
     </tbody>

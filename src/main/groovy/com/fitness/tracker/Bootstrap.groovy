@@ -62,8 +62,11 @@ class Bootstrap implements InitializingBean {
         foodRepository.saveAll(Arrays.asList(banana, apple, pizza, chickenBreast, hamburger))
 
         //Set up exercises
-        Exercise pechoPlano = new Exercise(name: "Bench Press", type: Exercise.Type.AEROBIC, caloriesBurnedPerMinute: 100)
-        exerciseRepository.saveAll(Arrays.asList(pechoPlano))
+        Exercise benchPress = new Exercise(name: "Bench Press", type: Exercise.Type.STRENGTH, caloriesBurnedPerMinute: 100)
+        Exercise overHeadPress = new Exercise(name: "Over head press", type: Exercise.Type.STRENGTH, caloriesBurnedPerMinute: 12)
+        Exercise running = new Exercise(name: "Running", type: Exercise.Type.AEROBIC, caloriesBurnedPerMinute: 10)
+        Exercise ropeJumps = new Exercise(name: "Rope jumps", type: Exercise.Type.AEROBIC, caloriesBurnedPerMinute: 12)
+        exerciseRepository.saveAll(Arrays.asList(benchPress, overHeadPress, running, ropeJumps))
 
         LOG.info("Bootstrapping finished")
     }
