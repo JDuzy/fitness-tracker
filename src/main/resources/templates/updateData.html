@@ -50,7 +50,7 @@
 
         <div class="form-row py-1">
           <label>Objective</label>
-          <select id="objectiveInput" required="true" class="form-select form-control" aria-label="Default select example" name="weightChangePerWeek" th:value="*{weightChangePerWeek}" th:errorClass="is-invalid">
+          <select id="objectiveInput" required="true" class="form-select form-control" aria-label="Default select example" name="physicalObjective.addedCaloriesFromObjective" th:value="*{physicalObjective.addedCaloriesFromObjective}" th:errorClass="is-invalid">
             <option value="" selected>Select your objective</option>
             <option value="300">Gain muscle - faster</option>
             <option value="150">Gain muscle - slower</option>
@@ -58,7 +58,7 @@
             <option value="-150">Loose fat - faster</option>
             <option value="-300">Loose fat - slower</option>
           </select>
-          <div th:if="${#fields.hasErrors('weightChangePerWeek')}" th:errors="*{weightChangePerWeek}" class="invalid-feedback"></div>
+          <div th:if="${#fields.hasErrors('physicalObjective.addedCaloriesFromObjective')}" th:errors="*{physicalObjective.addedCaloriesFromObjective}" class="invalid-feedback"></div>
         </div>
 
         <div class="form-row py-1">

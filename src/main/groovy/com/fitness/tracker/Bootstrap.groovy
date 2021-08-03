@@ -45,7 +45,7 @@ class Bootstrap implements InitializingBean {
         //Set up the Person
         String password = passwordEncoder.encode("123456")
         LocalDate dob = LocalDate.now().minusYears(18)
-        Person person = new Person(dateOfBirth: dob, weight: 80, height: 180, sex: "Male", physicalActivity: 1.725, weightChangePerWeek: 150)
+        Person person = new Person(dateOfBirth: dob, weight: 80, height: 180, sex: "Male", physicalActivity: 1.725, physicalObjective: 150)
         person.setNutritionalObjective()
 
         Credentials credentials = new Credentials(person: person, userName: "user1", email: "mail@mail.com", password: password, rpassword: password)

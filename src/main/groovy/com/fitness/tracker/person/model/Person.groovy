@@ -1,5 +1,7 @@
 package com.fitness.tracker.person.model
 
+import com.fitness.tracker.exercise.model.Exercise
+import com.fitness.tracker.exercise.model.ExerciseRecommender
 import com.fitness.tracker.exercise.model.ExerciseRegistration
 import com.fitness.tracker.food.model.DailyNutrientsEaten
 import com.fitness.tracker.food.model.DailyNutritionalObjective
@@ -62,7 +64,7 @@ class Person{
     BigDecimal physicalActivity
 
     @NotNull
-    BigDecimal weightChangePerWeek
+    PhysicalObjective physicalObjective
 
     @NotNull
     @OneToOne(cascade = CascadeType.ALL)
@@ -87,18 +89,18 @@ class Person{
         Period.between(this.dateOfBirth, LocalDate.now()).getYears()
     }
 
-    void updateData(String sex, LocalDate dateOfBirth, Integer height, BigDecimal weight, BigDecimal weightChangePerWeek, BigDecimal physicalActivity) {
+    void updateData(String sex, LocalDate dateOfBirth, Integer height, BigDecimal weight, PhysicalObjective physicalObjective, BigDecimal physicalActivity) {
         this.sex = sex
         this.dateOfBirth = dateOfBirth
         this.height = height
         this.weight = weight
-        this.weightChangePerWeek = weightChangePerWeek
+        this.physicalObjective = physicalObjective
         this.physicalActivity = physicalActivity
         setNutritionalObjective()
     }
 
     void setNutritionalObjective(){
-        nutritionalObjective.calculateObjective(age, weight, height, sex, physicalActivity, weightChangePerWeek)
+        nutritionalObjective.calculateObjective(age, weight, height, sex, physicalActivity, physicalObjective)
     }
 
     DailyNutrientsEaten dailyNutrientsEatenOn(LocalDate date){
@@ -176,5 +178,10 @@ class Person{
     List<Food> receiveFoodRecommendations(List<Food> foods, LocalDate date) {
         FoodRecommender recommender = new FoodRecommender()
         recommender.recommendBasedOnRemainingNutrients(foods, remainingNutrientsForTheActualDay(date))
+    }
+
+    List<Exercise> receiveExerciseRecommendations(List<Exercise> exercises){
+        ExerciseRecommender recommender = new ExerciseRecommender()
+        recommender.recommendBasedOnPhysicalObjective(exercises, physicalObjective)
     }
 }

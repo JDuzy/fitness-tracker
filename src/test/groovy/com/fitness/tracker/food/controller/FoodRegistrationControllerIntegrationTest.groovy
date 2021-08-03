@@ -58,7 +58,7 @@ class FoodRegistrationControllerIntegrationTest {
         //Set up the Person
         String password = passwordEncoder.encode("123456")
         LocalDate dob = LocalDate.now().minusYears(18)
-        personUsedToTest = new Person( dateOfBirth: dob, weight: 80, height: 180, sex: "male", physicalActivity: 1.725, weightChangePerWeek: 150)
+        personUsedToTest = new Person( dateOfBirth: dob, weight: 80, height: 180, sex: "male", physicalActivity: 1.725, physicalObjective: 150)
         personUsedToTest.setNutritionalObjective()
         credentialsUsedForTest = new Credentials(person: personUsedToTest, userName: "testUser", email: "testUser@mail.com", password: password, rpassword: password)
 

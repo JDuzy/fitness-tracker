@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test
 class NutrientsUnitTest {
 
     @Test
-    public void bothNutrientsHaveSameMainNutrientCarbohydrates(){
+    void bothNutrientsHaveSameMainNutrientCarbohydrates(){
         //Arrange
         Nutrients nutrients1 = new Nutrients(gramsOfCarbohydrates: 21, gramsOfProtein: 10, gramsOfFats: 10)
         Nutrients nutrients2 = new Nutrients(gramsOfCarbohydrates: 19, gramsOfProtein: 11, gramsOfFats: 5)
@@ -20,7 +20,7 @@ class NutrientsUnitTest {
     }
 
     @Test
-    public void bothNutrientsHaveSameMainNutrientProtein(){
+    void bothNutrientsHaveSameMainNutrientProtein(){
         //Arrange
         Nutrients nutrients1 = new Nutrients(gramsOfCarbohydrates: 10, gramsOfProtein: 21, gramsOfFats: 10)
         Nutrients nutrients2 = new Nutrients(gramsOfCarbohydrates: 8, gramsOfProtein: 19, gramsOfFats: 5)
@@ -34,7 +34,7 @@ class NutrientsUnitTest {
     }
 
     @Test
-    public void bothNutrientsHaveSameMainNutrientFats(){
+    void bothNutrientsHaveSameMainNutrientFats(){
         //Arrange
         Nutrients nutrients1 = new Nutrients(gramsOfCarbohydrates: 10, gramsOfProtein: 10, gramsOfFats: 22)
         Nutrients nutrients2 = new Nutrients(gramsOfCarbohydrates: 8, gramsOfProtein: 4, gramsOfFats: 19)
@@ -48,7 +48,7 @@ class NutrientsUnitTest {
     }
 
     @Test
-    public void bothNutrientsHaveNoMainNutrientFats(){
+    void bothNutrientsHaveNoMainNutrientFats(){
         //Arrange
         Nutrients nutrients1 = new Nutrients(gramsOfCarbohydrates: 10, gramsOfProtein: 12, gramsOfFats: 9)
         Nutrients nutrients2 = new Nutrients(gramsOfCarbohydrates: 6, gramsOfProtein: 4, gramsOfFats: 5)
@@ -62,7 +62,7 @@ class NutrientsUnitTest {
     }
 
     @Test
-    public void bothNutrientsHaveDifferentNutrientDistribution(){
+    void bothNutrientsHaveDifferentNutrientDistribution(){
         //Arrange
         Nutrients nutrients1 = new Nutrients(gramsOfCarbohydrates: 25, gramsOfProtein: 0.4, gramsOfFats: 0.3) //Main nutrient Carbohydrate
         Nutrients nutrients2 = new Nutrients(gramsOfCarbohydrates: 0.8, gramsOfProtein: 18.5, gramsOfFats: 4.2) //Main nutrient Carbohydrate
