@@ -4,7 +4,7 @@ import com.fitness.tracker.food.model.Food
 import com.fitness.tracker.person.model.Person
 import com.fitness.tracker.food.model.FoodRegistration
 import com.fitness.tracker.food.service.FoodService
-import com.fitness.tracker.person.service.CredentialsService
+import com.fitness.tracker.security.service.CredentialsService
 import com.fitness.tracker.person.service.PersonService
 import groovy.transform.CompileStatic
 import org.springframework.beans.factory.annotation.Autowired
@@ -44,19 +44,15 @@ class FoodRegistrationController {
     @GetMapping("/food/registration")
     String getFoodRegistrations(Model model, @RequestParam(required = false, defaultValue = "#{T(java.time.LocalDate).now().toString()}") @DateTimeFormat(iso = DATE) LocalDate registrationDate){
         Person loggedPerson = personService.getLoggedPerson()
-        model.addAttribute("credentials", credentialsService.getPrincipal())
-        model.addAttribute("person", loggedPerson)
+        List<Food> allFoods = foodService.findAll()
+        List<Food> recommendedFoods = personService.getRecommendedFoods(allFoods, registrationDate);
+        Set<FoodRegistration> dailyFoodsRegistrations = personService.getFoodRegistrationsByDate( registrationDate)
 
+        //String remainingNutrients = loggedPerson.remainingNutrientsForTheActualDay(registrationDate).toString()
+        //model.addAttribute("remainingNutrients", remainingNutrients)
 
-        List<Food> foods = foodService.findAll()
-        Set<FoodRegistration> dailyFoodsRegistrations = personService.getFoodRegistrationsByDate(loggedPerson, registrationDate)
-        //TO DO: Use model.addAttributes in 1 line
-        model.addAttribute("foodRegistrations", dailyFoodsRegistrations)
-        model.addAttribute("foods", foods)
-        model.addAttribute("today", registrationDate)
-        model.addAttribute("yesterday", registrationDate.minusDays(1).toString())
-        model.addAttribute("tomorrow", registrationDate.plusDays(1).toString())
-
+        model.addAllAttributes([ "credentials":credentialsService.getPrincipal(), "person":loggedPerson, "foodRegistrations":dailyFoodsRegistrations, "foods":allFoods, "recommendedFoods": recommendedFoods,
+                                 "today":registrationDate, "yesterday":registrationDate.minusDays(1).toString(), "tomorrow":registrationDate.plusDays(1).toString()])
         "foodRegistration"
     }
 

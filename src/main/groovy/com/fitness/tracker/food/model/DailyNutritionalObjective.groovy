@@ -1,9 +1,11 @@
 package com.fitness.tracker.food.model
 
+import com.fitness.tracker.person.model.PhysicalObjective
 import groovy.transform.CompileStatic
 
 import javax.persistence.CascadeType
 import javax.persistence.Column
+import javax.persistence.Embedded
 import javax.persistence.Entity
 import javax.persistence.GeneratedValue
 import javax.persistence.GenerationType
@@ -26,12 +28,11 @@ class DailyNutritionalObjective {
     Long id
 
     @NotNull
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "nutrients_id", referencedColumnName = "id")
+    @Embedded
     Nutrients objectiveNutrients = new Nutrients()
 
 
-    void calculateObjective(Integer age, BigDecimal weight, Integer height, String sex, BigDecimal physicalActivity, BigDecimal weightChangePerWeek){
+    void calculateObjective(Integer age, BigDecimal weight, Integer height, String sex, BigDecimal physicalActivity, PhysicalObjective physicalObjective){
         BigDecimal brm
         if (sex == "Male"){
             brm =  66 + (13.7 * weight) + (5 * height) - (6.8 * age)   //Harris-Benedict Equation
@@ -40,7 +41,8 @@ class DailyNutritionalObjective {
             brm =  655 + (9.6 * weight) + (1.8 * height) - (4.7 * age) // Harris-Benedict Equation
         }
 
-        BigDecimal objectiveCalories = (brm * physicalActivity) + weightChangePerWeek    //Katch-McArdle multipliers
+        BigDecimal maintenanceCalories = (brm * physicalActivity)
+        BigDecimal objectiveCalories =  physicalObjective.addObjectiveCalories(maintenanceCalories)    //Katch-McArdle multipliers
 
         distributePersonNutrients(objectiveCalories, weight)
     }
@@ -50,14 +52,14 @@ class DailyNutritionalObjective {
         this.objectiveNutrients - dailyNutrientsEaten.nutrients
     }
 
-    void distributePersonNutrients(BigDecimal objectiveCalories, BigDecimal weight){
+    private void distributePersonNutrients(BigDecimal objectiveCalories, BigDecimal weight){
         BigDecimal proteins = weight * 2
         BigDecimal fats = weight
         BigDecimal caloriesFromProteinAndFats = proteins * 4 + fats * 9
         BigDecimal caloriesForCarbohydrates = objectiveCalories - caloriesFromProteinAndFats
         BigDecimal carbohydrates = caloriesForCarbohydrates / 4
 
-        objectiveNutrients.update(new Nutrients(carbohydrates: carbohydrates, proteins: proteins, fats: fats))
+        objectiveNutrients = new Nutrients(carbohydrates,proteins, fats)
     }
 
 

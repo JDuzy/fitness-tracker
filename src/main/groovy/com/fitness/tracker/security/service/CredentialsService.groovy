@@ -1,8 +1,7 @@
-package com.fitness.tracker.person.service
+package com.fitness.tracker.security.service
 
-import com.fitness.tracker.person.model.Credentials
-import com.fitness.tracker.person.model.Person
-import com.fitness.tracker.person.repository.CredentialsRepository
+import com.fitness.tracker.security.Credentials
+import com.fitness.tracker.security.repository.CredentialsRepository
 import groovy.transform.CompileStatic
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.core.context.SecurityContextHolder

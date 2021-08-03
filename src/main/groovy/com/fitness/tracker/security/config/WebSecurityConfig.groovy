@@ -1,6 +1,6 @@
 package com.fitness.tracker.security.config
 
-import com.fitness.tracker.person.service.CredentialsService
+import com.fitness.tracker.security.service.CredentialsService
 import groovy.transform.CompileStatic
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
@@ -10,7 +10,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
 import org.springframework.security.core.userdetails.UserDetailsService
-import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 
 import java.time.LocalDate
@@ -56,13 +55,6 @@ class WebSecurityConfig extends WebSecurityConfigurerAdapter{
     @Override
     @Bean
     protected UserDetailsService userDetailsService() {
-        /*return (UserDetailsService) { String email ->
-            Optional<Person> person = userService.findPersonByEmail(email)
-            if (person.isEmpty()){
-                throw new UsernameNotFoundException("No user found with email: ${email}")
-            }
-            return person.get()
-        }*/
         (UserDetailsService){ String email -> credentialsService.findCredentialsByEmail(email) }
     }
 

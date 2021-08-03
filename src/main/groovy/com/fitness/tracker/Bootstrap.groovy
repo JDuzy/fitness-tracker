@@ -2,13 +2,14 @@ package com.fitness.tracker
 
 import com.fitness.tracker.exercise.model.Exercise
 import com.fitness.tracker.exercise.repository.ExerciseRepository
-import com.fitness.tracker.food.model.Characteristics
+
 import com.fitness.tracker.food.model.Food
 import com.fitness.tracker.food.model.Nutrients
 import com.fitness.tracker.food.repository.FoodRepository
-import com.fitness.tracker.person.model.Credentials
+import com.fitness.tracker.person.model.PhysicalObjective
+import com.fitness.tracker.security.Credentials
 import com.fitness.tracker.person.model.Person
-import com.fitness.tracker.person.repository.CredentialsRepository
+import com.fitness.tracker.security.repository.CredentialsRepository
 import groovy.transform.CompileStatic
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -45,24 +46,26 @@ class Bootstrap implements InitializingBean {
         //Set up the Person
         String password = passwordEncoder.encode("123456")
         LocalDate dob = LocalDate.now().minusYears(18)
-        Person person = new Person(dateOfBirth: dob, weight: 80, height: 180, sex: "Male", physicalActivity: 1.725, weightChangePerWeek: 150)
+        Person person = new Person(dateOfBirth: dob, weight: 80, height: 180, sex: "Male", physicalActivity: 1.725, physicalObjective: new PhysicalObjective( 150.0))
         person.setNutritionalObjective()
 
         Credentials credentials = new Credentials(person: person, userName: "user1", email: "mail@mail.com", password: password, rpassword: password)
         credentialsRepository.save(credentials)
 
         //Set up foods
-        Characteristics characteristics = new Characteristics(isVegan: false, isPescetarian: false, isVegetarian: false)
-        Food banana = new Food(name: "Banana", nutrientsPer100Gram: new Nutrients(carbohydrates: 20, proteins: 0.5, fats: 0.5), characteristics: characteristics, gramsInOnePortion: 100)
-        Food apple = new Food(name: "Apple",  nutrientsPer100Gram: new Nutrients(carbohydrates: 20,proteins: 0.5, fats: 2), characteristics: characteristics, gramsInOnePortion: 80)
-        Food pizza = new Food(name: "Pizza", nutrientsPer100Gram: new Nutrients(carbohydrates: 28,proteins: 5, fats: 9), characteristics: characteristics, gramsInOnePortion: 150)
-        Food chickenBreast = new Food(name: "Chicken breast", nutrientsPer100Gram: new Nutrients(carbohydrates: 20,proteins: 22, fats: 5), characteristics: characteristics, gramsInOnePortion: 120)
-        Food hamburguer = new Food(name: "Hamburguer",nutrientsPer100Gram: new Nutrients(carbohydrates: 38,proteins: 9, fats: 15), characteristics: characteristics, gramsInOnePortion: 300)
-        foodRepository.saveAll(Arrays.asList(banana, apple, pizza, chickenBreast, hamburguer))
+        Food banana = new Food(name: "Banana", nutrientsPer100Gram: new Nutrients( 20.0, 0.5, 0.5), gramsInOnePortion: 100)
+        Food apple = new Food(name: "Apple",  nutrientsPer100Gram: new Nutrients( 20.0, 0.5, 2.0), gramsInOnePortion: 80)
+        Food pizza = new Food(name: "Pizza", nutrientsPer100Gram: new Nutrients( 28.0, 5.0, 9.0), gramsInOnePortion: 150)
+        Food chickenBreast = new Food(name: "Chicken breast", nutrientsPer100Gram: new Nutrients( 1.0, 22.0, 5.0), gramsInOnePortion: 120)
+        Food hamburger = new Food(name: "Hamburger",nutrientsPer100Gram: new Nutrients( 19.0,  15.0, 16.0), gramsInOnePortion: 300)
+        foodRepository.saveAll(Arrays.asList(banana, apple, pizza, chickenBreast, hamburger))
 
         //Set up exercises
-        Exercise pechoPlano = new Exercise(name: "Bench Press", type: Exercise.Type.AEROBIC, caloriesBurnedPerMinute: 100)
-        exerciseRepository.saveAll(Arrays.asList(pechoPlano))
+        Exercise benchPress = new Exercise(name: "Bench Press", type: Exercise.Type.STRENGTH, caloriesBurnedPerMinute: 3.7)
+        Exercise overHeadPress = new Exercise(name: "Over head press", type: Exercise.Type.STRENGTH, caloriesBurnedPerMinute: 3.7)
+        Exercise running = new Exercise(name: "Running", type: Exercise.Type.AEROBIC, caloriesBurnedPerMinute: 5)
+        Exercise ropeJumps = new Exercise(name: "Rope jumps", type: Exercise.Type.AEROBIC, caloriesBurnedPerMinute: 5.4)
+        exerciseRepository.saveAll(Arrays.asList(benchPress, overHeadPress, running, ropeJumps))
 
         LOG.info("Bootstrapping finished")
     }

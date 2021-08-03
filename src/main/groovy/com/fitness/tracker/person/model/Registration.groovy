@@ -27,10 +27,12 @@ class Registration {
     @Column( name = "id", updatable = false, nullable = false)
     Long id
 
+
     @NotNull
     LocalDate registrationDate
 
     Boolean wasRegisteredOn(date){
         this.registrationDate.equals(date)
     }
+
 }

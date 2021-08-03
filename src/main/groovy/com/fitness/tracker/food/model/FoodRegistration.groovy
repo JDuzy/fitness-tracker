@@ -12,7 +12,6 @@ import javax.persistence.JoinColumn
 import javax.persistence.ManyToOne
 import javax.persistence.Table
 import javax.validation.constraints.NotNull
-import java.time.LocalDate
 
 @Entity
 @Table(name = "food_registration")
@@ -34,10 +33,6 @@ class FoodRegistration extends Registration{
 
     Integer getCalories(){
         food.getCaloriesPerAmount(amountOfGrams)
-    }
-
-    Boolean wasRegisteredOn(LocalDate date){
-        registrationDate.equals(date)
     }
 
     Nutrients calculateNutrientsIfAmountWere(BigDecimal amount) {

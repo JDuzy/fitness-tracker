@@ -70,21 +70,27 @@ function registerWeight(date){
 //FoodRegistration
 function registerFood(date){
     var foodAnchor = document.getElementsByClassName("list-group-item active")[0];
-    var amount = document.getElementById("amount-input");
+    var inputs = document.getElementsByName("amount-input");
+    var amount = null;
+    for (let input of inputs){
+        if (input.value != ""){
+            amount = input.value
+        }
+    }
     var xhr = new XMLHttpRequest();
-    var url = "/food/registration?registrationDate="
-    xhr.onreadystatechange = function() { // listen for state changes
+    var url = "/food/registration?registrationDate=".concat(date)
+    setXhrRedirect(xhr, url)
+    /*xhr.onreadystatechange = function() { // listen for state changes
         if (xhr.readyState == 4 && xhr.status == 200) { // when completed we can move away
             window.location = url.concat(date);
         }
-    }
-    xhr.open("POST", url.concat(date), true);
+    }*/
+    xhr.open("POST", url, true);
     xhr.setRequestHeader('Content-Type', 'application/json');
     xhr.send(JSON.stringify({
-        foodId: foodAnchor.id,
-        amount: amount.value
+        foodId: foodAnchor.getAttribute("value"),
+        amount: amount
     }))
-    return
 }
 
 function setXhrRedirect(xhr, urlForGet){
@@ -118,7 +124,6 @@ function openFoodRegistrationEditModal(name, registrationId, date){
         xhr.send(JSON.stringify({
             amount: $amount.val()
         }))
-        return
     };
 
     $btnModify.click(handler);
@@ -142,7 +147,6 @@ function openFoodRegistrationDeleteModal(name, registrationId, date){
 
         xhr.open("DELETE", urlForDelete, true);
         xhr.send();
-        return
     };
 
     $btnDelete.click(handler);
@@ -155,10 +159,24 @@ function openFoodRegistrationDeleteModal(name, registrationId, date){
 //ExerciseRegistration
 function registerExercise(date){
     var exerciseAnchor = document.getElementsByClassName("list-group-item active")[0];
-    var time = document.getElementById("time-input");
-    var weight = document.getElementById("weight-input");
+    var times = document.getElementsByName("time-input");
+    var weights = document.getElementsByName("weight-input");
+    var timeMinutes = null;
+    var weightKilograms = null;
     var xhr = new XMLHttpRequest();
     var url = "/exercise/registration?registrationDate="
+
+    for (let time of times){
+        if (time.value != ""){
+            timeMinutes = time.value
+        }
+    }
+    for (let weight of weights){
+        if (weight.value != ""){
+            weightKilograms = weight.value
+        }
+    }
+
     xhr.onreadystatechange = function() { // listen for state changes
         if (xhr.readyState == 4 && xhr.status == 200) { // when completed we can move away
             window.location = url.concat(date);
@@ -167,9 +185,9 @@ function registerExercise(date){
     xhr.open("POST", url.concat(date), true);
     xhr.setRequestHeader('Content-Type', 'application/json');
     xhr.send(JSON.stringify({
-        exerciseId: exerciseAnchor.id,
-        time: time.value,
-        weight: weight.value
+        exerciseId: exerciseAnchor.getAttribute("value"),
+        time: timeMinutes,
+        weight: weightKilograms
     }))
 }
 
@@ -197,7 +215,6 @@ function openExerciseRegistrationEditModal(name, registrationId, date){
             time: $time.val(),
             weight: $weight.val()
         }))
-        return
     };
 
     $btnModify.click(handler);
@@ -221,7 +238,6 @@ function openExerciseRegistrationDeleteModal(name, registrationId, date){
 
         xhr.open("DELETE", urlForDelete, true);
         xhr.send();
-        return
     };
 
     $btnDelete.click(handler);

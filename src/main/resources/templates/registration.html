@@ -13,7 +13,7 @@
     <div class="row justify-content-center">
         <div class="col col-md-5">
             <!--/*@thymesVar id="person" type="com.fitness.tracker.person.model.Person"*/-->
-            <!--/*@thymesVar id="credentials" type="com.fitness.tracker.person.model.Credentials"*/-->
+            <!--/*@thymesVar id="credentials" type="com.fitness.tracker.security.Credentials"*/-->
             <form method="post" th:action="@{/registration}" th:object="${credentials}" class="text-start">
                 <h1 class="display-4 text-center">Sign Up</h1>
 
@@ -72,8 +72,8 @@
                 </div>
 
                 <div class="form-row py-1">
-                    <label>Weekly objective</label>
-                    <select required="true" class="form-select form-control" aria-label="Default select example" name="person.weightChangePerWeek" th:value="*{person.weightChangePerWeek}" th:errorClass="is-invalid">
+                    <label>Physical objective</label>
+                    <select required="true" class="form-select form-control" aria-label="Default select example" name="person.physicalObjective.addedCaloriesFromObjective" th:value="*{person.physicalObjective.addedCaloriesFromObjective}" th:errorClass="is-invalid">
                         <option value="" selected>Select your objective</option>
                         <option value="300">Gain muscle - faster</option>
                         <option value="150">Gain muscle - slower</option>
@@ -81,7 +81,7 @@
                         <option value="-150">Loose fat - faster</option>
                         <option value="-300">Loose fat - slower</option>
                     </select>
-                    <div th:if="${#fields.hasErrors('person.weightChangePerWeek')}" th:errors="*{person.weightChangePerWeek}" class="invalid-feedback"></div>
+                    <div th:if="${#fields.hasErrors('person.physicalObjective.addedCaloriesFromObjective')}" th:errors="*{person.physicalObjective.addedCaloriesFromObjective}" class="invalid-feedback"></div>
                 </div>
 
                 <div class="form-row py-1">

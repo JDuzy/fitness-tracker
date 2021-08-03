@@ -1,17 +1,23 @@
 package com.fitness.tracker.person.model
 
+import com.fitness.tracker.exercise.model.Exercise
+import com.fitness.tracker.exercise.model.ExerciseRecommender
 import com.fitness.tracker.exercise.model.ExerciseRegistration
 import com.fitness.tracker.food.model.DailyNutrientsEaten
 import com.fitness.tracker.food.model.DailyNutritionalObjective
+import com.fitness.tracker.food.model.Food
+import com.fitness.tracker.food.model.FoodRecommender
 import com.fitness.tracker.food.model.FoodRegistration
 import com.fitness.tracker.food.model.Nutrients
 import com.fitness.tracker.weight.model.WeightRegistration
+import com.fitness.tracker.infrastructure.PhysicalObjectiveAttributeConverter
 import groovy.transform.CompileStatic
 import org.springframework.format.annotation.DateTimeFormat
 import org.springframework.web.server.ResponseStatusException
 
 import javax.persistence.CascadeType
 import javax.persistence.Column
+import javax.persistence.Convert
 import javax.persistence.Entity
 import javax.persistence.FetchType
 import javax.persistence.GeneratedValue
@@ -61,7 +67,8 @@ class Person{
     BigDecimal physicalActivity
 
     @NotNull
-    BigDecimal weightChangePerWeek
+    @Convert(converter = PhysicalObjectiveAttributeConverter.class)
+    PhysicalObjective physicalObjective = new PhysicalObjective()
 
     @NotNull
     @OneToOne(cascade = CascadeType.ALL)
@@ -72,32 +79,45 @@ class Person{
     @JoinColumn(name = "person_id")
     Set<DailyNutrientsEaten> dailyNutrientsEaten = []
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @OrderBy("id ASC")
     @JoinColumn(name = "person_id")
     Set<ExerciseRegistration> exerciseRegistrations = new LinkedHashSet<>()
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OrderBy("id ASC")
     @JoinColumn(name = "person_id")
     Set<WeightRegistration> weightRegistrations = new LinkedHashSet<>()
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     @OrderBy("id ASC")
     @JoinColumn(name = "person_id")
-    Set<FoodRegistration> foodRegistrations = new LinkedHashSet<>() //TODO: OrderBy or LinkedHashSet
+    Set<FoodRegistration> foodRegistrations = new LinkedHashSet<>()
 
 
     Integer getAge(){
         Period.between(this.dateOfBirth, LocalDate.now()).getYears()
     }
 
+    void updateData(String sex, LocalDate dateOfBirth, Integer height, BigDecimal weight, BigDecimal addedCaloriesToMaintenance, BigDecimal physicalActivity) {
+        this.sex = sex
+        this.dateOfBirth = dateOfBirth
+        this.height = height
+        this.weight = weight
+        physicalObjective = new PhysicalObjective(addedCaloriesFromObjective: addedCaloriesToMaintenance)
+        this.physicalActivity = physicalActivity
+        setNutritionalObjective()
+    }
+
     void setNutritionalObjective(){
-        nutritionalObjective.calculateObjective(age, weight, height, sex, physicalActivity, weightChangePerWeek)
+        nutritionalObjective.calculateObjective(age, weight, height, sex, physicalActivity, physicalObjective)
     }
 
     DailyNutrientsEaten dailyNutrientsEatenOn(LocalDate date){
         Optional.ofNullable(dailyNutrientsEaten.find {it.wereEatenOn(date)}).orElseGet({
-            dailyNutrientsEaten.add(new DailyNutrientsEaten(nutrients: new Nutrients(carbohydrates: 0, proteins: 0, fats: 0),eatenDay: date))
-            dailyNutrientsEaten.find({it.wereEatenOn(date)}) //Intellij cant resolve but it works
+            DailyNutrientsEaten nutrientsEaten = new DailyNutrientsEaten(nutrients: new Nutrients( 0.0,  0.0, 0.0),eatenDay: date)
+            dailyNutrientsEaten.add(nutrientsEaten)
+            nutrientsEaten
         })
     }
 
@@ -144,18 +164,8 @@ class Person{
         foodRegistrations.remove(registration)
     }
 
-    void updateData(String newSex, LocalDate dateOfBirth, Integer height, BigDecimal weight, BigDecimal weightChangePerWeek, BigDecimal physicalActivity) {
-        this.sex = sex
-        this.dateOfBirth = dateOfBirth
-        this.height = height
-        this.weight = weight
-        this.weightChangePerWeek = weightChangePerWeek
-        this.physicalActivity = physicalActivity
-        setNutritionalObjective()
-    }
-
-    List<ExerciseRegistration> getExercisesRegistrationsByDate(LocalDate date){
-        exerciseRegistrations.findAll {registration -> registration.wasRegisteredOn(date)}.toList()
+    Set<ExerciseRegistration> getExercisesRegistrationsByDate(LocalDate date){
+        exerciseRegistrations.findAll {registration -> registration.wasRegisteredOn(date)}
     }
 
     List<WeightRegistration> getWeightRegistrationsByDate(LocalDate date) {
@@ -166,13 +176,13 @@ class Person{
         exerciseRegistrations.add(exerciseRegistration)
     }
 
-    void deleteExerciseRegistration(ExerciseRegistration exerciseRegistration) {
-        exerciseRegistrations.remove(exerciseRegistration)
+    void updateExerciseRegistrationWithId(Long registrationId, BigDecimal newTime, BigDecimal newWeight) {
+        ExerciseRegistration registration = Optional.ofNullable(exerciseRegistrations.find{it.id.equals(registrationId)})
+                .orElseThrow({new ResponseStatusException(NOT_FOUND, "No exerciseRegistration with id: ${registrationId} was found")})
+        registration.setTime(newTime)
+        registration.setWeight(newWeight)
     }
 
-    ExerciseRegistration findExerciseRegistrationWithId(Long registrationId) {
-        exerciseRegistrations.find({registration -> registration.id == registrationId})
-    }
 
     void addWeightRegistration(WeightRegistration weightRegistration) {
         weightRegistrations.add(weightRegistration)
@@ -186,5 +196,21 @@ class Person{
 
     void deleteWeightRegistration(WeightRegistration weightRegistration) {
         weightRegistrations.remove(weightRegistration)
+    }
+
+    void deleteExerciseRegistrationWithId(Long registrationId) {
+        ExerciseRegistration registration = Optional.ofNullable(exerciseRegistrations.find{it.id.equals(registrationId)})
+                .orElseThrow({new ResponseStatusException(NOT_FOUND, "No exerciseRegistration with id: ${registrationId} was found")})
+        exerciseRegistrations.remove(registration)
+    }
+
+    List<Food> receiveFoodRecommendations(List<Food> foods, LocalDate date) {
+        FoodRecommender recommender = new FoodRecommender()
+        recommender.recommendBasedOnRemainingNutrients(foods, remainingNutrientsForTheActualDay(date))
+    }
+
+    List<Exercise> receiveExerciseRecommendations(List<Exercise> exercises){
+        ExerciseRecommender recommender = new ExerciseRecommender()
+        recommender.recommendBasedOnPhysicalObjective(exercises, physicalObjective)
     }
 }

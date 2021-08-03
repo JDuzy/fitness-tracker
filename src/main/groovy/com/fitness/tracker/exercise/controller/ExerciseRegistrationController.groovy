@@ -5,6 +5,7 @@ import com.fitness.tracker.exercise.model.ExerciseRegistration
 import com.fitness.tracker.exercise.service.ExerciseService
 import com.fitness.tracker.person.model.Person
 import com.fitness.tracker.person.service.PersonService
+import com.fitness.tracker.security.service.CredentialsService
 import groovy.transform.CompileStatic
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.format.annotation.DateTimeFormat
@@ -26,24 +27,18 @@ class ExerciseRegistrationController {
     final PersonService personService
 
     @Autowired
+    final CredentialsService credentialsService
+
+    @Autowired
     final ExerciseService exerciseService
 
     @GetMapping("/exercise/registration")
     String getExerciseRegistrations(Model model, @RequestParam(required = false, defaultValue = "#{T(java.time.LocalDate).now().toString()}") @DateTimeFormat(iso = DATE) LocalDate registrationDate){
         Person loggedPerson = personService.getLoggedPerson()
-        model.addAttribute("person", loggedPerson)
-
-        List<Exercise> exercises = exerciseService.findAll()
-
-        List<ExerciseRegistration> dailyExercisesRegistrations = personService.getExercisesRegistrationsByDate(registrationDate)
-
-        //TO DO: Use model.addAttributes in 1 line
-        model.addAttribute("exerciseRegistrations", dailyExercisesRegistrations)
-        model.addAttribute("exercises", exercises)
-        model.addAttribute("today", registrationDate.toString())
-        model.addAttribute("yesterday", registrationDate.minusDays(1).toString())
-        model.addAttribute("tomorrow", registrationDate.plusDays(1).toString())
-
+        List<Exercise> allExercises = exerciseService.findAll()
+        List<Exercise> recommendedExercises = personService.getRecommendedExercises(allExercises)
+        Set<ExerciseRegistration> dailyExercisesRegistrations = personService.getExercisesRegistrationsByDate(registrationDate)
+        model.addAllAttributes("person": loggedPerson, "credentials": credentialsService.getPrincipal(), "exerciseRegistrations": dailyExercisesRegistrations, "exercises": allExercises, "recommendedExercises": recommendedExercises, "today": registrationDate.toString(), "yesterday": registrationDate.minusDays(1).toString(), "tomorrow": registrationDate.plusDays(1).toString())
         "exerciseRegistration"
     }
 

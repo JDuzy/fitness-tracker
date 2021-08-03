@@ -1,7 +1,7 @@
 package com.fitness.tracker.person.controller
 
-import com.fitness.tracker.person.model.Credentials
-import com.fitness.tracker.person.service.CredentialsService
+import com.fitness.tracker.security.Credentials
+import com.fitness.tracker.security.service.CredentialsService
 import com.fitness.tracker.person.service.PersonService
 import groovy.transform.CompileStatic
 import org.springframework.beans.factory.annotation.Autowired
@@ -44,6 +44,7 @@ class RegistrationController {
             return "redirect:/food/registration"
         }
         model.addAttribute("credentials", credentials)
+        model.addAttribute("physycalObjective", credentials.person)
         "registration"
     }
 

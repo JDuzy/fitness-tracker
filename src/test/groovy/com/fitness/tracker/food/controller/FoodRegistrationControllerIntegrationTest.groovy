@@ -2,9 +2,9 @@ package com.fitness.tracker.food.controller
 
 import com.fitness.tracker.food.model.FoodRegistration
 import com.fitness.tracker.food.repository.FoodRegistrationRepository
-import com.fitness.tracker.person.model.Credentials
+import com.fitness.tracker.security.Credentials
 import com.fitness.tracker.person.model.Person
-import com.fitness.tracker.person.repository.CredentialsRepository
+import com.fitness.tracker.security.repository.CredentialsRepository
 import com.fitness.tracker.person.repository.PersonRepository
 import com.fitness.tracker.person.service.PersonService
 import org.junit.jupiter.api.Assertions
@@ -53,20 +53,19 @@ class FoodRegistrationControllerIntegrationTest {
 
     @BeforeEach
     void setUp(){
-
         personRepository.deleteAll()
 
         //Set up the Person
         String password = passwordEncoder.encode("123456")
         LocalDate dob = LocalDate.now().minusYears(18)
-        personUsedToTest = new Person( dateOfBirth: dob, weight: 80, height: 180, sex: "male", physicalActivity: 1.725, weightChangePerWeek: 150)
+        personUsedToTest = new Person( dateOfBirth: dob, weight: 80, height: 180, sex: "male", physicalActivity: 1.725, physicalObjective: 150)
         personUsedToTest.setNutritionalObjective()
         credentialsUsedForTest = new Credentials(person: personUsedToTest, userName: "testUser", email: "testUser@mail.com", password: password, rpassword: password)
 
         credentialsRepository.save(credentialsUsedForTest)
 
         doReturn(personRepository.findById(personUsedToTest.id).orElseThrow({new IllegalStateException("Error seting up Person on testSetUp")})).when(personService).getLoggedPerson()
-        //when(personService.getPrincipal()).thenReturn(person)
+
     }
 
     @Test

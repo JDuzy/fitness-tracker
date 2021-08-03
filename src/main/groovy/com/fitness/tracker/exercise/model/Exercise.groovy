@@ -34,19 +34,19 @@ class Exercise {
     @NotNull
     Type type
 
-    boolean isAerobic() {
-        if (type == Type.AEROBIC)
-            true
+    Boolean isAerobic() {
+        type == Type.AEROBIC
     }
 
-    boolean isStrength() {
-        if (type == Type.STRENGTH)
-            true
+    Boolean isStrength() {
+        type == Type.STRENGTH
     }
 
     BigDecimal getTotalCaloriesBurned(BigDecimal time) {
         caloriesBurnedPerMinute * time
     }
+
+
 
 }
 
