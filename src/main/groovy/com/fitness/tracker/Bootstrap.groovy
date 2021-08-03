@@ -6,6 +6,7 @@ import com.fitness.tracker.food.model.Characteristics
 import com.fitness.tracker.food.model.Food
 import com.fitness.tracker.food.model.Nutrients
 import com.fitness.tracker.food.repository.FoodRepository
+import com.fitness.tracker.person.model.PhysicalObjective
 import com.fitness.tracker.security.Credentials
 import com.fitness.tracker.person.model.Person
 import com.fitness.tracker.security.repository.CredentialsRepository
@@ -45,7 +46,7 @@ class Bootstrap implements InitializingBean {
         //Set up the Person
         String password = passwordEncoder.encode("123456")
         LocalDate dob = LocalDate.now().minusYears(18)
-        Person person = new Person(dateOfBirth: dob, weight: 80, height: 180, sex: "Male", physicalActivity: 1.725, physicalObjective: 150)
+        Person person = new Person(dateOfBirth: dob, weight: 80, height: 180, sex: "Male", physicalActivity: 1.725, physicalObjective: new PhysicalObjective(addedCaloriesFromObjective: 150))
         person.setNutritionalObjective()
 
         Credentials credentials = new Credentials(person: person, userName: "user1", email: "mail@mail.com", password: password, rpassword: password)

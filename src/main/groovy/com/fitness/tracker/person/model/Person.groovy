@@ -64,6 +64,8 @@ class Person{
     BigDecimal physicalActivity
 
     @NotNull
+
+
     PhysicalObjective physicalObjective
 
     @NotNull
@@ -82,19 +84,19 @@ class Person{
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @OrderBy("id ASC")
-    @JoinColumn(name = "person_id") //TODO: If joined by that column removing a registration must use foodRegistrationRepository.remove()
+    @JoinColumn(name = "person_id")
     Set<FoodRegistration> foodRegistrations = new LinkedHashSet<>()
 
     Integer getAge(){
         Period.between(this.dateOfBirth, LocalDate.now()).getYears()
     }
 
-    void updateData(String sex, LocalDate dateOfBirth, Integer height, BigDecimal weight, PhysicalObjective physicalObjective, BigDecimal physicalActivity) {
+    void updateData(String sex, LocalDate dateOfBirth, Integer height, BigDecimal weight, BigDecimal addedCaloriesToMaintenance, BigDecimal physicalActivity) {
         this.sex = sex
         this.dateOfBirth = dateOfBirth
         this.height = height
         this.weight = weight
-        this.physicalObjective = physicalObjective
+        physicalObjective.changeObjective(addedCaloriesToMaintenance)
         this.physicalActivity = physicalActivity
         setNutritionalObjective()
     }

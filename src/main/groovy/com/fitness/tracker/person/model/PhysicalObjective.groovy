@@ -21,4 +21,8 @@ class PhysicalObjective {
     BigDecimal addObjectiveCalories(BigDecimal maintenanceCalories) {
         return maintenanceCalories + addedCaloriesFromObjective
     }
+
+    void changeObjective(BigDecimal newAddedCalories) {
+        this.addedCaloriesFromObjective = newAddedCalories
+    }
 }
