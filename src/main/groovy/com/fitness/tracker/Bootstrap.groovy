@@ -53,18 +53,18 @@ class Bootstrap implements InitializingBean {
         credentialsRepository.save(credentials)
 
         //Set up foods
-        Food banana = new Food(name: "Banana", nutrientsPer100Gram: new Nutrients(gramsOfCarbohydrates: 20, gramsOfProtein: 0.5, gramsOfFats: 0.5), gramsInOnePortion: 100)
-        Food apple = new Food(name: "Apple",  nutrientsPer100Gram: new Nutrients(gramsOfCarbohydrates: 20, gramsOfProtein: 0.5, gramsOfFats: 2), gramsInOnePortion: 80)
-        Food pizza = new Food(name: "Pizza", nutrientsPer100Gram: new Nutrients(gramsOfCarbohydrates: 28, gramsOfProtein: 5, gramsOfFats: 9), gramsInOnePortion: 150)
-        Food chickenBreast = new Food(name: "Chicken breast", nutrientsPer100Gram: new Nutrients(gramsOfCarbohydrates: 1, gramsOfProtein: 22, gramsOfFats: 5), gramsInOnePortion: 120)
-        Food hamburger = new Food(name: "Hamburger",nutrientsPer100Gram: new Nutrients(gramsOfCarbohydrates: 19, gramsOfProtein: 15, gramsOfFats: 16), gramsInOnePortion: 300)
+        Food banana = new Food(name: "Banana", nutrientsPer100Gram: new Nutrients( 20.0, 0.5, 0.5), gramsInOnePortion: 100)
+        Food apple = new Food(name: "Apple",  nutrientsPer100Gram: new Nutrients( 20.0, 0.5, 2.0), gramsInOnePortion: 80)
+        Food pizza = new Food(name: "Pizza", nutrientsPer100Gram: new Nutrients( 28.0, 5.0, 9.0), gramsInOnePortion: 150)
+        Food chickenBreast = new Food(name: "Chicken breast", nutrientsPer100Gram: new Nutrients( 1.0, 22.0, 5.0), gramsInOnePortion: 120)
+        Food hamburger = new Food(name: "Hamburger",nutrientsPer100Gram: new Nutrients( 19.0,  15.0, 16.0), gramsInOnePortion: 300)
         foodRepository.saveAll(Arrays.asList(banana, apple, pizza, chickenBreast, hamburger))
 
         //Set up exercises
-        Exercise benchPress = new Exercise(name: "Bench Press", type: Exercise.Type.STRENGTH, caloriesBurnedPerMinute: 100)
-        Exercise overHeadPress = new Exercise(name: "Over head press", type: Exercise.Type.STRENGTH, caloriesBurnedPerMinute: 12)
-        Exercise running = new Exercise(name: "Running", type: Exercise.Type.AEROBIC, caloriesBurnedPerMinute: 10)
-        Exercise ropeJumps = new Exercise(name: "Rope jumps", type: Exercise.Type.AEROBIC, caloriesBurnedPerMinute: 12)
+        Exercise benchPress = new Exercise(name: "Bench Press", type: Exercise.Type.STRENGTH, caloriesBurnedPerMinute: 3.7)
+        Exercise overHeadPress = new Exercise(name: "Over head press", type: Exercise.Type.STRENGTH, caloriesBurnedPerMinute: 3.7)
+        Exercise running = new Exercise(name: "Running", type: Exercise.Type.AEROBIC, caloriesBurnedPerMinute: 5)
+        Exercise ropeJumps = new Exercise(name: "Rope jumps", type: Exercise.Type.AEROBIC, caloriesBurnedPerMinute: 5.4)
         exerciseRepository.saveAll(Arrays.asList(benchPress, overHeadPress, running, ropeJumps))
 
         LOG.info("Bootstrapping finished")

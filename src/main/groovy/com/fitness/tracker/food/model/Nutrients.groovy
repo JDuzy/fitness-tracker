@@ -2,43 +2,37 @@ package com.fitness.tracker.food.model
 
 
 import groovy.transform.CompileStatic
-import groovy.transform.ToString
-import org.springframework.data.annotation.Transient
 
-import javax.persistence.Column
-import javax.persistence.Entity
-import javax.persistence.GeneratedValue
-import javax.persistence.GenerationType
-import javax.persistence.Id
-import javax.persistence.SequenceGenerator
-import javax.persistence.Table
+import javax.persistence.Embeddable
+import javax.persistence.Transient
 import javax.validation.constraints.NotNull
 import java.math.RoundingMode
-import java.util.stream.Collectors
 
-@Entity
-@Table(name = "nutrients")
+@Embeddable
 @CompileStatic
 class Nutrients {
 
-    @Id
-    @SequenceGenerator(name = 'nutrient_sequence', sequenceName = 'nutrient_sequence', allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "nutrient_sequence")
-    @Column( name = "id", updatable = false, nullable = false)
-    long id
-
-    @NotNull
-    BigDecimal gramsOfCarbohydrates
-
-    @NotNull
-    BigDecimal gramsOfProtein
-
-    @NotNull
-    BigDecimal gramsOfFats
-
     @Transient
-    BigDecimal MINIMUM_PERCENTAGE_TO_BE_MAIN_NUTRIENT = 45
+    final BigDecimal MINIMUM_PERCENTAGE_TO_BE_MAIN_NUTRIENT = 45
 
+    @NotNull
+    final BigDecimal gramsOfCarbohydrates
+
+    @NotNull
+    final BigDecimal gramsOfProtein
+
+    @NotNull
+    final BigDecimal gramsOfFats
+
+    Nutrients(BigDecimal carbs, BigDecimal proteins, BigDecimal fats){
+        gramsOfCarbohydrates = carbs
+        gramsOfProtein = proteins
+        gramsOfFats = fats
+    }
+
+    Nutrients() {
+
+    }
 
     Integer getCalories(){
         BigDecimal calories = (gramsOfCarbohydrates * 4 + gramsOfProtein * 4 + gramsOfFats * 4).setScale(0, RoundingMode.HALF_UP)
@@ -46,30 +40,24 @@ class Nutrients {
     }
 
     Nutrients minus(Nutrients other){
-        new Nutrients(gramsOfCarbohydrates: this.gramsOfCarbohydrates - other.gramsOfCarbohydrates, gramsOfProtein: this.gramsOfProtein - other.gramsOfProtein, gramsOfFats: this.gramsOfFats - other.gramsOfFats)
+        new Nutrients(this.gramsOfCarbohydrates - other.gramsOfCarbohydrates, this.gramsOfProtein - other.gramsOfProtein, this.gramsOfFats - other.gramsOfFats)
     }
 
     Nutrients plus(Nutrients other){
-        new Nutrients(gramsOfCarbohydrates: this.gramsOfCarbohydrates + other.gramsOfCarbohydrates, gramsOfProtein: this.gramsOfProtein + other.gramsOfProtein, gramsOfFats: this.gramsOfFats + other.gramsOfFats)
+        new Nutrients(this.gramsOfCarbohydrates + other.gramsOfCarbohydrates, this.gramsOfProtein + other.gramsOfProtein, this.gramsOfFats + other.gramsOfFats)
     }
 
-    void update(Nutrients other) {
-        this.gramsOfCarbohydrates = other.gramsOfCarbohydrates
-        this.gramsOfProtein = other.gramsOfProtein
-        this.gramsOfFats = other.gramsOfFats
+    Nutrients addNutrientsBasedOn(FoodRegistration foodRegistration) {
+        this + foodRegistration.nutrients
     }
 
-    void addNutrientsBasedOn(FoodRegistration foodRegistration) {
-        update(this + foodRegistration.nutrients)
+    Nutrients deleteNutrientsBasedOn(FoodRegistration foodRegistration) {
+        this - foodRegistration.nutrients
     }
 
-    void deleteNutrientsBasedOn(FoodRegistration foodRegistration) {
-        update(this - foodRegistration.nutrients)
-    }
-
-    void updateNutrientsBasedOn(FoodRegistration foodRegistration, BigDecimal newAmount) {
-        update(this - foodRegistration.nutrients)
-        update(this + foodRegistration.calculateNutrientsIfAmountWere(newAmount))
+    Nutrients updateNutrientsBasedOn(FoodRegistration foodRegistration, BigDecimal newAmount) {
+        Nutrients delete =  this - foodRegistration.nutrients
+        delete + foodRegistration.calculateNutrientsIfAmountWere(newAmount)
     }
 
     Boolean hasSimilarNutrientDistributionTo(Nutrients other){
@@ -93,4 +81,5 @@ class Nutrients {
                 ", Fats=" + gramsOfFats +
                 '}';
     }
+
 }

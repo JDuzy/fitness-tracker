@@ -1,15 +1,17 @@
 package com.fitness.tracker.food.model
 
+import groovy.transform.CompileStatic
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 
+@CompileStatic
 class NutrientsUnitTest {
 
     @Test
     void bothNutrientsHaveSameMainNutrientCarbohydrates(){
         //Arrange
-        Nutrients nutrients1 = new Nutrients(gramsOfCarbohydrates: 21, gramsOfProtein: 10, gramsOfFats: 10)
-        Nutrients nutrients2 = new Nutrients(gramsOfCarbohydrates: 19, gramsOfProtein: 11, gramsOfFats: 5)
+        Nutrients nutrients1 = new Nutrients( 21.0,  10.0, 10.0)
+        Nutrients nutrients2 = new Nutrients( 19.0,  11.0, 5.0)
 
         //Act
         Boolean haveSameNutrient = nutrients1.hasSimilarNutrientDistributionTo(nutrients2)
@@ -22,8 +24,8 @@ class NutrientsUnitTest {
     @Test
     void bothNutrientsHaveSameMainNutrientProtein(){
         //Arrange
-        Nutrients nutrients1 = new Nutrients(gramsOfCarbohydrates: 10, gramsOfProtein: 21, gramsOfFats: 10)
-        Nutrients nutrients2 = new Nutrients(gramsOfCarbohydrates: 8, gramsOfProtein: 19, gramsOfFats: 5)
+        Nutrients nutrients1 = new Nutrients( 10.0,  21.0, 10.0)
+        Nutrients nutrients2 = new Nutrients( 8.0,  19.0, 5.0)
 
         //Act
         Boolean haveSameNutrient = nutrients1.hasSimilarNutrientDistributionTo(nutrients2)
@@ -36,8 +38,8 @@ class NutrientsUnitTest {
     @Test
     void bothNutrientsHaveSameMainNutrientFats(){
         //Arrange
-        Nutrients nutrients1 = new Nutrients(gramsOfCarbohydrates: 10, gramsOfProtein: 10, gramsOfFats: 22)
-        Nutrients nutrients2 = new Nutrients(gramsOfCarbohydrates: 8, gramsOfProtein: 4, gramsOfFats: 19)
+        Nutrients nutrients1 = new Nutrients( 10.0, 10.0, 22.0)
+        Nutrients nutrients2 = new Nutrients( 8.0, 4.0, 19.0)
 
         //Act
         Boolean haveSameNutrient = nutrients1.hasSimilarNutrientDistributionTo(nutrients2)
@@ -50,8 +52,8 @@ class NutrientsUnitTest {
     @Test
     void bothNutrientsHaveNoMainNutrientFats(){
         //Arrange
-        Nutrients nutrients1 = new Nutrients(gramsOfCarbohydrates: 10, gramsOfProtein: 12, gramsOfFats: 9)
-        Nutrients nutrients2 = new Nutrients(gramsOfCarbohydrates: 6, gramsOfProtein: 4, gramsOfFats: 5)
+        Nutrients nutrients1 = new Nutrients( 10.0, 12.0, 9.0)
+        Nutrients nutrients2 = new Nutrients( 6.0, 4.0, 5.0)
 
         //Act
         Boolean haveSameNutrient = nutrients1.hasSimilarNutrientDistributionTo(nutrients2)
@@ -64,8 +66,8 @@ class NutrientsUnitTest {
     @Test
     void bothNutrientsHaveDifferentNutrientDistribution(){
         //Arrange
-        Nutrients nutrients1 = new Nutrients(gramsOfCarbohydrates: 25, gramsOfProtein: 0.4, gramsOfFats: 0.3) //Main nutrient Carbohydrate
-        Nutrients nutrients2 = new Nutrients(gramsOfCarbohydrates: 0.8, gramsOfProtein: 18.5, gramsOfFats: 4.2) //Main nutrient Carbohydrate
+        Nutrients nutrients1 = new Nutrients( 25.0,  0.4, 0.3) //Main nutrient Carbohydrate
+        Nutrients nutrients2 = new Nutrients( 0.8,  18.5, 4.2) //Main nutrient Carbohydrate
 
         //Act
         Boolean haveSameNutrient = nutrients1.hasSimilarNutrientDistributionTo(nutrients2)

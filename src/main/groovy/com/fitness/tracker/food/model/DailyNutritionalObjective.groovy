@@ -5,6 +5,7 @@ import groovy.transform.CompileStatic
 
 import javax.persistence.CascadeType
 import javax.persistence.Column
+import javax.persistence.Embedded
 import javax.persistence.Entity
 import javax.persistence.GeneratedValue
 import javax.persistence.GenerationType
@@ -27,8 +28,7 @@ class DailyNutritionalObjective {
     Long id
 
     @NotNull
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "nutrients_id", referencedColumnName = "id")
+    @Embedded
     Nutrients objectiveNutrients = new Nutrients()
 
 
@@ -59,7 +59,7 @@ class DailyNutritionalObjective {
         BigDecimal caloriesForCarbohydrates = objectiveCalories - caloriesFromProteinAndFats
         BigDecimal carbohydrates = caloriesForCarbohydrates / 4
 
-        objectiveNutrients.update(new Nutrients(gramsOfCarbohydrates: carbohydrates, gramsOfProtein: proteins, gramsOfFats: fats))
+        objectiveNutrients = new Nutrients(carbohydrates,proteins, fats)
     }
 
 

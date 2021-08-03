@@ -2,15 +2,12 @@ package com.fitness.tracker.food.model
 
 import groovy.transform.CompileStatic
 
-import javax.persistence.CascadeType
 import javax.persistence.Column
+import javax.persistence.Embedded
 import javax.persistence.Entity
 import javax.persistence.GeneratedValue
 import javax.persistence.GenerationType
 import javax.persistence.Id
-import javax.persistence.JoinColumn
-import javax.persistence.OneToOne
-import javax.persistence.PrimaryKeyJoinColumn
 import javax.persistence.SequenceGenerator
 import javax.persistence.Table
 import javax.validation.constraints.NotNull
@@ -31,8 +28,7 @@ class Food {
     String name
 
     @NotNull
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "nutrients_id", referencedColumnName = "id")
+    @Embedded
     Nutrients nutrientsPer100Gram
 
     @NotNull
@@ -55,7 +51,7 @@ class Food {
     }
 
     Nutrients getNutrientsPerAmount(BigDecimal amountOfGrams){
-        new Nutrients(gramsOfCarbohydrates: (amountOfGrams * carbohydrates)/100 , gramsOfProtein: (amountOfGrams * proteins)/100, gramsOfFats: (amountOfGrams * fats)/100)
+        new Nutrients((amountOfGrams * carbohydrates)/100 , (amountOfGrams * proteins)/100, (amountOfGrams * fats)/100)
     }
 
     Integer getCaloriesPerAmount(BigDecimal amountOfGrams){
