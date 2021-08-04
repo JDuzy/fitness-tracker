@@ -37,14 +37,14 @@ class WeightRegistrationController {
         List<Integer> daysOfLastMonthList = CalendarLogic.getDaysOfLastMonthList(registrationDate)
         //---
 
-        List<List<WeightRegistration>> monthlyWeightRegistrations = new ArrayList<List<WeightRegistration>>()
+        /*List<List<WeightRegistration>> monthlyWeightRegistrations = new ArrayList<List<WeightRegistration>>()
 
         for (int i=1; i <= registrationDate.lengthOfMonth(); i++){
             List<WeightRegistration> dailyWeightRegistrations = personService.getWeightRegistrationsByDate(registrationDate.withDayOfMonth(i))
             monthlyWeightRegistrations.add( dailyWeightRegistrations )
-        }
+        }*/
 
-        println monthlyWeightRegistrations.size()
+        List<WeightRegistration> monthlyWeightRegistrations = personService.getMonthlyWeightRegistrations(registrationDate.getMonth())
         //TO DO: Use model.addAttributes in 1 line
         model.addAttribute("monthlyWeightRegistrations", monthlyWeightRegistrations)
         model.addAttribute("daysOfMonth", daysInMonthList)
@@ -55,7 +55,6 @@ class WeightRegistrationController {
         model.addAttribute("thisYear", registrationDate.getYear().toString())
         model.addAttribute("lastMonth", registrationDate.minusMonths(1).toString().toLowerCase())
         model.addAttribute("nextMonth", registrationDate.plusMonths(1).toString().toLowerCase())
-
         "weightRegistration"
     }
 

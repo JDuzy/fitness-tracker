@@ -15,6 +15,7 @@ import javax.persistence.MappedSuperclass
 import javax.persistence.SequenceGenerator
 import javax.validation.constraints.NotNull
 import java.time.LocalDate
+import java.time.Month
 
 @MappedSuperclass
 @CompileStatic
@@ -27,7 +28,6 @@ class Registration {
     @Column( name = "id", updatable = false, nullable = false)
     Long id
 
-
     @NotNull
     LocalDate registrationDate
 
@@ -35,4 +35,7 @@ class Registration {
         this.registrationDate.equals(date)
     }
 
+    Boolean wasRegisteredOnMonth(Month month) {
+        registrationDate.getMonth() == month
+    }
 }

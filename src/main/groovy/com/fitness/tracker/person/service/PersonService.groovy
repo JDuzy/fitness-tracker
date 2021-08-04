@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service
 import org.springframework.web.server.ResponseStatusException
 import javax.transaction.Transactional
 import java.time.LocalDate
+import java.time.Month
 
 import static org.springframework.http.HttpStatus.NOT_FOUND
 
@@ -147,5 +148,9 @@ class PersonService {
 
     List<Exercise> getRecommendedExercises(List<Exercise> allExercises) {
         getLoggedPerson().receiveExerciseRecommendations(allExercises)
+    }
+
+    List<WeightRegistration> getMonthlyWeightRegistrations(Month month) {
+        loggedPerson.getMonthlyWeightRegistrations(month)
     }
 }

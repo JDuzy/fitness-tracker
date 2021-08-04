@@ -34,6 +34,7 @@ import javax.validation.constraints.NotBlank
 import javax.validation.constraints.NotNull
 import javax.validation.constraints.Past
 import java.time.LocalDate
+import java.time.Month
 import java.time.Period
 
 import static org.springframework.http.HttpStatus.NOT_FOUND
@@ -213,5 +214,9 @@ class Person{
     List<Exercise> receiveExerciseRecommendations(List<Exercise> exercises){
         ExerciseRecommender recommender = new ExerciseRecommender()
         recommender.recommendBasedOnPhysicalObjective(exercises, physicalObjective)
+    }
+
+    List<WeightRegistration> getMonthlyWeightRegistrations(Month month) {
+        weightRegistrations.findAll({registration -> registration.wasRegisteredOnMonth(month)}).toList()
     }
 }

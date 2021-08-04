@@ -62,19 +62,19 @@
 
             <li th:each="day : ${daysOfLastMonth}" class="grayout">
               <div class="date" th:text="${day}">
-                <div class = "badge bg-primary rounded-pill py-4 px-4 fs-5" th:each="dailyWeightRegistration : ${monthlyWeightRegistrations[day - 1]} " th:text="${dailyWeightRegistration.weight} + ' kg'"></div>
+                <div class = "badge bg-primary rounded-pill py-4 px-4 fs-5" ></div>
               </div>
             </li>
 
             <li th:each="day : ${daysOfMonth}" th:onclick="openWeightRegistrationModal([[${todayLocalDate.withDayOfMonth(day)}]])">
               <div class="date" th:text="${day}">                                                          <!--array starts at 0-->
-                <div class = "badge bg-primary rounded-pill py-4 px-4 fs-5" th:each="dailyWeightRegistration : ${monthlyWeightRegistrations[day - 1]}" th:text="${dailyWeightRegistration.weight} + ' kg'" th:onclick="OpenWeightRegistrationEditModal"></div>
               </div>
+              <div class = "badge bg-primary rounded-pill py-4 px-4 fs-5" th:each="dailyWeightRegistration : ${monthlyWeightRegistrations}" th:if="${dailyWeightRegistration.registrationDate.getDayOfMonth() == day}" th:text="${dailyWeightRegistration.weight} + ' kg'" th:onclick="OpenWeightRegistrationEditModal"></div>
             </li>
 
             <li th:each="day : ${daysOfNextMonth}" class="grayout">
               <div class="date" th:text="${day}">
-                <div class = "badge bg-primary rounded-pill py-4 px-4 fs-5" th:each="dailyWeightRegistration : ${monthlyWeightRegistrations[day - 1]}" th:text="${dailyWeightRegistration.weight} + ' kg'"></div>
+                <div class = "badge bg-primary rounded-pill py-4 px-4 fs-5" ></div>
               </div>
             </li>
 
