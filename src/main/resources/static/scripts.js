@@ -289,28 +289,45 @@ function openWeightRegistrationModal(date){
     $modal.modal('show');
 }
 
-//calendar
-/*function createDaysFromLastMonth(date) {
-    var dateTemp = moment(date, "YYYY-MM-DD")
-    //var monthOfYear = dateTemp.get("month")//0-11
-    //var year = dateTemp.get("year")
-    var daysInMonth = dateTemp.daysInMonth(dateTemp)
-    var x ="", i;
-    for (i=1; i<=daysInMonth; i++) {
-        x = x +
-            '<li><div class="date">'+i+'</div></li>';
-    }
-    document.getElementById("calendar-days").innerHTML = x;
-}*/
+function openWeightRegistrationEditModal(date, registrationId){
+    //clone dialog and remove ids to ensure uniqueness
+    //var $modal = $('#ModificationModal*').clone().removeAttr('id');
+    var $originalModal = $('#WeightRegistrationEditModal')
+    var $modal = $originalModal.clone().removeAttr('id');
 
-//utility
-function getDate(){
-    var today = new Date();
-    var dd = String(today.getDate()).padStart(2, '0');
-    var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
-    var yyyy = today.getFullYear();
+    $modal.find('[name="registration-form"]')//establish value as date?
+    $modal.find('[name="modify-update-text"]').text(name);
+    var $btnModify = $modal.find('[name="modify-registration"]');
+    var $btnDelete = $modal.find('[name="delete-registration"]');
 
-    today = mm + '/' + dd + '/' + yyyy;
-    return today
+    var modifyWeightRegistration = function (){
+        var $weight = $modal.find('[name="edit-weight-input"]');
+        var xhr = new XMLHttpRequest();
+        var urlForPut = "/weight/registration/".concat(registrationId);
+        var urlForGet = "/weight/registration/".concat("?registrationDate=").concat(date);
+        setXhrRedirect(xhr, urlForGet);
+
+        xhr.open("PUT", urlForPut, true);
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.send(JSON.stringify({
+            weight: $weight.val()
+        }))
+    };
+
+    var deleteWeightRegistration = function (){
+        var xhr = new XMLHttpRequest();
+        var urlForDelete = "/weight/registration/".concat(registrationId);
+        var urlForGet = "/weight/registration/".concat("?registrationDate=").concat(date);
+
+        setXhrRedirect(xhr, urlForGet);
+
+        xhr.open("DELETE", urlForDelete, true);
+        xhr.send();
+    };
+
+    $btnModify.click(modifyWeightRegistration)
+    $btnDelete.click(deleteWeightRegistration);
+
+    //show dialo
+    $modal.modal('show');
 }
-

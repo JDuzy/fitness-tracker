@@ -30,19 +30,11 @@ class WeightRegistrationController {
         Person loggedPerson = personService.getLoggedPerson()
         model.addAttribute("person", loggedPerson)
 
-        //
         //get days in current, last and next month for calendar
         List<Integer> daysInMonthList = CalendarLogic.getDaysInMonthList(registrationDate)
         List<Integer> daysOfNextMonthList = CalendarLogic.getDaysOfNextMonthList(registrationDate)
         List<Integer> daysOfLastMonthList = CalendarLogic.getDaysOfLastMonthList(registrationDate)
         //---
-
-        /*List<List<WeightRegistration>> monthlyWeightRegistrations = new ArrayList<List<WeightRegistration>>()
-
-        for (int i=1; i <= registrationDate.lengthOfMonth(); i++){
-            List<WeightRegistration> dailyWeightRegistrations = personService.getWeightRegistrationsByDate(registrationDate.withDayOfMonth(i))
-            monthlyWeightRegistrations.add( dailyWeightRegistrations )
-        }*/
 
         List<WeightRegistration> monthlyWeightRegistrations = personService.getMonthlyWeightRegistrations(registrationDate.getMonth())
         //TO DO: Use model.addAttributes in 1 line
@@ -69,8 +61,8 @@ class WeightRegistrationController {
     @PutMapping("/weight/registration/{registrationId}")
     @ResponseBody
     String modifyARegistration(@PathVariable Long registrationId, @RequestBody Map<String, String> payload){
-        BigDecimal weight = payload.get("weight").toBigDecimal()
-        personService.updateWeightRegistration(registrationId, weight)
+        BigDecimal newWeight = payload.get("weight").toBigDecimal()
+        personService.updateWeightRegistration(registrationId, newWeight)
         "Updated"
     }
 

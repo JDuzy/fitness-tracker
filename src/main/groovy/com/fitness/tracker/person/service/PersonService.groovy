@@ -125,25 +125,12 @@ class PersonService {
 
     @Transactional
     void updateWeightRegistration(Long registrationId, BigDecimal newWeight) {
-        Person person = getLoggedPerson()
-        WeightRegistration registration = Optional.ofNullable(person.findWeightRegistrationWithId(registrationId) as WeightRegistration)
-                .orElseThrow({
-                    new ResponseStatusException(NOT_FOUND, "No weightRegistration with id: ${registrationId} was found")
-                })
-        person.deleteWeightRegistration(registration)
-        registration.weight = newWeight
-        person.addWeightRegistration(registration)
-        registration
+        getLoggedPerson().updateWeightRegistrationWithId(registrationId, newWeight)
     }
 
     @Transactional
     void deleteWeightRegistration(Long registrationId) {
-        Person person = getLoggedPerson()
-        WeightRegistration registration = Optional.ofNullable(person.findWeightRegistrationWithId(registrationId) as WeightRegistration)
-                .orElseThrow({
-                    new ResponseStatusException(NOT_FOUND, "No weightRegistration with id: ${registrationId} was found")
-                })
-        person.deleteWeightRegistration(registration)
+        getLoggedPerson().deleteWeightRegistrationWithId(registrationId)
     }
 
     List<Exercise> getRecommendedExercises(List<Exercise> allExercises) {

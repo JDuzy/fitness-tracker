@@ -193,11 +193,22 @@ class Person{
     }
 
     void findWeightRegistrationWithId(long registrationId) {
+        println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
+        println(weightRegistrations)
+        println( (weightRegistrations.find({registration -> registration.id == registrationId}).id ))
         weightRegistrations.find({registration -> registration.id == registrationId})
     }
 
-    void deleteWeightRegistration(WeightRegistration weightRegistration) {
-        weightRegistrations.remove(weightRegistration)
+    void updateWeightRegistrationWithId(Long registrationId, BigDecimal newWeight) {
+        WeightRegistration weightRegistration = Optional.ofNullable(weightRegistrations.find{it.id.equals(registrationId)})
+                .orElseThrow({new ResponseStatusException(NOT_FOUND, "No weightRegistration with id: ${registrationId} was found")})
+        weightRegistration.setWeight(newWeight)
+    }
+
+    void deleteWeightRegistrationWithId(Long registrationId) {
+        WeightRegistration registration = Optional.ofNullable(weightRegistrations.find{it.id.equals(registrationId)})
+                .orElseThrow({new ResponseStatusException(NOT_FOUND, "No weightRegistration with id: ${registrationId} was found")})
+        weightRegistrations.remove(registration)
     }
 
     void deleteExerciseRegistrationWithId(Long registrationId) {
