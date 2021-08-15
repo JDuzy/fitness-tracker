@@ -150,7 +150,7 @@
 
   <div class="card" th:object="${person}">
     <div class="card-header row pb-1">
-      <!--<h5 th:text=" 'Eaten nutrients:' + ${remainingNutrients}"></h5>-->
+      <!--<h5 th:text=" 'Eaten nutrients:' + ${remainingNutrients}"></h5>--> <!--Comment-->
       <a th:href="@{'/food/registration?registrationDate=' + ${yesterday}}" class="bi bi-chevron-left col text-center"></a>
       <h5 class=" col text-center" th:text="${today}">Featured</h5>
       <a th:href="@{'/food/registration?registrationDate=' + ${tomorrow}}" class="bi bi-chevron-right col text-center"></a>
