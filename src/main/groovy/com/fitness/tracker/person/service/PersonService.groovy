@@ -52,36 +52,36 @@ class PersonService {
     }
 
     @Transactional
-    void updateData(Person person, Map<String, String> payload){
-        person.updateData(payload.get("sex"), LocalDate.parse(payload.get("dateOfBirth")), payload.get("height").toInteger(), payload.get("weight").toBigDecimal(), payload.get("objective").toBigDecimal(), payload.get("physicalActivity").toBigDecimal())
+    void updateData(Map<String, String> payload){
+        loggedPerson.updateData(payload.get("sex"), LocalDate.parse(payload.get("dateOfBirth")), payload.get("height").toInteger(), payload.get("weight").toBigDecimal(), payload.get("objective").toBigDecimal(), payload.get("physicalActivity").toBigDecimal())
     }
 
     @Transactional
     FoodRegistration registerFood(LocalDate registrationDate, BigDecimal amountOfGrams, Long foodId) {
         Food food = foodRepository.findFoodById(foodId).orElseThrow({new IllegalStateException("Food with id ${foodId} does not exists")})
         FoodRegistration registration = new FoodRegistration( registrationDate: registrationDate, amountOfGrams: amountOfGrams, food: food)
-        getLoggedPerson().addFoodRegistration(registration, registrationDate)
+        loggedPerson.addFoodRegistration(registration, registrationDate)
         registration
     }
 
     @Transactional
     Set<FoodRegistration> getFoodRegistrationsByDate(LocalDate date){
-        getLoggedPerson().getFoodRegistrationsByDate(date)
+        loggedPerson.getFoodRegistrationsByDate(date)
     }
 
     @Transactional
     void updateFoodRegistration(Long registrationId, BigDecimal newAmount) {
-        getLoggedPerson().updateFoodRegistrationWithId(registrationId, newAmount)
+        loggedPerson.updateFoodRegistrationWithId(registrationId, newAmount)
     }
 
     @Transactional
     void deleteFoodRegistration(Long registrationId) {
-        getLoggedPerson().deleteFoodRegistrationWithId(registrationId)
+        loggedPerson.deleteFoodRegistrationWithId(registrationId)
     }
 
     @Transactional
     Set<ExerciseRegistration> getExercisesRegistrationsByDate(LocalDate date) {
-        getLoggedPerson().getExercisesRegistrationsByDate(date)
+        loggedPerson.getExercisesRegistrationsByDate(date)
     }
 
     @Transactional
@@ -90,24 +90,24 @@ class PersonService {
             new IllegalStateException("Exercise with id ${exerciseId} does not exists")
         })
         ExerciseRegistration registration = new ExerciseRegistration(registrationDate: registrationDate, time: time, weight: weight, exercise: exercise)
-        getLoggedPerson().addExerciseRegistration(registration)
+        loggedPerson.addExerciseRegistration(registration)
     }
 
     @Transactional
     void updateExerciseRegistration(Long registrationId, BigDecimal newTime, BigDecimal newWeight) {
-        getLoggedPerson().updateExerciseRegistrationWithId(registrationId, newTime, newWeight)
+        loggedPerson.updateExerciseRegistrationWithId(registrationId, newTime, newWeight)
     }
 
     @Transactional
     void deleteExerciseRegistration(Long registrationId) {
-        getLoggedPerson().deleteExerciseRegistrationWithId(registrationId)
+        loggedPerson.deleteExerciseRegistrationWithId(registrationId)
     }
 
     List<Food> getRecommendedFoods(List<Food> allFoods, LocalDate date) {
-        getLoggedPerson().receiveFoodRecommendations(allFoods, date)
+        loggedPerson.receiveFoodRecommendations(allFoods, date)
     }
 
     List<Exercise> getRecommendedExercises(List<Exercise> allExercises) {
-        getLoggedPerson().receiveExerciseRecommendations(allExercises)
+        loggedPerson.receiveExerciseRecommendations(allExercises)
     }
 }
