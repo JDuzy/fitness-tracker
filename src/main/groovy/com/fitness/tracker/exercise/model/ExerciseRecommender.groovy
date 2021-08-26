@@ -5,7 +5,7 @@ import com.fitness.tracker.person.model.PhysicalObjective
 
 class ExerciseRecommender {
 
-    List<Exercise> recommendBasedOnPhysicalObjective(List<Exercise> exercises, PhysicalObjective objective){
+    static List<Exercise> recommendBasedOnPhysicalObjective(List<Exercise> exercises, PhysicalObjective objective){
         exercises.findAll({exercise -> objective.isExerciseOptimum(exercise)})
     }
 }

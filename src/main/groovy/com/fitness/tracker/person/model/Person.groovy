@@ -179,12 +179,10 @@ class Person{
     }
 
     List<Food> receiveFoodRecommendations(List<Food> foods, LocalDate date) {
-        FoodRecommender recommender = new FoodRecommender()
-        recommender.recommendBasedOnRemainingNutrients(foods, remainingNutrientsForTheActualDay(date))
+        FoodRecommender.recommendBasedOnRemainingNutrients(foods, remainingNutrientsForTheActualDay(date))
     }
 
     List<Exercise> receiveExerciseRecommendations(List<Exercise> exercises){
-        ExerciseRecommender recommender = new ExerciseRecommender()
-        recommender.recommendBasedOnPhysicalObjective(exercises, physicalObjective)
+        ExerciseRecommender.recommendBasedOnPhysicalObjective(exercises, physicalObjective)
     }
 }
