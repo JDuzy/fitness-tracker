@@ -65,7 +65,7 @@
 
         <li th:each="day : ${daysOfMonth}" th:onclick="openWeightRegistrationModal([[${todayLocalDate.withDayOfMonth(day)}]])">
           <div class="date" th:text="${day}"></div>
-          <div class = "badge bg-primary rounded-pill mb-1 py-1 px-4 fs-6" th:each="dailyWeightRegistration : ${monthlyWeightRegistrations}" th:if="${dailyWeightRegistration.registrationDate.getDayOfMonth() == day}" th:text="${dailyWeightRegistration.weight} + ' kg'" th:onclick="openWeightRegistrationEditModal([[${dailyWeightRegistration.registrationDate}]], [[${dailyWeightRegistration.id}]])"></div>
+          <div class = "badge bg-primary rounded-pill mb-1 py-1 px-4 fs-6" th:each="dailyWeightRegistration : ${monthlyWeightRegistrations}" th:if="${dailyWeightRegistration.registrationDate.getDayOfMonth() == day && dailyWeightRegistration.registrationDate.getYear() == thisYear}" th:text="${dailyWeightRegistration.weight} + ' kg'" th:onclick="openWeightRegistrationEditModal([[${dailyWeightRegistration.registrationDate}]], [[${dailyWeightRegistration.id}]])"></div>
         </li>
 
         <li th:each="day : ${daysOfNextMonth}" class="grayout">

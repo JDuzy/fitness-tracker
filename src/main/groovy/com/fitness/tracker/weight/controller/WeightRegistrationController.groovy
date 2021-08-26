@@ -44,7 +44,7 @@ class WeightRegistrationController {
         model.addAttribute("daysOfLastMonth", daysOfLastMonthList)
         model.addAttribute("todayLocalDate", registrationDate)
         model.addAttribute("thisMonth", registrationDate.getMonth().toString().toLowerCase())
-        model.addAttribute("thisYear", registrationDate.getYear().toString())
+        model.addAttribute("thisYear", registrationDate.getYear())
         model.addAttribute("lastMonth", registrationDate.minusMonths(1).toString().toLowerCase())
         model.addAttribute("nextMonth", registrationDate.plusMonths(1).toString().toLowerCase())
         "weightRegistration"
